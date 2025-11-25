@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   Typography,
@@ -10,10 +11,20 @@ import {
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getCategories, getProducts } from "@/lib/wooClient";
+import { buildCategoryMetadata } from "@/seo/buildCategoryMetadata";
 
 interface CategoryPageProps {
   params: Promise<{ lang: string; slug: string }>;
 }
+
+export const generateMetadata = async (
+    props: CategoryPageProps
+  ): Promise<Metadata> => {
+    const { params } = props;
+    const { lang, slug } = await params;
+  
+    return buildCategoryMetadata({ lang, slug });
+  };
 
 const CategoryPage = async ({ params }: CategoryPageProps) => {
   const { lang, slug } = await params;
@@ -26,8 +37,6 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   if (!category) return notFound();
 
   const products = await getProducts({ category: category.id, per_page: 40 });
-
-  console.log(products);
 
   return (
     <Box>

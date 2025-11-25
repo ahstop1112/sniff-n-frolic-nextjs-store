@@ -1,5 +1,5 @@
-// src/app/[lang]/products/[slug]/page.tsx
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   Typography,
@@ -12,10 +12,20 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProductBySlug } from "@/lib/wooClient";
 import ProductImageGallery from "@/components/ProductImageGallery";
+import { buildProductMetadata } from "@/seo/buildProductMetaTag";
 
 interface ProductPageProps {
   params: Promise<{ lang: string; slug: string }>;
 }
+
+export const generateMetadata = async (
+    props: ProductPageProps
+  ): Promise<Metadata> => {
+    const { params } = props;
+    const { lang, slug } = await params;
+  
+    return buildProductMetadata({ lang, slug });
+};
 
 const ProductPage = async ({ params }: ProductPageProps) => {
     const { lang, slug } = await params;

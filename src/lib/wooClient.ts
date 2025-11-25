@@ -8,6 +8,27 @@ if (!baseUrlEnv || !consumerKey || !consumerSecret) {
 
 const baseUrl = baseUrlEnv.replace(/\/$/, "");
 
+export interface YoastOgImage {
+    url: string;
+    width?: number;
+    height?: number;
+    type?: string;
+}
+
+export interface YoastHeadJson {
+    title?: string;
+    description?: string;
+    canonical?: string;
+    og_title?: string;
+    og_description?: string;
+    og_url?: string;
+    og_site_name?: string;
+    og_type?: string;
+    og_locale?: string;
+    og_image?: YoastOgImage[];
+    twitter_card?: string;
+}
+
 export interface WooImage {
   id: number;
   src: string;
@@ -27,6 +48,8 @@ export interface WooProduct {
   short_description: string; // HTML
   description: string; // HTML
   sku: string;
+  yoast_head?: string;
+  yoast_head_json?: YoastHeadJson;
 }
 
 export interface WooCategory {
