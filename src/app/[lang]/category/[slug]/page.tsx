@@ -12,12 +12,11 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getCategories, getProducts } from "@/lib/wooClient";
 
 interface CategoryPageProps {
-  params: { lang: string; slug: string };
+  params: Promise<{ lang: string; slug: string }>;
 }
 
 const CategoryPage = async ({ params }: CategoryPageProps) => {
-  const { lang, slug } = params;
-
+  const { lang, slug } = await params;
   if (!isValidLocale(lang)) return notFound();
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
@@ -27,6 +26,8 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   if (!category) return notFound();
 
   const products = await getProducts({ category: category.id, per_page: 40 });
+
+  console.log(products);
 
   return (
     <Box>
@@ -40,14 +41,9 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
             <Grid item xs={12} sm={6} md={3} key={p.id}>
               <Card variant="outlined">
                 <CardContent>
-                  <Typography
-                    component={Link}
-                    href={`/${locale}/products/${p.slug}`}
-                    variant="subtitle1"
-                    sx={{ textDecoration: "none" }}
-                  >
+                  <Link href={`/${locale}/products/${p.slug}`} >
                     {p.name}
-                  </Typography>
+                  </Link>
                   <Typography variant="body2" color="text.secondary">
                     ${p.price}
                   </Typography>

@@ -2,21 +2,21 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Container, Box, Stack, Link as MuiLink } from "@mui/material";
+import { Container, Box, Stack, Typography } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { SearchBar } from "@/components/SearchBar";
 
-const LangLayout = async ({
-  children,
-  params,
-}: {
+interface LangLayoutProps {
   children: ReactNode;
-  params: { lang: string };
-}) => {
-  if (!isValidLocale(params.lang)) return notFound();
+  params: Promise<{ lang: string }>;
+}
 
-  const locale: Locale = params.lang;
+const LangLayout = async ({ children, params }: LangLayoutProps) => {
+  const { lang } = await params;
+  if (!isValidLocale(lang)) return notFound();
+
+  const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
   return (
@@ -28,28 +28,25 @@ const LangLayout = async ({
           alignItems="center"
           gap={2}
         >
-          <MuiLink component={Link} href={`/${locale}`} underline="none">
-            {dict.common.siteTitle}
-          </MuiLink>
-
-          <SearchBar locale={locale} />
+            <Link href={`/${locale}`} style={{ textDecoration: "none" }}>
+                <Typography variant="h6">
+                    {dict.common.siteTitle}
+                </Typography>
+            </Link>
+            <SearchBar locale={locale} />
 
           <Stack direction="row" spacing={2} alignItems="center">
-            <MuiLink component={Link} href={`/${locale}`} underline="none">
+            <Link href={`/${locale}`}>
               {dict.nav.home}
-            </MuiLink>
-            <MuiLink component={Link} href={`/${locale}/products`} underline="none">
+            </Link >
+            <Link href={`/${locale}/products`}>
               {dict.nav.products}
-            </MuiLink>
-            <MuiLink component={Link} href={`/${locale}/about`} underline="none">
+            </Link >
+            <Link href={`/${locale}/about`}>
               {dict.nav.about}
-            </MuiLink>
-            <MuiLink component={Link} href="/en" underline="none">
-              EN
-            </MuiLink>
-            <MuiLink component={Link} href="/zh" underline="none">
-              中文
-            </MuiLink>
+            </Link >
+            <Link href="/en">EN</Link>
+            <Link href="/zh">中文</Link>
           </Stack>
         </Stack>
       </Box>
@@ -59,4 +56,4 @@ const LangLayout = async ({
   );
 };
 
-export default LangLayout;
+export default LangLayout;  

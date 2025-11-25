@@ -13,12 +13,13 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
 
 interface ProductsPageProps {
-  params: { lang: string };
+  params: Promise<{ lang: string; slug: string }>;
 }
 
 const ProductsPage = async ({ params }: ProductsPageProps) => {
-  if (!isValidLocale(params.lang)) return notFound();
-  const locale: Locale = params.lang;
+  const { lang, slug } = await params;
+  if (!isValidLocale(lang)) return notFound();
+  const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
   const products = await getProducts({ per_page: 20 });
@@ -35,14 +36,9 @@ const ProductsPage = async ({ params }: ProductsPageProps) => {
             <Grid item xs={12} sm={6} md={3} key={p.id}>
               <Card variant="outlined">
                 <CardContent>
-                  <Typography
-                    component={Link}
-                    href={`/${locale}/products/${p.slug}`}
-                    variant="subtitle1"
-                    sx={{ textDecoration: "none" }}
-                  >
+                  <Link href={`/${locale}/products/${p.slug}`}>
                     {p.name}
-                  </Typography>
+                  </Link>
                   <Typography variant="body2" color="text.secondary">
                     ${p.price}
                   </Typography>

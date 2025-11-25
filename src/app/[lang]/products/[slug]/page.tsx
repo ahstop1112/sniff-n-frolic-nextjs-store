@@ -14,20 +14,20 @@ import { getProductBySlug } from "@/lib/wooClient";
 import ProductImageGallery from "@/components/ProductImageGallery";
 
 interface ProductPageProps {
-  params: { lang: string; slug: string };
+  params: Promise<{ lang: string; slug: string }>;
 }
 
 const ProductPage = async ({ params }: ProductPageProps) => {
-  const { lang, slug } = params;
+    const { lang, slug } = await params;
+    if (!isValidLocale(lang)) return notFound();
 
-  if (!isValidLocale(lang)) return notFound();
-  const locale: Locale = lang;
-  const dict = await getDictionary(locale);
+    const locale: Locale = lang;
+    const dict = await getDictionary(locale);
 
-  const product = await getProductBySlug(slug);
-  if (!product) return notFound();
+    const product = await getProductBySlug(slug);
+    if (!product) return notFound();
 
-  const images = product.images ?? [];
+    const images = product.images ?? [];
 
   return (
     <Box>
@@ -63,24 +63,16 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           )}
 
           <Box mt={4} display="flex" gap={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              component={Link}
-              href={product.permalink}
-              target="_blank"
-            >
-              {dict.common.viewOnSniff}
-            </Button>
-
-            <Button
-              variant="outlined"
-              color="secondary"
-              component={Link}
-              href={`/${locale}/products`}
-            >
-              {dict.common.backToAll}
-            </Button>
+            <Link href={product.permalink}  target="_blank">
+                <Button variant="contained" color="primary">
+                    {dict.common.viewOnSniff}
+                </Button>
+            </Link>
+            <Link href={`/${locale}/products`}  target="_blank">
+                <Button variant="outlined" color="primary">
+                    {dict.common.backToAll}
+                </Button>
+            </Link>
           </Box>
         </Grid>
       </Grid>

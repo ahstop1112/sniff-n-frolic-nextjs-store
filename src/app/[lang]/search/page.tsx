@@ -13,39 +13,41 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
 
 interface SearchPageProps {
-  params: { lang: string };
+  params: Promise<{ lang: string }>;
   searchParams?: { search?: string };
 }
 
 const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
-  if (!isValidLocale(params.lang)) return notFound();
-  const locale: Locale = params.lang;
-  const dict = await getDictionary(locale);
+    const { lang } = await params;
+    if (!isValidLocale(lang)) return notFound();
 
-  const raw = searchParams?.search ?? "";
-  const search = raw.trim();
+    const locale: Locale = lang;
+    const dict = await getDictionary(locale);
 
-  if (!search) {
-    return (
-      <Box>
-        <Typography variant="h4" gutterBottom>
-          {locale === "zh" ? "搜尋產品" : "Search products"}
-        </Typography>
-        <Typography variant="body1" mt={2}>
-          {locale === "zh"
-            ? "請喺上面搜尋欄輸入產品關鍵字。"
-            : "Please type a product keyword in the search bar above."}
-        </Typography>
-      </Box>
-    );
-  }
+    const raw = searchParams?.search ?? "";
+    const search = raw.trim();
 
-  const products = await getProducts({ per_page: 24, search });
+    if (!search) {
+        return (
+        <Box>
+            <Typography variant="h4" gutterBottom>
+            {locale === "zh" ? "搜尋產品" : "Search products"}
+            </Typography>
+            <Typography variant="body1" mt={2}>
+            {locale === "zh"
+                ? "請喺上面搜尋欄輸入產品關鍵字。"
+                : "Please type a product keyword in the search bar above."}
+            </Typography>
+        </Box>
+        );
+    }
 
-  const title =
-    locale === "zh"
-      ? `搜尋結果：「${search}」`
-      : `Search results for: "${search}"`;
+    const products = await getProducts({ per_page: 24, search });
+
+    const title =
+        locale === "zh"
+        ? `搜尋結果：「${search}」`
+        : `Search results for: "${search}"`;
 
   return (
     <Box>
@@ -66,14 +68,9 @@ const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
               <Grid item xs={12} sm={6} md={3} key={p.id}>
                 <Card variant="outlined">
                   <CardContent>
-                    <Typography
-                      component={Link}
-                      href={`/${locale}/products/${p.slug}`}
-                      variant="subtitle1"
-                      sx={{ textDecoration: "none" }}
-                    >
+                    <Link href={`/${locale}/products/${p.slug}`} >
                       {p.name}
-                    </Typography>
+                    </Link>
                     <Typography variant="body2" color="text.secondary">
                       ${p.price}
                     </Typography>

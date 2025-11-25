@@ -1,10 +1,12 @@
-const baseUrl = process.env.WC_API_BASE_URL!;
+const baseUrlEnv = process.env.WC_API_BASE_URL!;
 const consumerKey = process.env.WC_CONSUMER_KEY!;
 const consumerSecret = process.env.WC_CONSUMER_SECRET!;
 
-if (!baseUrl || !consumerKey || !consumerSecret) {
+if (!baseUrlEnv || !consumerKey || !consumerSecret) {
   throw new Error("WooCommerce API env vars are missing");
 }
+
+const baseUrl = baseUrlEnv.replace(/\/$/, "");
 
 export interface WooImage {
   id: number;
@@ -43,7 +45,10 @@ const wooFetch = async <T>(
   path: string,
   params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> => {
-  const url = new URL(path, baseUrl);
+    const cleanPath = path.replace(/^\//, "");
+    const url = new URL(`${baseUrl}/${cleanPath}`);
+
+  console.log(baseUrl);
 
   url.searchParams.set("consumer_key", consumerKey);
   url.searchParams.set("consumer_secret", consumerSecret);
@@ -56,7 +61,7 @@ const wooFetch = async <T>(
   }
 
   const res = await fetch(url.toString(), {
-    cache: "no-store", // 之後可以改做 ISR
+    cache: "no-store", 
   });
 
   if (!res.ok) {
