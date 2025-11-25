@@ -1,6 +1,7 @@
 // src/app/[lang]/search/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import {
   Typography,
   Box,
@@ -11,11 +12,22 @@ import {
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
+import { buildSearchMetadata } from "@/seo/buildSearchMetaTag";
 
 interface SearchPageProps {
-  params: Promise<{ lang: string }>;
-  searchParams?: { search?: string };
+    params: Promise<{ lang: string }>;
+    searchParams: Promise<{ q?: string }>;
 }
+
+export const generateMetadata = async (
+    props: SearchPageProps
+  ): Promise<Metadata> => {
+    const { params, searchParams } = props;
+    const { lang } = await params;
+    const { q } = await searchParams;
+  
+    return buildSearchMetadata({ lang, query: q });
+};
 
 const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
     const { lang } = await params;

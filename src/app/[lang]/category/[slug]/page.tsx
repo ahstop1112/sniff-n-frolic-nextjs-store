@@ -11,7 +11,7 @@ import {
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getCategories, getProducts } from "@/lib/wooClient";
-import { buildCategoryMetadata } from "@/seo/buildCategoryMetadata";
+import { buildCategoryMetadata } from "@/seo/buildCategoryMetaTag";
 
 interface CategoryPageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -48,16 +48,16 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
         <Grid container spacing={2}>
           {products.map((p) => (
             <Grid item xs={12} sm={6} md={3} key={p.id}>
-              <Card variant="outlined">
-                <CardContent>
-                  <Link href={`/${locale}/products/${p.slug}`} >
-                    {p.name}
-                  </Link>
-                  <Typography variant="body2" color="text.secondary">
-                    ${p.price}
-                  </Typography>
-                </CardContent>
-              </Card>
+                <Card variant="outlined">
+                    <CardContent>
+                    <Link href={`/${locale}/products/${p.slug}`} >
+                        {p.name}
+                    </Link>
+                    <Typography variant="body2" color="text.secondary">
+                        ${p.price}
+                    </Typography>
+                    </CardContent>
+                </Card>
             </Grid>
           ))}
         </Grid>

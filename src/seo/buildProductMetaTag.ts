@@ -1,33 +1,35 @@
 import type { Metadata } from "next";
-import { isValidLocale } from "@/i18n/config";
+import { isValidLocale, type Locale } from "@/i18n/config";
 import { getProductBySlug } from "@/lib/wooClient";
+import { seoConfig } from "./seoConfig";
 
-interface buildProductMetadataArgs {
+interface BuildProductMetadataArgs {
     lang: string;
     slug: string;
 }
 
-export const buildProductMetadata = async ( args: buildProductMetadataArgs ): Promise<Metadata> => {
+export const buildProductMetadata = async ( args: BuildProductMetadataArgs ): Promise<Metadata> => {
     const { lang, slug } = args;
   
     if (!isValidLocale(lang)) {
       return {
-        title: "Product not found - Sniff & Frolic",
+        title: `Product not found - ${seoConfig.siteName}`,
         description: "The requested product could not be found.",
       };
     }
+    const locale: Locale = lang;
   
     const product = await getProductBySlug(slug);
   
     if (!product) {
       return {
-        title: "Product not found - Sniff & Frolic",
+        title: `Product not found - ${seoConfig.siteName}`,
         description: "The requested product could not be found.",
       };
     }
   
     const yoast = product.yoast_head_json;
-    const baseTitle = yoast?.title || `${product.name} - Sniff & Frolic`;
+    const baseTitle = yoast?.title || `${product.name} - ${seoConfig.siteName}`;
     const baseDescription =
       yoast?.description ||
       "Healthy Canadian-made treats & adventure-ready goodies for pets and their humans.";
@@ -38,7 +40,7 @@ export const buildProductMetadata = async ( args: buildProductMetadataArgs ): Pr
     const ogImageFromWoo = product.images?.[0]?.src;
     const ogImage = ogImageFromYoast || ogImageFromWoo;
   
-    const siteName = yoast?.og_site_name || "Sniff & Frolic";
+    const siteName = yoast?.og_site_name || seoConfig.siteName;
   
     const metadata: Metadata = {
       title: baseTitle,
@@ -60,12 +62,12 @@ export const buildProductMetadata = async ( args: buildProductMetadataArgs ): Pr
             ]
           : [],
       },
-      twitter: {
-        card: yoast?.twitter_card || "summary_large_image",
-        title: baseTitle,
-        description: baseDescription,
-        images: ogImage ? [ogImage] : [],
-      },
+      // twitter: {
+      //   card: yoast?.twitter_card || "summary_large_image",
+      //   title: baseTitle,
+      //   description: baseDescription,
+      //   images: ogImage ? [ogImage] : [],
+      // },
     };
   
     return metadata;
