@@ -10,9 +10,12 @@ import {
 } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getProductBySlug, getProductVariations } from "@/lib/wooClient";
+import { getProductBySlug, getProductVariations, WooProduct, WooProductVariation } from "@/lib/wooClient";
 import ProductImageGallery from "@/components/ProductImageGallery";
 import { buildProductMetadata } from "@/seo/buildProductMetaTag";
+// Add To Cart
+import { ProductPurchasePanel } from "@/components/ProductPurchasePanel";
+import type { AddToCartInput } from "@/lib/cartTypes";
 
 interface ProductPageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -90,101 +93,107 @@ const ProductPage = async ({ params }: ProductPageProps) => {
         variantOptions = buildVariantOptions(product, variations);
     }
 
-  return (
-    <Box>
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={6}>
-          <ProductImageGallery images={images} productName={product.name} />
-        </Grid>
+    const addToCartInput: AddToCartInput = {
+        id: product.id,
+        slug: product.slug,
+        name: product.name,
+        price: Number(product.price || product.regular_price || 0),
+        imageUrl: product.images?.[0]?.src,
+    };
 
-        <Grid item xs={12} md={6}>
-            <Typography variant="h4" component="h1" gutterBottom>
-            {product.name}
-            </Typography>
+    return (
+        <Box>
+        <Grid container spacing={4}>
+            <Grid item xs={12} md={6}>
+                <ProductImageGallery images={images} productName={product.name} />
+            </Grid>
 
-            <Typography variant="h6" color="primary" gutterBottom>
-                CAD${product.price}
-            </Typography>
+            <Grid item xs={12} md={6}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                {product.name}
+                </Typography>
 
-            {product.on_sale && (
-            <Typography variant="body2" color="secondary">
-                {locale === "zh" ? "優惠中" : "On Sale"}
-            </Typography>
+                <Typography variant="h6" color="primary" gutterBottom>
+                    CAD${product.price}
+                </Typography>
+
+                {product.on_sale && (
+                <Typography variant="body2" color="secondary">
+                    {locale === "zh" ? "優惠中" : "On Sale"}
+                </Typography>
+                )}
+
+                {variantOptions.length > 0 && (
+                <Box mt={3}>
+                {variantOptions.map((group) => (
+                    <Box key={group.slug} mb={2}>
+                    <Typography variant="subtitle2" gutterBottom>
+                        {locale === "zh" ? group.name : group.name}
+                        {/* 之後你可以喺度做中英文 map，例如 Color → 顏色 */}
+                    </Typography>
+
+                    <Box
+                        sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 1,
+                        }}
+                    >
+                        {group.values.map((value) => (
+                        <Box
+                            key={value}
+                            sx={{
+                            borderRadius: 1,
+                            border: "1px solid",
+                            borderColor: "divider",
+                            px: 1.2,
+                            py: 0.4,
+                            fontSize: 14,
+                            }}
+                        >
+                            {value}
+                        </Box>
+                        ))}
+                    </Box>
+                    </Box>
+                ))}
+                </Box>
             )}
 
-            {variantOptions.length > 0 && (
-            <Box mt={3}>
-              {variantOptions.map((group) => (
-                <Box key={group.slug} mb={2}>
-                  <Typography variant="subtitle2" gutterBottom>
-                    {locale === "zh" ? group.name : group.name}
-                    {/* 之後你可以喺度做中英文 map，例如 Color → 顏色 */}
-                  </Typography>
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 1,
-                    }}
-                  >
-                    {group.values.map((value) => (
-                      <Box
-                        key={value}
-                        sx={{
-                          borderRadius: 1,
-                          border: "1px solid",
-                          borderColor: "divider",
-                          px: 1.2,
-                          py: 0.4,
-                          fontSize: 14,
-                        }}
-                      >
-                        {value}
-                      </Box>
-                    ))}
-                  </Box>
+            {product.short_description && (
+                <Box mt={2}>
+                <div
+                    dangerouslySetInnerHTML={{ __html: product.short_description }}
+                />
                 </Box>
-              ))}
-            </Box>
-          )}
+            )}
 
-          {product.short_description && (
-            <Box mt={2}>
-              <div
-                dangerouslySetInnerHTML={{ __html: product.short_description }}
-              />
+            <Box mt={4} display="flex" gap={2}>
+                {/* Add To Cart */}
+                <ProductPurchasePanel product={addToCartInput} locale={locale} />
+                {/* Go back to Homepage */}
+                <Link href={`/${locale}/products`}  target="_blank">
+                    <Button variant="outlined" color="primary">
+                        {dict.common.backToAll}
+                    </Button>
+                </Link>
             </Box>
-          )}
-
-          <Box mt={4} display="flex" gap={2}>
-            <Link href={product.permalink}  target="_blank">
-                <Button variant="contained" color="primary">
-                    {dict.common.viewOnSniff}
-                </Button>
-            </Link>
-            <Link href={`/${locale}/products`}  target="_blank">
-                <Button variant="outlined" color="primary">
-                    {dict.common.backToAll}
-                </Button>
-            </Link>
-          </Box>
+            </Grid>
         </Grid>
-      </Grid>
 
-      {product.description && (
-        <Box mt={6}>
-          <Divider />
-          <Box mt={3}>
-            <Typography variant="h6" gutterBottom>
-              {locale === "zh" ? "產品詳情" : "Product details"}
-            </Typography>
-            <div dangerouslySetInnerHTML={{ __html: product.description }} />
-          </Box>
+        {product.description && (
+            <Box mt={6}>
+            <Divider />
+            <Box mt={3}>
+                <Typography variant="h6" gutterBottom>
+                {locale === "zh" ? "產品詳情" : "Product details"}
+                </Typography>
+                <div dangerouslySetInnerHTML={{ __html: product.description }} />
+            </Box>
+            </Box>
+        )}
         </Box>
-      )}
-    </Box>
-  );
+    );
 };
 
 export default ProductPage;
