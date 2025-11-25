@@ -30,26 +30,58 @@ export interface YoastHeadJson {
 }
 
 export interface WooImage {
-  id: number;
-  src: string;
-  alt: string;
+    id: number;
+    src: string;
+    alt: string;
+    thumbnail: string;
 }
 
 export interface WooProduct {
-  id: number;
-  name: string;
-  slug: string;
-  permalink: string;
-  price: string;
-  regular_price: string;
-  sale_price: string;
-  on_sale: boolean;
-  images: WooImage[];
-  short_description: string; // HTML
-  description: string; // HTML
-  sku: string;
-  yoast_head?: string;
-  yoast_head_json?: YoastHeadJson;
+    id: number;
+    name: string;
+    slug: string;
+    permalink: string;
+    price: string;
+    regular_price: string;
+    sale_price: string;
+    on_sale: boolean;
+    images: WooImage[];
+    short_description: string; // HTML
+    description: string; // HTML
+    sku: string;
+    type: string;
+    attributes?: WooProductAttribute[];
+    variations?: number[];
+    yoast_head?: string;
+    yoast_head_json?: YoastHeadJson;
+}
+
+export interface WooProductAttribute {
+    id: number;
+    name: string;       // e.g. "Color"
+    slug: string;       // e.g. "pa_color"
+    position: number;
+    visible: boolean;
+    variation: boolean; // true = (color / size）
+    options: string[];  // e.g. ["Red", "Blue"]
+}
+
+export interface WooVariationAttribute {
+    id: number;
+    name: string;   // e.g. "Color"
+    option: string; // e.g. "Red"
+}
+
+export interface WooProductVariation {
+    id: number;
+    sku: string;
+    price: string;
+    regular_price: string;
+    sale_price: string;
+    on_sale: boolean;
+    stock_status: "instock" | "outofstock" | "onbackorder";
+    attributes: WooVariationAttribute[];
+    image?: WooImage;
 }
 
 export interface WooCategory {
@@ -70,8 +102,6 @@ const wooFetch = async <T>(
 ): Promise<T> => {
     const cleanPath = path.replace(/^\//, "");
     const url = new URL(`${baseUrl}/${cleanPath}`);
-
-  console.log(baseUrl);
 
   url.searchParams.set("consumer_key", consumerKey);
   url.searchParams.set("consumer_secret", consumerSecret);
@@ -101,6 +131,8 @@ export const getProducts = async (options?: {
   category?: number;
   search?: string;
   orderby?: "date" | "title" | "price";
+  status?: "publish" | "draft" | "pending" | "private";
+  stock_status?: "instock" | "outofstock" | "onbackorder";
 }): Promise<WooProduct[]> => {
   return wooFetch<WooProduct[]>("/products", {
     per_page: options?.per_page ?? 20,
@@ -108,18 +140,25 @@ export const getProducts = async (options?: {
     category: options?.category,
     search: options?.search,
     orderby: options?.orderby,
+    status: options?.status ?? "publish",
+    stock_status: options?.stock_status,
   });
 };
 
 export const getProductBySlug = async (slug: string): Promise<WooProduct | null> => {
-  const products = await wooFetch<WooProduct[]>("/products", {
-    slug,
-    per_page: 1,
-  });
+    const products = await wooFetch<WooProduct[]>("/products", {
+        slug,
+        per_page: 1,
+    });
 
-  if (!products.length) return null;
-  return products[0];
+    if (!products.length) return null;
+    return products[0];
 };
+
+export const getProductVariations = async (productId: number): Promise<WooProductVariation[]> =>
+    wooFetch<WooProductVariation[]>(`products/${productId}/variations`, {
+      per_page: 100,
+    });
 
 export const getCategories = async (options?: {
   parent?: number;
