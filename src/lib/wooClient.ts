@@ -2,6 +2,10 @@ const baseUrlEnv = process.env.WC_API_BASE_URL!;
 const consumerKey = process.env.WC_CONSUMER_KEY!;
 const consumerSecret = process.env.WC_CONSUMER_SECRET!;
 
+// const WC_API_BASE_URL = "https://sniffnfrolic.com/wp-json/wc/v3";
+// const WC_CONSUMER_KEY = "ck_bf0a526f957a7322b4cfcdc9f211845cf3ca9324";
+// const WC_CONSUMER_SECRET = "cs_2d25614235bf5e2c04d8b3734d55568bf094de18";
+
 if (!baseUrlEnv || !consumerKey || !consumerSecret) {
   throw new Error("WooCommerce API env vars are missing");
 }
@@ -9,79 +13,79 @@ if (!baseUrlEnv || !consumerKey || !consumerSecret) {
 const baseUrl = baseUrlEnv.replace(/\/$/, "");
 
 export interface YoastOgImage {
-    url: string;
-    width?: number;
-    height?: number;
-    type?: string;
+  url: string;
+  width?: number;
+  height?: number;
+  type?: string;
 }
 
 export interface YoastHeadJson {
-    title?: string;
-    description?: string;
-    canonical?: string;
-    og_title?: string;
-    og_description?: string;
-    og_url?: string;
-    og_site_name?: string;
-    og_type?: string;
-    og_locale?: string;
-    og_image?: YoastOgImage[];
-    twitter_card?: string;
+  title?: string;
+  description?: string;
+  canonical?: string;
+  og_title?: string;
+  og_description?: string;
+  og_url?: string;
+  og_site_name?: string;
+  og_type?: string;
+  og_locale?: string;
+  og_image?: YoastOgImage[];
+  twitter_card?: string;
 }
 
 export interface WooImage {
-    id: number;
-    src: string;
-    alt: string;
-    thumbnail: string;
+  id: number;
+  src: string;
+  alt: string;
+  thumbnail: string;
 }
 
 export interface WooProduct {
-    id: number;
-    name: string;
-    slug: string;
-    permalink: string;
-    price: string;
-    regular_price: string;
-    sale_price: string;
-    on_sale: boolean;
-    images: WooImage[];
-    short_description: string; // HTML
-    description: string; // HTML
-    sku: string;
-    type: string;
-    attributes?: WooProductAttribute[];
-    variations?: number[];
-    yoast_head?: string;
-    yoast_head_json?: YoastHeadJson;
+  id: number;
+  name: string;
+  slug: string;
+  permalink: string;
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  on_sale: boolean;
+  images: WooImage[];
+  short_description: string; // HTML
+  description: string; // HTML
+  sku: string;
+  type: string;
+  attributes?: WooProductAttribute[];
+  variations?: number[];
+  yoast_head?: string;
+  yoast_head_json?: YoastHeadJson;
 }
 
 export interface WooProductAttribute {
-    id: number;
-    name: string;       // e.g. "Color"
-    slug: string;       // e.g. "pa_color"
-    position: number;
-    visible: boolean;
-    variation: boolean; // true = (color / size）
-    options: string[];  // e.g. ["Red", "Blue"]
+  id: number;
+  name: string; // e.g. "Color"
+  slug: string; // e.g. "pa_color"
+  position: number;
+  visible: boolean;
+  variation: boolean; // true = (color / size）
+  options: string[]; // e.g. ["Red", "Blue"]
 }
 
 export interface WooVariationAttribute {
-    id: number;
-    name: string;   // e.g. "Color"
-    option: string; // e.g. "Red"
+  id: number;
+  name: string; // e.g. "Color"
+  option: string; // e.g. "Red"
 }
 
 export interface WooProductVariation {
-    id: number;
-    sku: string;
-    price: string;
-    regular_price: string;
-    sale_price: string;
-    on_sale: boolean;
-    stock_status: "instock" | "outofstock" | "onbackorder";
-    attributes: WooVariationAttribute[];
-    image?: WooImage;
+  id: number;
+  sku: string;
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  on_sale: boolean;
+  stock_status: "instock" | "outofstock" | "onbackorder";
+  attributes: WooVariationAttribute[];
+  image?: WooImage;
 }
 
 export interface WooCategory {
@@ -100,8 +104,8 @@ const wooFetch = async <T>(
   path: string,
   params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> => {
-    const cleanPath = path.replace(/^\//, "");
-    const url = new URL(`${baseUrl}/${cleanPath}`);
+  const cleanPath = path.replace(/^\//, "");
+  const url = new URL(`${baseUrl}/${cleanPath}`);
 
   url.searchParams.set("consumer_key", consumerKey);
   url.searchParams.set("consumer_secret", consumerSecret);
@@ -114,7 +118,7 @@ const wooFetch = async <T>(
   }
 
   const res = await fetch(url.toString(), {
-    cache: "no-store", 
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -145,20 +149,24 @@ export const getProducts = async (options?: {
   });
 };
 
-export const getProductBySlug = async (slug: string): Promise<WooProduct | null> => {
-    const products = await wooFetch<WooProduct[]>("/products", {
-        slug,
-        per_page: 1,
-    });
+export const getProductBySlug = async (
+  slug: string
+): Promise<WooProduct | null> => {
+  const products = await wooFetch<WooProduct[]>("/products", {
+    slug,
+    per_page: 1,
+  });
 
-    if (!products.length) return null;
-    return products[0];
+  if (!products.length) return null;
+  return products[0];
 };
 
-export const getProductVariations = async (productId: number): Promise<WooProductVariation[]> =>
-    wooFetch<WooProductVariation[]>(`products/${productId}/variations`, {
-      per_page: 100,
-    });
+export const getProductVariations = async (
+  productId: number
+): Promise<WooProductVariation[]> =>
+  wooFetch<WooProductVariation[]>(`products/${productId}/variations`, {
+    per_page: 100,
+  });
 
 export const getCategories = async (options?: {
   parent?: number;
