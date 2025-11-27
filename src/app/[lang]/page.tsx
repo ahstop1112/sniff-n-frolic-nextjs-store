@@ -37,8 +37,6 @@ const HomePage = async ({ params }: HomePageProps) => {
     const products = await getProducts({ per_page: 8, orderby: "date" });
     const categories = await getCategories({ parent: 0, hide_empty: true });
 
-    
-
     return (
         <>
         <Typography variant="h4" component="h1" gutterBottom>
@@ -51,35 +49,35 @@ const HomePage = async ({ params }: HomePageProps) => {
 
         <Box mt={3}>
             <Grid container spacing={2}>
-            {products.map((p) => {
-                const firstImg = p.images[0] || null;
-                console.log(firstImg);
-                return(
-                    <Grid xs={12} sm={6} md={3} key={p.id}>
-                        <Card variant="outlined">
-                            <CardContent>
-                                <Link href={`/${locale}/products/${p.slug}`} >
-                                    <Box
-                                        component="img"
-                                        src={firstImg ? firstImg.thumbnail : ``}
-                                        alt={firstImg ? firstImg.alt : p.name}
-                                        sx={{
-                                        width: "100%",
-                                        maxHeight: 400,
-                                        objectFit: "cover",
-                                        borderRadius: 2,
-                                        }}
-                                    />
-                                    {p.name}
-                                </Link>
-                                <Typography variant="body2" color="text.secondary">
-                                    ${p.price}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                )
-            })}
+                {products.map((p) => {
+                    const firstImg = p.images[0] || null;
+                    console.log(firstImg);
+                    return(
+                        <Grid xs={12} sm={6} md={3} key={p.id}>
+                            <Card variant="outlined">
+                                <CardContent>
+                                    <Link href={`/${locale}/products/${p.slug}`} >
+                                        <Box
+                                            component="img"
+                                            src={firstImg ? firstImg.thumbnail : ``}
+                                            alt={firstImg ? firstImg.alt : p.name}
+                                            sx={{
+                                            width: "100%",
+                                            maxHeight: 400,
+                                            objectFit: "cover",
+                                            borderRadius: 2,
+                                            }}
+                                        />
+                                        {p.name}
+                                    </Link>
+                                    <Typography variant="body2" color="text.secondary">
+                                        ${p.price}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    )
+                })}
             </Grid>
         </Box>
 
