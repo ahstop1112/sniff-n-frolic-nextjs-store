@@ -94,25 +94,44 @@ const ProductPage = async ({ params }: ProductPageProps) => {
     imageUrl: product.images?.[0]?.src,
   };
 
+  const hasSale =
+    product.on_sale && product.sale_price && product.sale_price !== "";
+  const regularPrice = Number(product.regular_price || product.price || 0);
+  const salePrice = Number(product.sale_price || 0);
+
   return (
     <Box>
       <Grid container spacing={4}>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
           <ProductImageGallery images={images} productName={product.name} />
         </Grid>
-
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
           <Typography variant="h4" component="h1" gutterBottom>
             {product.name}
           </Typography>
 
-          <Typography variant="h6" color="primary" gutterBottom>
-            CAD${product.price}
-          </Typography>
+          {hasSale ? (
+            <Box display="flex" alignItems="baseline" gap={1}>
+              {/* Sale 價 */}
+              <Typography
+                variant="h6"
+                sx={{ color: "#e16849", fontWeight: 700 }}
+              >
+                CAD ${salePrice.toFixed(2)}
+              </Typography>
 
-          {product.on_sale && (
-            <Typography variant="body2" color="secondary">
-              {locale === "zh" ? "優惠中" : "On Sale"}
+              {/* 原價，劃走 */}
+              <Typography
+                variant="body2"
+                sx={{ textDecoration: "line-through", opacity: 0.7 }}
+              >
+                CAD ${regularPrice.toFixed(2)}
+              </Typography>
+            </Box>
+          ) : (
+            // 冇 on_sale 時正常價
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              CAD ${regularPrice.toFixed(2)}
             </Typography>
           )}
 
@@ -176,9 +195,6 @@ const ProductPage = async ({ params }: ProductPageProps) => {
         <Box mt={6}>
           <Divider />
           <Box mt={3}>
-            <Typography variant="h6" gutterBottom>
-              {locale === "zh" ? "產品詳情" : "Product details"}
-            </Typography>
             <div dangerouslySetInnerHTML={{ __html: product.description }} />
           </Box>
         </Box>

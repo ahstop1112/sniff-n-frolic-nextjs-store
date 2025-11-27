@@ -40,7 +40,7 @@ const LangLayout = async ({ children, params }: LangLayoutProps) => {
               <Link href={`/${locale}`}>{dict.nav.home}</Link>
               <Link href={`/${locale}/products`}>{dict.nav.products}</Link>
               <Link href={`/${locale}/about`}>{dict.nav.about}</Link>
-              <Link href="/en">EN</Link>
+              <Link href="/">EN</Link>
               <Link href="/zh">中文</Link>
             </Stack>
           </Stack>

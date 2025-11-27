@@ -1,7 +1,7 @@
 // src/app/[lang]/cart/page.tsx
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
-import { CartPageClient } from "@/components/CartPageClient";
+import CartPageClient from "@/components/CartPageClient";
 
 interface CartPageProps {
   params: Promise<{ lang: string }>;
