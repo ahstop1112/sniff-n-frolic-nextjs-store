@@ -219,8 +219,7 @@ export const MiniCart = ({ locale }: MiniCartProps) => {
 
               {/* Demo：直接 link 去 Woo checkout */}
               <Link
-                href="https://sniffnfrolic.com/checkout/"
-                target="_blank"
+                href={`/${locale}/checkout`}
                 style={{ textDecoration: "none" }}
               >
                 <Button
