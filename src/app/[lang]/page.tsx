@@ -51,9 +51,8 @@ const HomePage = async ({ params }: HomePageProps) => {
             <Grid container spacing={2}>
                 {products.map((p) => {
                     const firstImg = p.images[0] || null;
-                    console.log(firstImg);
                     return(
-                        <Grid xs={12} sm={6} md={3} key={p.id}>
+                        <Grid size={{ xs: 12, sm: 6, md: 3 }} key={p.id}>
                             <Card variant="outlined">
                                 <CardContent>
                                     <Link href={`/${locale}/products/${p.slug}`} >
@@ -94,7 +93,7 @@ const HomePage = async ({ params }: HomePageProps) => {
             </Typography>
             <Grid container spacing={2}>
                 {categories.map((cat) => (
-                <Grid xs={6} sm={4} md={3} key={cat.id}>
+                <Grid size={{ xs: 6, sm: 4, md: 3 }} key={cat.id}>
                     <Link href={`/${locale}/category/${cat.slug}`}>
                         <Card variant="outlined">
                             {cat.image?.src && (

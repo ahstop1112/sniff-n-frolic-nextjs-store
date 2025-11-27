@@ -33,7 +33,7 @@ const ProductsPage = async ({ params }: ProductsPageProps) => {
       <Box mt={3}>
         <Grid container spacing={2}>
           {products.map((p) => (
-            <Grid item xs={12} sm={6} md={3} key={p.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={p.id}>
               <Card variant="outlined">
                 <CardContent>
                   <Link href={`/${locale}/products/${p.slug}`}>

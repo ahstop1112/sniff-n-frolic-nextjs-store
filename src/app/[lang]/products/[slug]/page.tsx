@@ -104,11 +104,11 @@ const ProductPage = async ({ params }: ProductPageProps) => {
     return (
         <Box>
         <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                 <ProductImageGallery images={images} productName={product.name} />
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                 {product.name}
                 </Typography>
@@ -125,38 +125,37 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
                 {variantOptions.length > 0 && (
                 <Box mt={3}>
-                {variantOptions.map((group) => (
-                    <Box key={group.slug} mb={2}>
-                    <Typography variant="subtitle2" gutterBottom>
-                        {locale === "zh" ? group.name : group.name}
-                        {/* 之後你可以喺度做中英文 map，例如 Color → 顏色 */}
-                    </Typography>
+                    {variantOptions.map((group) => (
+                        <Box key={group.slug} mb={2}>
+                        <Typography variant="subtitle2" gutterBottom>
+                            {locale === "zh" ? group.name : group.name}
+                        </Typography>
 
-                    <Box
-                        sx={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: 1,
-                        }}
-                    >
-                        {group.values.map((value) => (
                         <Box
-                            key={value}
                             sx={{
-                            borderRadius: 1,
-                            border: "1px solid",
-                            borderColor: "divider",
-                            px: 1.2,
-                            py: 0.4,
-                            fontSize: 14,
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: 1,
                             }}
                         >
-                            {value}
+                            {group.values.map((value) => (
+                            <Box
+                                key={value}
+                                sx={{
+                                borderRadius: 1,
+                                border: "1px solid",
+                                borderColor: "divider",
+                                px: 1.2,
+                                py: 0.4,
+                                fontSize: 14,
+                                }}
+                            >
+                                {value}
+                            </Box>
+                            ))}
                         </Box>
-                        ))}
-                    </Box>
-                    </Box>
-                ))}
+                        </Box>
+                    ))}
                 </Box>
             )}
 
