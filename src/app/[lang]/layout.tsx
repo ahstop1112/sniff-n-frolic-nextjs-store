@@ -1,4 +1,3 @@
-// src/app/[lang]/layout.tsx
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -7,6 +6,8 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { SearchBar } from "@/components/SearchBar";
 import { CartProviderClient } from "@/components/CartProviderClient";
+import GtmPageView from "@/components/GtmPageView";
+
 import { MiniCart } from "@/components/MiniCart";
 
 interface LangLayoutProps {
@@ -45,8 +46,10 @@ const LangLayout = async ({ children, params }: LangLayoutProps) => {
             </Stack>
           </Stack>
         </Box>
-
-        <main>{children}</main>
+        <main>
+          <GtmPageView />
+          {children}
+        </main>
       </Container>
     </CartProviderClient>
   );
