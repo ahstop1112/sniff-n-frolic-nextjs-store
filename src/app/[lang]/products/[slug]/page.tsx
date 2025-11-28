@@ -128,7 +128,6 @@ const ProductPage = async ({ params }: ProductPageProps) => {
                 <Box key={group.slug} mb={2}>
                   <Typography variant="subtitle2" gutterBottom>
                     {locale === "zh" ? group.name : group.name}
-                    {/* 之後你可以喺度做中英文 map，例如 Color → 顏色 */}
                   </Typography>
 
                   <Box
@@ -170,12 +169,6 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           <Box mt={4} display="flex" gap={2}>
             {/* Add To Cart */}
             <ProductPurchasePanel product={addToCartInput} locale={locale} />
-            {/* Go back to Homepage */}
-            <Link href={`/${locale}/products`} target="_blank">
-              <Button variant="outlined" color="primary">
-                {dict.common.backToAll}
-              </Button>
-            </Link>
           </Box>
         </Grid>
       </Grid>
@@ -184,9 +177,6 @@ const ProductPage = async ({ params }: ProductPageProps) => {
         <Box mt={6}>
           <Divider />
           <Box mt={3}>
-            <Typography variant="h6" gutterBottom>
-              {locale === "zh" ? "產品詳情" : "Product details"}
-            </Typography>
             <div dangerouslySetInnerHTML={{ __html: product.description }} />
           </Box>
         </Box>
