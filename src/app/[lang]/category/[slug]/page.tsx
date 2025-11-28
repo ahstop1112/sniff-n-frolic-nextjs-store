@@ -1,13 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-} from "@mui/material";
+import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getCategories, getProducts } from "@/lib/wooClient";
@@ -18,13 +12,13 @@ interface CategoryPageProps {
 }
 
 export const generateMetadata = async (
-    props: CategoryPageProps
-  ): Promise<Metadata> => {
-    const { params } = props;
-    const { lang, slug } = await params;
-  
-    return buildCategoryMetadata({ lang, slug });
-  };
+  props: CategoryPageProps
+): Promise<Metadata> => {
+  const { params } = props;
+  const { lang, slug } = await params;
+
+  return buildCategoryMetadata({ lang, slug });
+};
 
 const CategoryPage = async ({ params }: CategoryPageProps) => {
   const { lang, slug } = await params;
@@ -47,17 +41,15 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
       <Box mt={3}>
         <Grid container spacing={2}>
           {products.map((p) => (
-            <Grid item xs={12} sm={6} md={3} key={p.id}>
-                <Card variant="outlined">
-                    <CardContent>
-                    <Link href={`/${locale}/products/${p.slug}`} >
-                        {p.name}
-                    </Link>
-                    <Typography variant="body2" color="text.secondary">
-                        ${p.price}
-                    </Typography>
-                    </CardContent>
-                </Card>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={p.id}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Link href={`/${locale}/products/${p.slug}`}>{p.name}</Link>
+                  <Typography variant="body2" color="text.secondary">
+                    ${p.price}
+                  </Typography>
+                </CardContent>
+              </Card>
             </Grid>
           ))}
         </Grid>
