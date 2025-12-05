@@ -128,10 +128,10 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           <ProductImageGallery images={images} productName={product.name} />
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {product.name}
-          </Typography>
+            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                {product.name}
+                </Typography>
 
           <Typography variant="h6" color="primary" gutterBottom>
             CAD${product.price}
@@ -150,6 +150,13 @@ const ProductPage = async ({ params }: ProductPageProps) => {
                   <Typography variant="subtitle2" gutterBottom>
                     {locale === "zh" ? group.name : group.name}
                   </Typography>
+                {variantOptions.length > 0 && (
+                <Box mt={3}>
+                {variantOptions.map((group) => (
+                    <Box key={group.slug} mb={2}>
+                    <Typography variant="subtitle2" gutterBottom>
+                        {locale === "zh" ? group.name : group.name}
+                    </Typography>
 
                   <Box
                     sx={{

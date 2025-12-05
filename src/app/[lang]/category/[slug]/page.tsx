@@ -93,9 +93,10 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
         <Grid container spacing={2}>
         {(randomProducts || []).map((p) => (
             <Grid size={{ xs: 6, sm: 6, md: 3 }} key={p.id}>
-              <Card variant="outlined">
-              <CardContent>
-                  <Link href={`/${locale}/products/${p.slug}`}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Link href={`/${locale}/products/${p.slug}`} >
+                        
                     <Box
                       component="img"
                       src={p?.images[0].src}
@@ -103,12 +104,13 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
                       style={{ maxWidth: `100%`}}
                     />
                     {p.name}
+                    
                   </Link>
-                  <Typography variant="body2" color="text.secondary">
-                    ${p.price}
-                  </Typography>
-                </CardContent>
-              </Card>
+                    <Typography variant="body2" color="text.secondary">
+                        ${p.price}
+                    </Typography>
+                    </CardContent>
+                </Card>
             </Grid>
           ))}
         </Grid>
