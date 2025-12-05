@@ -42,7 +42,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   const parentCategory = allCats.find((c) => c.id === category.parent);
 
   const breadcrumbs: BreadcrumbItem[] = [
-    { label: locale === "zh" ? "首頁" : "Home", href: `${locale}` },
+    { label: locale === "zh" ? "首頁" : "Home", href: `/` },
     { label: locale === "zh"  ? "全部商品" : "Collection", href: collectionHref },
   ];
 
