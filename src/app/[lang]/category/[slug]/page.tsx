@@ -57,20 +57,19 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
 
   return (
     <Box>
+      <BreadcrumbsNav items={breadcrumbs} />
       <Typography variant="h4" component="h1" gutterBottom>
         {category.name}
       </Typography>
-
       <Box mt={3}>
-        <BreadcrumbsNav items={breadcrumbs} />
         {/* All Top Level Categories */}
         {childCatgories.length > 0 && <>
-          <Typography variant="h4" component="h1" gutterBottom>
+          <Typography variant="h6" component="h6" gutterBottom>
               Categories
             </Typography>
           <Grid container spacing={2}>
             {(childCatgories || []).map((cat) => (
-              <Grid size={{ xs: 6, sm: 6, md: 2 }} key={cat.id}>
+              <Grid size={{ xs: 6, sm: 3, md: 2 }} key={cat.id}>
                 <Card variant="outlined">
                   <CardContent>
                     <Link href={`/${locale}/category/${cat.slug}`}>
@@ -90,29 +89,34 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
             ))}
           </Grid>
         </>}
-        <Grid container spacing={2}>
-        {(randomProducts || []).map((p) => (
-            <Grid size={{ xs: 6, sm: 6, md: 3 }} key={p.id}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Link href={`/${locale}/products/${p.slug}`} >
-                        
-                    <Box
-                      component="img"
-                      src={p?.images[0].src}
-                      alt={p?.images[0].alt || p.name}
-                      style={{ maxWidth: `100%`}}
-                    />
-                    {p.name}
-                    
-                  </Link>
-                    <Typography variant="body2" color="text.secondary">
-                        ${p.price}
-                    </Typography>
-                    </CardContent>
-                </Card>
-            </Grid>
-          ))}
+        <Grid container spacing={2} mt={3}>
+          <Typography variant="h6" component="h6" gutterBottom>
+            Products
+          </Typography>
+          <Grid container spacing={2}>
+            {(randomProducts || []).map((p) => (
+              <Grid size={{ xs: 6, sm: 3, md: 3 }} key={p.id}>
+                  <Card variant="outlined">
+                    <CardContent>
+                      <Link href={`/${locale}/products/${p.slug}`} >
+                          
+                      <Box
+                        component="img"
+                        src={p?.images[0].src}
+                        alt={p?.images[0].alt || p.name}
+                        style={{ maxWidth: `100%`}}
+                      />
+                      {p.name}
+                      
+                    </Link>
+                      <Typography variant="body2" color="text.secondary">
+                          ${p.price}
+                      </Typography>
+                      </CardContent>
+                  </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Box>
     </Box>

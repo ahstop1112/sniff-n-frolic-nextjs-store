@@ -82,6 +82,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   const dict = await getDictionary(locale);
 
   const product = await getProductBySlug(slug);
+  console.log(product);
   if (!product) return notFound();
 
   // Breadcrumbs
@@ -146,18 +147,10 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           {variantOptions.length > 0 && (
             <Box mt={3}>
               {variantOptions.map((group) => (
-                <Box key={group.slug} mb={2}>
+                  <Box key={group.slug} mb={2}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {locale === "zh" ? group.name : group.name}
+                      {locale === "zh" ? group.name : group.name}
                   </Typography>
-                {variantOptions.length > 0 && (
-                <Box mt={3}>
-                {variantOptions.map((group) => (
-                    <Box key={group.slug} mb={2}>
-                    <Typography variant="subtitle2" gutterBottom>
-                        {locale === "zh" ? group.name : group.name}
-                    </Typography>
-
                   <Box
                     sx={{
                       display: "flex",
