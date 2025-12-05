@@ -55,6 +55,8 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
 
   breadcrumbs.push({ label: category.name });
 
+  console.log(randomProducts)
+
   return (
     <Box>
       <BreadcrumbsNav items={breadcrumbs} />
@@ -99,18 +101,11 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
                   <Card variant="outlined">
                     <CardContent>
                       <Link href={`/${locale}/products/${p.slug}`} >
-                          
-                      <Box
-                        component="img"
-                        src={p?.images[0].src}
-                        alt={p?.images[0].alt || p.name}
-                        style={{ maxWidth: `100%`}}
-                      />
-                      {p.name}
-                      
-                    </Link>
+                        <ProductImageBox image={p?.images[0]} productName={p.name} />
+                        {p.name}
+                      </Link>
                       <Typography variant="body2" color="text.secondary">
-                          ${p.price}
+                          ${p.price} {p.on_sale ? <span style={{ textDecoration: `line-through` }}>{p.regular_price}</span> : null} 
                       </Typography>
                       </CardContent>
                   </Card>
