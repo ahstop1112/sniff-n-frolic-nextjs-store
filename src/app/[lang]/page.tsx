@@ -1,15 +1,8 @@
 // src/app/[lang]/page.tsx
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
-import {
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-} from "@mui/material";
+import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
@@ -19,33 +12,33 @@ interface HomePageProps {
 }
 
 export const generateMetadata = async (
-    props: HomePageProps
-  ): Promise<Metadata> => {
-    const { params } = props;
-    const { lang } = await params;
-  
-    return buildHomeMetadata({ lang });
+  props: HomePageProps
+): Promise<Metadata> => {
+  const { params } = props;
+  const { lang } = await params;
+
+  return buildHomeMetadata({ lang });
 };
 
 const HomePage = async ({ params }: HomePageProps) => {
-    const { lang } = await params;
-    if (!isValidLocale(lang)) return notFound();
+  const { lang } = await params;
+  if (!isValidLocale(lang)) return notFound();
 
-    const locale: Locale = lang;
-    const dict = await getDictionary(locale);
+  const locale: Locale = lang;
+  const dict = await getDictionary(locale);
 
-    const products = await getProducts({ per_page: 8, orderby: "date" });
-    const categories = await getCategories({ parent: 0, hide_empty: true });
+  const products = await getProducts({ per_page: 8, orderby: "date" });
+  const categories = await getCategories({ parent: 0, hide_empty: true });
 
-    return (
-        <>
-        <Typography variant="h4" component="h1" gutterBottom>
-            {dict.common.siteTitle}
-        </Typography>
+  return (
+    <>
+      <Typography variant="h4" component="h1" gutterBottom>
+        {dict.common.siteTitle}
+      </Typography>
 
-        <Typography variant="subtitle1" gutterBottom>
-            {dict.common.latestArrivals}
-        </Typography>
+      <Typography variant="subtitle1" gutterBottom>
+        {dict.common.latestArrivals}
+      </Typography>
 
         <Box mt={3}>
             <Grid container spacing={2}>
@@ -80,11 +73,9 @@ const HomePage = async ({ params }: HomePageProps) => {
             </Grid>
         </Box>
 
-        <Box mt={4}>
-            <Link href={`/${locale}/products`} >
-                {dict.common.viewAll} →
-            </Link>
-        </Box>
+      <Box mt={4}>
+        <Link href={`/${locale}/products`}>{dict.common.viewAll} →</Link>
+      </Box>
 
         {categories.length > 0 && (
             <Box mt={6}>

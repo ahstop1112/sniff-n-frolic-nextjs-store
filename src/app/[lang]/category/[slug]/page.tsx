@@ -1,13 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-} from "@mui/material";
+import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getCategories, getProducts } from "@/lib/wooClient";
@@ -18,13 +12,13 @@ interface CategoryPageProps {
 }
 
 export const generateMetadata = async (
-    props: CategoryPageProps
-  ): Promise<Metadata> => {
-    const { params } = props;
-    const { lang, slug } = await params;
-  
-    return buildCategoryMetadata({ lang, slug });
-  };
+  props: CategoryPageProps
+): Promise<Metadata> => {
+  const { params } = props;
+  const { lang, slug } = await params;
+
+  return buildCategoryMetadata({ lang, slug });
+};
 
 const CategoryPage = async ({ params }: CategoryPageProps) => {
   const { lang, slug } = await params;
