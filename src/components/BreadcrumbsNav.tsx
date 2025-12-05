@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export interface BreadcrumbItem {
   label: string;
-  href?: string; // 最尾嗰個通常冇 href
+  href?: string;
 }
 
 interface BreadcrumbsNavProps {

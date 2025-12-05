@@ -10,6 +10,7 @@ import {
   WooProduct,
   WooProductVariation,
 } from "@/lib/wooClient";
+import BreadcrumbsNav, { type BreadcrumbItem } from "@/components/BreadcrumbsNav";
 import ProductImageGallery from "@/components/ProductImageGallery";
 import { buildProductMetadata } from "@/seo/buildProductMetaTag";
 // Add To Cart
@@ -83,6 +84,25 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   const product = await getProductBySlug(slug);
   if (!product) return notFound();
 
+  // Breadcrumbs
+  const collectionHref = `/${locale}/products`;
+  const mainCategory = product.categories?.[0];
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: locale === "zh" ? "首頁" : "Home", href: `${locale}` },
+    { label: locale === "zh"  ? "全部商品" : "Collection", href: collectionHref },
+  ];
+
+  if (mainCategory) {
+    breadcrumbs.push({
+      label: mainCategory.name,
+      href: `/${locale}/category/${mainCategory.slug}`,
+    });
+  }
+
+  breadcrumbs.push({ label: product.name });
+
+  // Products Details
   const images = product.images ?? [];
 
   let variantOptions: VariantOptionGroup[] = [];
@@ -103,6 +123,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   return (
     <Box>
       <Grid container spacing={4}>
+        <BreadcrumbsNav items={breadcrumbs} />
         <Grid size={{ xs: 12, sm: 6, md: 6 }}>
           <ProductImageGallery images={images} productName={product.name} />
         </Grid>
