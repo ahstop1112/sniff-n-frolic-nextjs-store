@@ -21,9 +21,8 @@ const ProductImageGallery = ({
       <Box
         sx={{
           width: "100%",
-          height: 300,
+          height: 450,
           bgcolor: "grey.100",
-          borderRadius: 2,
         }}
       />
     );
@@ -39,9 +38,8 @@ const ProductImageGallery = ({
         alt={mainImage.alt || productName}
         sx={{
           width: "100%",
-          maxHeight: 400,
-          objectFit: "cover",
-          borderRadius: 2,
+          height: 450,
+          objectFit: "contain",
         }}
       />
 
@@ -61,7 +59,9 @@ const ProductImageGallery = ({
                 borderRadius: 1,
                 cursor: "pointer",
                 border:
-                  idx === selectedIndex ? "2px solid #e16849" : "1px solid #ddd",
+                  idx === selectedIndex
+                    ? "2px solid #e16849"
+                    : "1px solid #ddd",
                 flexShrink: 0,
               }}
             />

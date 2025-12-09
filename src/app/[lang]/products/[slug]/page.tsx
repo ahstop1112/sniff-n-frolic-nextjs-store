@@ -10,7 +10,9 @@ import {
   WooProduct,
   WooProductVariation,
 } from "@/lib/wooClient";
-import BreadcrumbsNav, { type BreadcrumbItem } from "@/components/BreadcrumbsNav";
+import BreadcrumbsNav, {
+  type BreadcrumbItem,
+} from "@/components/BreadcrumbsNav";
 import ProductImageGallery from "@/components/ProductImageGallery";
 import { buildProductMetadata } from "@/seo/buildProductMetaTag";
 // Add To Cart
@@ -90,7 +92,10 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
   const breadcrumbs: BreadcrumbItem[] = [
     { label: locale === "zh" ? "首頁" : "Home", href: `${locale}` },
-    { label: locale === "zh"  ? "全部商品" : "Collection", href: collectionHref },
+    {
+      label: locale === "zh" ? "全部商品" : "Collection",
+      href: collectionHref,
+    },
   ];
 
   if (mainCategory) {
@@ -122,18 +127,17 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
   return (
     <Box>
+      <BreadcrumbsNav items={breadcrumbs} />
       <Grid container spacing={4}>
-        <BreadcrumbsNav items={breadcrumbs} />
         <Grid size={{ xs: 12, sm: 6, md: 6 }}>
           <ProductImageGallery images={images} productName={product.name} />
         </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            {product.name}
+          </Typography>
 
-            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-                <Typography variant="h4" component="h1" gutterBottom>
-                {product.name}
-                </Typography>
-
-          <Typography variant="h6" color="primary" gutterBottom>
+          <Typography variant="h5" color="primary" gutterBottom>
             CAD${product.price}
           </Typography>
 
@@ -143,48 +147,51 @@ const ProductPage = async ({ params }: ProductPageProps) => {
             </Typography>
           )}
 
-          {variantOptions.length > 0 && (
+          {variantOptions.length > 0 ? (
             <Box mt={3}>
               {variantOptions.map((group) => (
                 <Box key={group.slug} mb={2}>
                   <Typography variant="subtitle2" gutterBottom>
                     {locale === "zh" ? group.name : group.name}
                   </Typography>
-                {variantOptions.length > 0 && (
-                <Box mt={3}>
-                {variantOptions.map((group) => (
-                    <Box key={group.slug} mb={2}>
-                    <Typography variant="subtitle2" gutterBottom>
-                        {locale === "zh" ? group.name : group.name}
-                    </Typography>
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 1,
-                    }}
-                  >
-                    {group.values.map((value) => (
-                      <Box
-                        key={value}
-                        sx={{
-                          borderRadius: 1,
-                          border: "1px solid",
-                          borderColor: "divider",
-                          px: 1.2,
-                          py: 0.4,
-                          fontSize: 14,
-                        }}
-                      >
-                        {value}
-                      </Box>
-                    ))}
-                  </Box>
+                  {variantOptions.length > 0 && (
+                    <Box mt={3}>
+                      {variantOptions.map((group) => (
+                        <Box key={group.slug} mb={2}>
+                          <Typography variant="subtitle2" gutterBottom>
+                            {locale === "zh" ? group.name : group.name}
+                          </Typography>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: 1,
+                            }}
+                          >
+                            {group.values.map((value) => (
+                              <Box
+                                key={value}
+                                sx={{
+                                  borderRadius: 1,
+                                  border: "1px solid",
+                                  borderColor: "divider",
+                                  px: 1.2,
+                                  py: 0.4,
+                                  fontSize: 14,
+                                }}
+                              >
+                                {value}
+                              </Box>
+                            ))}
+                          </Box>
+                        </Box>
+                      ))}
+                    </Box>
+                  )}
                 </Box>
               ))}
             </Box>
-          )}
+          ) : null}
 
           {product.short_description && (
             <Box mt={2}>
@@ -193,22 +200,20 @@ const ProductPage = async ({ params }: ProductPageProps) => {
               />
             </Box>
           )}
-
           <Box mt={4} display="flex" gap={2}>
             {/* Add To Cart */}
             <ProductPurchasePanel product={addToCartInput} locale={locale} />
           </Box>
         </Grid>
-      </Grid>
-
-      {product.description && (
-        <Box mt={6}>
-          <Divider />
-          <Box mt={3}>
-            <div dangerouslySetInnerHTML={{ __html: product.description }} />
+        {product.description && (
+          <Box mt={6}>
+            <Divider />
+            <Box mt={3}>
+              <div dangerouslySetInnerHTML={{ __html: product.description }} />
+            </Box>
           </Box>
-        </Box>
-      )}
+        )}
+      </Grid>
     </Box>
   );
 };
