@@ -151,47 +151,40 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
           {variantOptions.length > 0 ? (
             <Box mt={3}>
-              {variantOptions.map((group) => (
-                <Box key={group.slug} mb={2}>
-                  <Typography variant="subtitle2" gutterBottom>
-                    {locale === "zh" ? group.name : group.name}
-                  </Typography>
-                  {variantOptions.length > 0 && (
-                    <Box mt={3}>
-                      {variantOptions.map((group) => (
-                        <Box key={group.slug} mb={2}>
-                          <Typography variant="subtitle2" gutterBottom>
-                            {locale === "zh" ? group.name : group.name}
-                          </Typography>
+              {variantOptions.length > 0 && (
+                <Box mt={3}>
+                  {variantOptions.map((group) => (
+                    <Box key={group.slug} mb={2}>
+                      <Typography variant="subtitle2" gutterBottom>
+                        {locale === "zh" ? group.name : group.name}
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 1,
+                        }}
+                      >
+                        {group.values.map((value) => (
                           <Box
+                            key={value}
                             sx={{
-                              display: "flex",
-                              flexWrap: "wrap",
-                              gap: 1,
+                              borderRadius: 1,
+                              border: "1px solid",
+                              borderColor: "divider",
+                              px: 1.2,
+                              py: 0.4,
+                              fontSize: 14,
                             }}
                           >
-                            {group.values.map((value) => (
-                              <Box
-                                key={value}
-                                sx={{
-                                  borderRadius: 1,
-                                  border: "1px solid",
-                                  borderColor: "divider",
-                                  px: 1.2,
-                                  py: 0.4,
-                                  fontSize: 14,
-                                }}
-                              >
-                                {value}
-                              </Box>
-                            ))}
+                            {value}
                           </Box>
-                        </Box>
-                      ))}
+                        ))}
+                      </Box>
                     </Box>
-                  )}
+                  ))}
                 </Box>
-              ))}
+              )}
             </Box>
           ) : null}
 
