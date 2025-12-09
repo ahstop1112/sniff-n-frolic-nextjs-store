@@ -8,6 +8,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { SearchBar } from "@/components/SearchBar";
 import { CartProviderClient } from "@/components/CartProviderClient";
 import { MiniCart } from "@/components/MiniCart";
+import Footer from "@/components/Footer";
 
 interface LangLayoutProps {
   children: ReactNode;
@@ -23,42 +24,34 @@ const LangLayout = async ({ children, params }: LangLayoutProps) => {
 
   return (
     <CartProviderClient>
-        <Container maxWidth="lg" sx={{ py: 3 }}>
+      <Container maxWidth="lg" sx={{ py: 3 }}>
         <Box component="header" sx={{ mb: 4 }}>
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                gap={2}
-            >
-                <Link href={`/${locale}`} style={{ textDecoration: "none" }}>
-                    <Typography variant="h6">
-                        {dict.common.siteTitle}
-                    </Typography>
-                </Link>
-                <SearchBar locale={locale} />
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            gap={2}
+          >
+            <Link href={`/${locale}`} style={{ textDecoration: "none" }}>
+              <Typography variant="h6">{dict.common.siteTitle}</Typography>
+            </Link>
+            <SearchBar locale={locale} />
 
-                <Stack direction="row" spacing={2} alignItems="center">
-                    <Link href={`/${locale}`}>
-                    {dict.nav.home}
-                    </Link >
-                    <Link href={`/${locale}/products`}>
-                    {dict.nav.products}
-                    </Link >
-                    <Link href={`/${locale}/about`}>
-                    {dict.nav.about}
-                    </Link >
-                    <Link href="/en">EN</Link>
-                    <Link href="/zh">中文</Link>
-                    <MiniCart locale={locale} />
-                </Stack>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Link href={`/${locale}`}>{dict.nav.home}</Link>
+              <Link href={`/${locale}/products`}>{dict.nav.products}</Link>
+              <Link href={`/${locale}/about`}>{dict.nav.about}</Link>
+              <Link href="/en">EN</Link>
+              <Link href="/zh">中文</Link>
+              <MiniCart locale={locale} />
             </Stack>
+          </Stack>
         </Box>
-
         <main>{children}</main>
-        </Container>
+        <Footer />
+      </Container>
     </CartProviderClient>
   );
 };
 
-export default LangLayout;  
+export default LangLayout;
