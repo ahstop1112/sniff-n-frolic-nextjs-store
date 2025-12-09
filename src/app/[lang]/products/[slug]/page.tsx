@@ -84,11 +84,13 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   const dict = await getDictionary(locale);
 
   const product = await getProductBySlug(slug);
+  console.log(product);
   if (!product) return notFound();
 
   // Breadcrumbs
   const collectionHref = `/${locale}/products`;
-  const mainCategory = product.categories?.[0];
+  const mainCategory =
+    product && product.categories ? product.categories?.[0] : {};
 
   const breadcrumbs: BreadcrumbItem[] = [
     { label: locale === "zh" ? "首頁" : "Home", href: `${locale}` },

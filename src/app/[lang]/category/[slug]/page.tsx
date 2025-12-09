@@ -60,14 +60,15 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
 
   breadcrumbs.push({ label: category.name });
 
+  console.log(randomProducts);
+
   return (
     <Box>
+      <BreadcrumbsNav items={breadcrumbs} />
       <Typography variant="h4" component="h1" gutterBottom>
         {category.name}
       </Typography>
-
       <Box mt={3}>
-        <BreadcrumbsNav items={breadcrumbs} />
         {/* All Top Level Categories */}
         {childCatgories.length > 0 && (
           <>

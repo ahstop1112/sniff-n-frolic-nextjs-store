@@ -7,6 +7,7 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
+import ProductImageBox from "@/components/ProductImageBox";
 interface HomePageProps {
   params: Promise<{ lang: string }>;
 }
@@ -49,17 +50,7 @@ const HomePage = async ({ params }: HomePageProps) => {
                             <Card variant="outlined">
                                 <CardContent>
                                     <Link href={`/${locale}/products/${p.slug}`} >
-                                        <Box
-                                            component="img"
-                                            src={firstImg ? firstImg.thumbnail : ``}
-                                            alt={firstImg ? firstImg.alt : p.name}
-                                            sx={{
-                                            width: "100%",
-                                            maxHeight: 400,
-                                            objectFit: "cover",
-                                            borderRadius: 2,
-                                            }}
-                                        />
+                                        <ProductImageBox image={firstImg} productName={p.name} />
                                         {p.name}
                                     </Link>
                                     <Typography variant="body2" color="text.secondary">
