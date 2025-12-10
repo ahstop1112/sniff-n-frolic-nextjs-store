@@ -55,7 +55,7 @@ const Footer = ({ locale }:FooterProps) => {
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Grid container spacing={4}>
           {/* 左邊：Logo + 簡介 */}
-          <Grid size={{ xs: 6, sm: 6, md: 3 }}>
+          <Grid size={{ xs: 6, sm: 4, md: 3 }} >
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
               Sniff & Frolic
             </Typography>
@@ -118,8 +118,7 @@ const Footer = ({ locale }:FooterProps) => {
             </Box>
           </Grid>
 
-          {/* 中間：About */}
-          <Grid item xs={6} sm={6} md={3}>
+          <Grid size={{ xs: 6, sm: 4, md: 3 }} >
             <Typography
               variant="caption"
               sx={{
@@ -168,9 +167,7 @@ const Footer = ({ locale }:FooterProps) => {
               </MuiLink>
             </Box>
           </Grid>
-
-          {/* 右邊：訂閱 + Social */}
-          <Grid item xs={6} sm={6} md={3}>
+          <Grid size={{ xs: 6, sm: 4, md: 3 }} >
             <Typography
               variant="caption"
               sx={{
