@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Container, Box, Stack, Typography } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 import { SearchBar } from "@/components/SearchBar";
 import { CartProviderClient } from "@/components/CartProviderClient";
 import { MiniCart } from "@/components/MiniCart";
@@ -47,7 +48,9 @@ const LangLayout = async ({ children, params }: LangLayoutProps) => {
             </Stack>
           </Stack>
         </Box>
-        <main>{children}</main>
+        <main>
+          <CurrencyProvider>{children}</CurrencyProvider>
+        </main>
         <Footer locale={locale} />
       </Container>
     </CartProviderClient>

@@ -6,6 +6,7 @@ import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
+import { formatPrice } from "@/lib/currency";
 import BreadcrumbsNav, {
   type BreadcrumbItem,
 } from "@/components/BreadcrumbsNav";
@@ -94,7 +95,7 @@ const ProductsPage = async ({ params }: ProductsPageProps) => {
                     {p.name}
                   </Link>
                   <Typography variant="body2" color="text.secondary">
-                    ${p.price}
+                    {formatPrice(Number(p.price || 0))}
                   </Typography>
                 </CardContent>
               </Card>

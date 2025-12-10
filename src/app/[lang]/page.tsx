@@ -6,6 +6,7 @@ import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
+import { formatPrice } from "@/lib/currency";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
 import ProductImageBox from "@/components/ProductImageBox";
 interface HomePageProps {
@@ -41,66 +42,66 @@ const HomePage = async ({ params }: HomePageProps) => {
         {dict.common.latestArrivals}
       </Typography>
 
-        <Box mt={3}>
-            <Grid container spacing={2}>
-                {products.map((p) => {
-                    const firstImg = p.images[0] || null;
-                    return(
-                        <Grid size={{ xs: 12, sm: 6, md: 3 }} key={p.id}>
-                            <Card variant="outlined">
-                                <CardContent>
-                                    <Link href={`/${locale}/products/${p.slug}`} >
-                                        <ProductImageBox image={firstImg} productName={p.name} />
-                                        {p.name}
-                                    </Link>
-                                    <Typography variant="body2" color="text.secondary">
-                                        ${p.price}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    )
-                })}
-            </Grid>
-        </Box>
+      <Box mt={3}>
+        <Grid container spacing={2}>
+          {products.map((p) => {
+            const firstImg = p.images[0] || null;
+            return (
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={p.id}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Link href={`/${locale}/products/${p.slug}`}>
+                      <ProductImageBox image={firstImg} productName={p.name} />
+                      {p.name}
+                    </Link>
+                    <Typography variant="body2" color="text.secondary">
+                      {formatPrice(Number(p.price || 0))}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
 
       <Box mt={4}>
         <Link href={`/${locale}/products`}>{dict.common.viewAll} →</Link>
       </Box>
 
-        {categories.length > 0 && (
-            <Box mt={6}>
-            <Typography variant="h5" gutterBottom>
-                {dict.common.shopByCategory}
-            </Typography>
-            <Grid container spacing={2}>
-                {categories.map((cat) => (
-                <Grid size={{ xs: 6, sm: 4, md: 3 }} key={cat.id}>
-                    <Link href={`/${locale}/category/${cat.slug}`}>
-                        <Card variant="outlined">
-                            {cat.image?.src && (
-                                <img
-                                    src={cat.image.src}
-                                    alt={cat.image.alt || cat.name}
-                                    style={{
-                                        width: "100%",
-                                        height: 120,
-                                        objectFit: "cover",
-                                    }}
-                                />
-                            )}
-                            <CardContent>
-                                <Typography variant="subtitle1">{cat.name}</Typography>
-                            </CardContent>
-                        </Card>
-                    </Link>
-                </Grid>
-                ))}
-            </Grid>
-            </Box>
-        )}
-        </>
-    );
+      {categories.length > 0 && (
+        <Box mt={6}>
+          <Typography variant="h5" gutterBottom>
+            {dict.common.shopByCategory}
+          </Typography>
+          <Grid container spacing={2}>
+            {categories.map((cat) => (
+              <Grid size={{ xs: 6, sm: 4, md: 3 }} key={cat.id}>
+                <Link href={`/${locale}/category/${cat.slug}`}>
+                  <Card variant="outlined">
+                    {cat.image?.src && (
+                      <img
+                        src={cat.image.src}
+                        alt={cat.image.alt || cat.name}
+                        style={{
+                          width: "100%",
+                          height: 120,
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
+                    <CardContent>
+                      <Typography variant="subtitle1">{cat.name}</Typography>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      )}
+    </>
+  );
 };
 
 export default HomePage;

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Typography, Box, Grid, Button, Divider } from "@mui/material";
@@ -18,6 +17,8 @@ import { buildProductMetadata } from "@/seo/buildProductMetaTag";
 // Add To Cart
 import { ProductPurchasePanel } from "@/components/ProductPurchasePanel";
 import type { AddToCartInput } from "@/lib/cartTypes";
+// Currency
+import { formatPrice } from "@/lib/currency";
 
 interface ProductPageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -127,6 +128,10 @@ const ProductPage = async ({ params }: ProductPageProps) => {
     imageUrl: product.images?.[0]?.src,
   };
 
+  // Currency
+  const price = Number(product.price || product.regular_price || 0);
+  const displayPrice = formatPrice(price);
+
   return (
     <Box>
       <BreadcrumbsNav items={breadcrumbs} />
@@ -140,7 +145,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           </Typography>
 
           <Typography variant="h5" color="primary" gutterBottom>
-            CAD${product.price}
+            {displayPrice}
           </Typography>
 
           {product.on_sale && (

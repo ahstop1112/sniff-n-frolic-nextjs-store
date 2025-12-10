@@ -5,6 +5,7 @@ import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getCategories, getProducts } from "@/lib/wooClient";
+import { formatPrice } from "@/lib/currency";
 import { buildCategoryMetadata } from "@/seo/buildCategoryMetaTag";
 import BreadcrumbsNav, {
   type BreadcrumbItem,
@@ -60,8 +61,6 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
 
   breadcrumbs.push({ label: category.name });
 
-  console.log(randomProducts);
-
   return (
     <Box>
       <BreadcrumbsNav items={breadcrumbs} />
@@ -115,7 +114,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
                     {p.name}
                   </Link>
                   <Typography variant="body2" color="text.secondary">
-                    ${p.price}
+                    {formatPrice(Number(p.price || 0))}
                   </Typography>
                 </CardContent>
               </Card>
