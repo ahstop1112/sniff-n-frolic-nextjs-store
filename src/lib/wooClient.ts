@@ -129,8 +129,8 @@ export const wooFetch = async <T>(
       );
     }
   
-    const cleanPath = path.replace(/^\/+/, "");          // 去走 path 頭部多餘 /
-    const trimmedBase = baseUrl.replace(/\/+$/, "");     // 去走 baseUrl 尾部多餘 /
+    const cleanPath = path.replace(/^\/+/, "");
+    const trimmedBase = baseUrl.replace(/\/+$/, "");
     const url = new URL(`${trimmedBase}/${cleanPath}`);
   
     url.searchParams.set("consumer_key", consumerKey);

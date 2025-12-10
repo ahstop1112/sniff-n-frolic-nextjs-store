@@ -1,5 +1,7 @@
-"use client";
+'use client'
+import { useEffect, useMemo, useState } from "react";
 import NextLink from "next/link";
+import type { Locale } from "@/i18n/config";
 import {
   Box,
   Container,
@@ -9,16 +11,36 @@ import {
   Button,
   Link as MuiLink,
 } from "@mui/material";
-import { useMemo } from "react";
-import { getCategories } from "@/lib/wooClient";
+import type { WooCategory } from "@/lib/wooClient";
+import { getTopLevelCategories } from "@/utils/category";
 
-const Footer = async () => {
+interface FooterProps {
+  locale: Locale;
+}
+
+const Footer = ({ locale }:FooterProps) => {
+  const [topLevelCategories, setTopLevelCategories] = useState<WooCategory[]>([]);
+  const [loadingCats, setLoadingCats] = useState(false);
+
   const year = useMemo(() => new Date().getFullYear(), []);
 
-  const allCats = await getCategories();
-  const topLevelCategories = allCats
-    .filter((c) => c.parent === 0)
-    .sort((a, b) => a.id - b.id);
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        setLoadingCats(true);
+        const res = await fetch("/api/categories", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to fetch categories");
+        const data = (await res.json()) as WooCategory[];
+        setTopLevelCategories(getTopLevelCategories(data));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoadingCats(false);
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   return (
     <Box
@@ -62,23 +84,42 @@ const Footer = async () => {
                 gap: 0.5,
               }}
             >
-              {topLevelCategories.map((cat) => (
+              {loadingCats && (
+                <Typography variant="caption" color="text.secondary">
+                  Loading...
+                </Typography>
+              )}
+
+              {!loadingCats &&
+                topLevelCategories.map((cat) => (
+                  <MuiLink
+                    key={cat.id}
+                    component={NextLink}
+                    href={`/${locale}/category/${cat.slug}`} // 依你路由改
+                    underline="hover"
+                    color="text.primary"
+                    sx={{ fontSize: 14 }}
+                  >
+                    {cat.name}
+                  </MuiLink>
+                ))}
+
+              {!loadingCats && topLevelCategories.length === 0 && (
                 <MuiLink
-                  key={cat.id}
                   component={NextLink}
-                  href={`/category/${cat.slug}`} // 按你而家嘅路由改
+                  href="/products"
                   underline="hover"
                   color="text.primary"
                   sx={{ fontSize: 14 }}
                 >
-                  {cat.name}
+                  All Products
                 </MuiLink>
-              ))}
+              )}
             </Box>
           </Grid>
 
-          {/* 中間：導航 2 */}
-          <Grid size={{ xs: 6, sm: 6, md: 3 }}>
+          {/* 中間：About */}
+          <Grid item xs={6} sm={6} md={3}>
             <Typography
               variant="caption"
               sx={{
@@ -129,7 +170,7 @@ const Footer = async () => {
           </Grid>
 
           {/* 右邊：訂閱 + Social */}
-          <Grid size={{ xs: 6, sm: 6, md: 3 }}>
+          <Grid item xs={6} sm={6} md={3}>
             <Typography
               variant="caption"
               sx={{

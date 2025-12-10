@@ -48,7 +48,7 @@ const LangLayout = async ({ children, params }: LangLayoutProps) => {
           </Stack>
         </Box>
         <main>{children}</main>
-        <Footer />
+        <Footer locale={locale} />
       </Container>
     </CartProviderClient>
   );
