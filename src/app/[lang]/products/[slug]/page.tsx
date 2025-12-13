@@ -51,12 +51,10 @@ const buildVariantOptions = (
   variationAttrs.forEach((attr) => {
     const valueSet = new Set<string>();
 
-    // 1) product 層 options
     attr.options?.forEach((opt) => {
       if (opt) valueSet.add(opt);
     });
 
-    // 2) variation 層 attributes（保險再收集一次）
     variations.forEach((v) => {
       v.attributes.forEach((va) => {
         if (va.name === attr.name || va.name === attr.slug) {
