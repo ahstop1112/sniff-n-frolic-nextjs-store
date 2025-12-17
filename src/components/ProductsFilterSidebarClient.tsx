@@ -52,6 +52,7 @@ const ProductsFilterSidebarClient = ({
       const qs = params.toString();
       const nextUrl = qs ? `${pathname}?${qs}` : pathname;
       router.push(nextUrl);
+      router.refresh();
     },
     [pathname, router, searchParams]
   );
