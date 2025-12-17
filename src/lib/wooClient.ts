@@ -216,3 +216,14 @@ export const getCategories = async (options?: {
     hide_empty: options?.hide_empty ?? true,
   });
 };
+
+export const getCategoryById = async (id: string) => {
+  const category = await wooFetch(`products/categories/${id}`, {
+    params: { per_page: 100 },
+    cache: "no-store",
+  });
+
+  console.log(category)
+
+  return Array.isArray(category) ? category : null;
+};

@@ -5,37 +5,64 @@ import Image from "next/image";
 import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getProducts, getCategories } from "@/lib/wooClient";
+import { getProducts, getCategories, getCategoryById } from "@/lib/wooClient";
 import { formatPrice } from "@/lib/currency";
 import BreadcrumbsNav, {
   type BreadcrumbItem,
 } from "@/components/BreadcrumbsNav";
+import ProductsFilterSidebarClient from "@/components/ProductsFilterSidebarClient";
 import ProductImageBox from "@/components/ProductImageBox";
 import { shuffleArray } from "@/utils/helpers";
+
+type SearchParams = Record<string, string | string[] | undefined>;
 interface ProductsPageProps {
   params: Promise<{ lang: string; slug: string }>;
+  searchParams: Promise<SearchParams>;
 }
 
-const ProductsPage = async ({ params }: ProductsPageProps) => {
+const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const { lang, slug } = await params;
+  const sp = await searchParams;
+
   if (!isValidLocale(lang)) return notFound();
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
+  const isZh = locale === "zh";
 
-  // Show the first level of Categoryes
+  const categorySlug = typeof sp.category === "string" ? sp.category : undefined;
+  const inStockFlag = typeof sp.in_stock === "string" ? sp.in_stock : undefined;
+
   const allCats = await getCategories();
   const topLevelCategories = allCats
     .filter((c) => c.parent === 0)
     .sort((a, b) => a.id - b.id);
 
-  const products = await getProducts({ per_page: 50 });
-  const randomProducts = shuffleArray(products);
+  // Show the first level of Categoryes
+  let selectedCategory = undefined as any;
+  selectedCategory = categorySlug ? topLevelCategories.find(item => item.slug === categorySlug) : null;
+
+  const wooParams: Record<string, string | number> = {
+    per_page: 50,
+    status: "publish"
+  };
+
+  if (selectedCategory?.id) {
+    wooParams.category = selectedCategory.id;
+  }
+
+  if (inStockFlag === "1") {
+    (wooParams as any).stock_status = "instock";
+  }
+
+  const products = await getProducts(wooParams);
+  const finalProducts = categorySlug || inStockFlag ? products : shuffleArray(products);
 
   // Breadcrumbs
+  const homeHref = isZh ? "/zh" : "/";
   const collectionHref = `/${locale}/products`;
 
   const breadcrumbs: BreadcrumbItem[] = [
-    { label: locale === "zh" ? "首頁" : "Home", href: `/${locale}` },
+    { label: locale === "zh" ? "首頁" : "Home", href: homeHref },
     {
       label: locale === "zh" ? "全部商品" : "Collection",
       href: collectionHref,
@@ -43,45 +70,48 @@ const ProductsPage = async ({ params }: ProductsPageProps) => {
   ];
 
   return (
-    <>
-      <Box mt={3}>
-        <BreadcrumbsNav items={breadcrumbs} />
-        {/* All Top Level Categories */}
-        <Typography variant="h4" component="h1" gutterBottom>
-          Categories
-        </Typography>
-        <Grid container spacing={2}>
-          {topLevelCategories.map((cat) => (
-            <Grid size={{ xs: 12, sm: 6, md: 2 }} key={cat.id}>
-              <Card variant="outlined">
-                <CardContent>
-                  <Link href={`/${locale}/category/${cat.slug}`}>
-                    <Box
-                      component="img"
-                      src={cat?.image.src}
-                      alt={cat?.image.alt || cat.name}
-                      style={{ maxWidth: `100%` }}
-                    />
-                    <Typography variant="body2" color="text.secondary">
-                      {cat.name}
-                    </Typography>
-                  </Link>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+    <Box mt={3}>
+      <BreadcrumbsNav items={breadcrumbs} />
+      {/* All Top Level Categories */}
+      <Typography variant="h4" component="h1" gutterBottom>
+        Categories
+      </Typography>
+      <Grid container spacing={2}>
+        {topLevelCategories.map((cat) => (
+          <Grid size={{ xs: 12, sm: 6, md: 2 }} key={cat.id}>
+            <Card variant="outlined">
+              <CardContent>
+                <Link href={`/${locale}/category/${cat.slug}`}>
+                  <Box
+                    component="img"
+                    src={cat?.image.src}
+                    alt={cat?.image.alt || cat.name}
+                    style={{ maxWidth: `100%` }}
+                  />
+                  <Typography variant="body2" color="text.secondary">
+                    {cat.name}
+                  </Typography>
+                </Link>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+      {/* All Product */}
+      <Typography
+        variant="h4"
+        component="h1"
+        style={{ marginTop: 24 }}
+        gutterBottom
+      >
+        {dict.nav.products}
+      </Typography>
+      <Grid container spacing={2}>
+        <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
+          <ProductsFilterSidebarClient locale={locale} categories={topLevelCategories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))} />
         </Grid>
-        {/* All Product */}
-        <Typography
-          variant="h4"
-          component="h1"
-          style={{ marginTop: 24 }}
-          gutterBottom
-        >
-          {dict.nav.products}
-        </Typography>
-        <Grid container spacing={2}>
-          {(randomProducts || []).map((p) => (
+        <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
+          {(finalProducts || []).map((p) => (
             <Grid size={{ xs: 6, sm: 6, md: 3 }} key={p.id}>
               <Card variant="outlined">
                 <CardContent>
@@ -101,9 +131,10 @@ const ProductsPage = async ({ params }: ProductsPageProps) => {
               </Card>
             </Grid>
           ))}
+
         </Grid>
-      </Box>
-    </>
+      </Grid>
+    </Box>
   );
 };
 
