@@ -1,17 +1,14 @@
 // src/app/[lang]/products/page.tsx
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getProducts, getCategories, getCategoryById } from "@/lib/wooClient";
-import { formatPrice } from "@/lib/currency";
-import BreadcrumbsNav, {
-  type BreadcrumbItem,
-} from "@/components/BreadcrumbsNav";
+import { getProducts, getCategories } from "@/lib/wooClient";
+import BreadcrumbsNav, { type BreadcrumbItem } from "@/components/BreadcrumbsNav";
 import ProductsFilterSidebarClient from "@/components/ProductsFilterSidebarClient";
-import ProductImageBox from "@/components/ProductImageBox";
+import CategoryGrid from "@/components/CategoryGrid";
+import ProductGrid from "@/components/ProductGrid";
 import { shuffleArray } from "@/utils/helpers";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -27,7 +24,6 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   if (!isValidLocale(lang)) return notFound();
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
-  const isZh = locale === "zh";
 
   const categorySlug = typeof sp.category === "string" ? sp.category : undefined;
   const inStockFlag = typeof sp.in_stock === "string" ? sp.in_stock : undefined;
@@ -58,44 +54,22 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const finalProducts = categorySlug || inStockFlag ? products : shuffleArray(products);
 
   // Breadcrumbs
-  const homeHref = isZh ? "/zh" : "/";
-  const collectionHref = `/${locale}/products`;
-
   const breadcrumbs: BreadcrumbItem[] = [
-    { label: locale === "zh" ? "首頁" : "Home", href: homeHref },
     {
       label: locale === "zh" ? "全部商品" : "Collection",
-      href: collectionHref,
+      href: `/${locale}/products`,
     },
   ];
 
   return (
     <Box mt={3}>
-      <BreadcrumbsNav items={breadcrumbs} />
+      <BreadcrumbsNav locale={locale} items={breadcrumbs} showProducts />
       {/* All Top Level Categories */}
       <Typography variant="h4" component="h1" gutterBottom>
         Categories
       </Typography>
       <Grid container spacing={2}>
-        {topLevelCategories.map((cat) => (
-          <Grid size={{ xs: 12, sm: 6, md: 2 }} key={cat.id}>
-            <Card variant="outlined">
-              <CardContent>
-                <Link href={`/${locale}/category/${cat.slug}`}>
-                  <Box
-                    component="img"
-                    src={cat?.image.src}
-                    alt={cat?.image.alt || cat.name}
-                    style={{ maxWidth: `100%` }}
-                  />
-                  <Typography variant="body2" color="text.secondary">
-                    {cat.name}
-                  </Typography>
-                </Link>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+        {(topLevelCategories || []).map((cat) => <CategoryGrid key={cat.id} locale={locale} slug={cat.slug} image={cat?.image} name={cat.name} />)}
       </Grid>
       {/* All Product */}
       <Typography
@@ -111,27 +85,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
           <ProductsFilterSidebarClient locale={locale} categories={topLevelCategories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))} />
         </Grid>
         <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
-          {(finalProducts || []).map((p) => (
-            <Grid size={{ xs: 6, sm: 6, md: 3 }} key={p.id}>
-              <Card variant="outlined">
-                <CardContent>
-                  <Link href={`/${locale}/products/${p.slug}`}>
-                    <Box
-                      component="img"
-                      src={p?.images[0].src}
-                      alt={p?.images[0].alt || p.name}
-                      style={{ maxWidth: `100%` }}
-                    />
-                    {p.name}
-                  </Link>
-                  <Typography variant="body2" color="text.secondary">
-                    {formatPrice(Number(p.price || 0))}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-
+          {(finalProducts || []).map((p) => <ProductGrid key={p.id} locale={locale} slug={p.slug} image={p?.images[0]} name={p.name} price={p.price} />)}
         </Grid>
       </Grid>
     </Box>

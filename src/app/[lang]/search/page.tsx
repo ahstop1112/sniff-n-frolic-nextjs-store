@@ -7,6 +7,7 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
 import { buildSearchMetadata } from "@/seo/buildSearchMetaTag";
+import ProductGrid from "@/components/ProductGrid";
 
 interface SearchPageProps {
   params: Promise<{ lang: string }>;
@@ -25,12 +26,13 @@ export const generateMetadata = async (
 
 const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
   const { lang } = await params;
+  const sp = await searchParams;
   if (!isValidLocale(lang)) return notFound();
 
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
-  const raw = searchParams?.search ?? "";
+  const raw = sp?.search ?? "";
   const search = raw.trim();
 
   if (!search) {
@@ -70,18 +72,7 @@ const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
           </Typography>
         ) : (
           <Grid container spacing={2}>
-            {products.map((p) => (
-              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={p.id}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Link href={`/${locale}/products/${p.slug}`}>{p.name}</Link>
-                    <Typography variant="body2" color="text.secondary">
-                      ${p.price}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
+            {(products || []).map((p) => <ProductGrid key={p.id} locale={locale} slug={p.slug} image={p?.images[0]} name={p.name} price={p.price} />)}
           </Grid>
         )}
       </Box>

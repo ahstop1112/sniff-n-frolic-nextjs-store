@@ -91,13 +91,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   const mainCategory =
     product && product.categories ? product.categories?.[0] : {};
 
-  const breadcrumbs: BreadcrumbItem[] = [
-    { label: locale === "zh" ? "首頁" : "Home", href: `${locale}` },
-    {
-      label: locale === "zh" ? "全部商品" : "Collection",
-      href: collectionHref,
-    },
-  ];
+  const breadcrumbs: BreadcrumbItem[] = [];
 
   if (mainCategory) {
     breadcrumbs.push({
@@ -132,7 +126,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
   return (
     <Box>
-      <BreadcrumbsNav items={breadcrumbs} />
+      <BreadcrumbsNav items={breadcrumbs} locale={locale} />
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, sm: 6, md: 6 }}>
           <ProductImageGallery images={images} productName={product.name} />

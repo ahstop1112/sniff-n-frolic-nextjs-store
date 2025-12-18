@@ -6,16 +6,15 @@ import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
-import { formatPrice } from "@/lib/currency";
+import { shuffleArray } from "@/utils/helpers";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
-import ProductImageBox from "@/components/ProductImageBox";
+import CategoryGrid from "@/components/CategoryGrid";
+import ProductGrid from "@/components/ProductGrid";
 interface HomePageProps {
   params: Promise<{ lang: string }>;
 }
 
-export const generateMetadata = async (
-  props: HomePageProps
-): Promise<Metadata> => {
+export const generateMetadata = async (props: HomePageProps): Promise<Metadata> => {
   const { params } = props;
   const { lang } = await params;
 
@@ -30,6 +29,8 @@ const HomePage = async ({ params }: HomePageProps) => {
   const dict = await getDictionary(locale);
 
   const products = await getProducts({ per_page: 8, orderby: "date" });
+  const finalProducts = shuffleArray(products);
+
   const categories = await getCategories({ parent: 0, hide_empty: true });
 
   return (
@@ -44,24 +45,7 @@ const HomePage = async ({ params }: HomePageProps) => {
 
       <Box mt={3}>
         <Grid container spacing={2}>
-          {products.map((p) => {
-            const firstImg = p.images[0] || null;
-            return (
-              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={p.id}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Link href={`/${locale}/products/${p.slug}`}>
-                      <ProductImageBox image={firstImg} productName={p.name} />
-                      {p.name}
-                    </Link>
-                    <Typography variant="body2" color="text.secondary">
-                      {formatPrice(Number(p.price || 0))}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            );
-          })}
+          {(finalProducts || []).map((p) => <ProductGrid key={p.id} locale={locale} slug={p.slug} image={p?.images[0]} name={p.name} price={p.price} />)}
         </Grid>
       </Box>
 
@@ -75,28 +59,7 @@ const HomePage = async ({ params }: HomePageProps) => {
             {dict.common.shopByCategory}
           </Typography>
           <Grid container spacing={2}>
-            {categories.map((cat) => (
-              <Grid size={{ xs: 6, sm: 4, md: 3 }} key={cat.id}>
-                <Link href={`/${locale}/category/${cat.slug}`}>
-                  <Card variant="outlined">
-                    {cat.image?.src && (
-                      <img
-                        src={cat.image.src}
-                        alt={cat.image.alt || cat.name}
-                        style={{
-                          width: "100%",
-                          height: 120,
-                          objectFit: "cover",
-                        }}
-                      />
-                    )}
-                    <CardContent>
-                      <Typography variant="subtitle1">{cat.name}</Typography>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </Grid>
-            ))}
+            {(categories || []).map((cat) => <CategoryGrid key={cat.id} locale={locale} slug={cat.slug} image={cat?.image} name={cat.name} />)}
           </Grid>
         </Box>
       )}

@@ -33,7 +33,6 @@ export const formatPrice = (
       minimumFractionDigits: 2,
     }).format(amount);
 
-    // 針對唔同 code，自己決定外觀
     if (c.code === "CAD") {
       return `CA$${formattedNumber}`;
     }
