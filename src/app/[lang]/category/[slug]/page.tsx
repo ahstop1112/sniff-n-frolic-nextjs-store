@@ -41,12 +41,11 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
   const childCatgories = allCats.filter((c) => c.parent === category.id);
 
   const collectionHref = `/${locale}/products`;
-  const parentCategory = allCats.find((c) => c.id === category.parent);
 
   const wooParams: Record<string, string | number> = {
     per_page: 50,
     status: "publish",
-    category: parentCategory ? parentCategory.id : ``
+    category: category?.id
   };
 
   // Breadcrumbs
@@ -58,12 +57,10 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
     },
   ];
 
-  if (parentCategory) {
-    breadcrumbs.push({
-      label: parentCategory.name,
-      href: `/${locale}/category/${parentCategory.slug}`,
-    });
-  }
+  breadcrumbs.push({
+    label: category.name,
+    href: `/${locale}/category/${category.slug}`,
+  });
 
   breadcrumbs.push({ label: category.name });
 
@@ -73,20 +70,13 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
   let selectedCategory = undefined as any;
   selectedCategory = categorySlug ? allCats.find(item => item.slug === categorySlug) : null;
 
-  if (selectedCategory?.id) {
-    wooParams.category = selectedCategory.id;
-  }
-
-  console.log(sp);
+  wooParams.category = selectedCategory ? selectedCategory.id : category.id;
 
   if (inStockFlag === "1") {
     (wooParams as any).stock_status = "instock";
   }
-
   const products = await getProducts(wooParams);
   const finalProducts = slug || inStockFlag ? products : shuffleArray(products);
-
-  console.log(slug);
 
   return (
     <Box>
