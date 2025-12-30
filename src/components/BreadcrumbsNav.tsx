@@ -14,8 +14,8 @@ interface BreadcrumbsNavProps {
   hideProducts: any
 }
 
-const BreadcrumbsNav = ({ items, locale = "en", hideProducts = false }: BreadcrumbsNavProps) => {
-  if (!items || items.length === 0) return null;
+const BreadcrumbsNav = ({ items = [], locale = "en", hideProducts = false }: BreadcrumbsNavProps) => {
+  // if (!items || items.length === 0) return null;
   let navItems = [
     { label: locale === "zh" ? "首頁" : "Home", href: locale === "zh" ? "/zh" : "/en" },
     { label: locale === "zh" ? "全部商品" : "Collection", href: `/${locale}/products` }

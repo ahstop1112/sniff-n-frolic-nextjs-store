@@ -58,7 +58,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
 
   return (
     <Box mt={3}>
-      <BreadcrumbsNav locale={locale} items={breadcrumbs} showProducts />
+      <BreadcrumbsNav locale={locale} items={breadcrumbs} />
       {/* All Top Level Categories */}
       <Typography variant="h4" component="h1" gutterBottom>
         Categories

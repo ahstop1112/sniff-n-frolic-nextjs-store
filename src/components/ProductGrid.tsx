@@ -17,7 +17,7 @@ interface ProductGridProps {
 
 const ProductGrid = ({ slug, locale, image, name, price }: ProductGridProps) => {
   return (
-    <Grid size={{ xs: 6, sm: 6, md: 4, lg: 3, xl: 3 }}>
+    <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3, xl: 3 }}>
       <Card variant="outlined">
         <CardContent>
           <Link href={`/${locale}/products/${slug}`}>

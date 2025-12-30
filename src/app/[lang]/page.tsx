@@ -35,10 +35,6 @@ const HomePage = async ({ params }: HomePageProps) => {
 
   return (
     <>
-      <Typography variant="h4" component="h1" gutterBottom>
-        {dict.common.siteTitle}
-      </Typography>
-
       <Typography variant="subtitle1" gutterBottom>
         {dict.common.latestArrivals}
       </Typography>
