@@ -11,7 +11,7 @@ export interface BreadcrumbItem {
 interface BreadcrumbsNavProps {
   locale: Locale
   items: BreadcrumbItem[];
-  hideProducts: any
+  hideProducts: Boolean
 }
 
 const BreadcrumbsNav = ({ items = [], locale = "en", hideProducts = false }: BreadcrumbsNavProps) => {
@@ -20,7 +20,7 @@ const BreadcrumbsNav = ({ items = [], locale = "en", hideProducts = false }: Bre
     { label: locale === "zh" ? "首頁" : "Home", href: locale === "zh" ? "/zh" : "/en" },
     { label: locale === "zh" ? "全部商品" : "Collection", href: `/${locale}/products` }
   ];
- navItems.push(...items);
+  items && items.length > 0 && navItems.push(...items);
 
   return (
     <Box component="nav" aria-label="Breadcrumb" sx={{ mb: 2, fontSize: 13 }}>
