@@ -86,7 +86,7 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
 
   return (
     <Box>
-      <BreadcrumbsNav items={[breadcrumbs]} />
+      <BreadcrumbsNav items={breadcrumbs} />
       <Typography variant="h4" component="h1" gutterBottom>
         {category.name}
       </Typography>
@@ -111,10 +111,10 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
           {dict.nav.products}
         </Typography>
         <Grid container spacing={2}>
-          {childCatgories && childCatgories.length > 0 ? <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
+          <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
             <ProductsFilterSidebarClient locale={locale} categories={childCatgories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))} />
-          </Grid> : null}
-          <Grid container size={childCatgories && childCatgories.length > 0 ? { lg: 9, xl: 9, md: 9, sm: 12, xs: 12 } : { lg: 12, xl: 12, md: 12, sm: 12, xs: 12 }}>
+          </Grid>
+          <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
             {(finalProducts || []).map((p) => <ProductGrid key={p.id} locale={locale} slug={p.slug} image={p?.images[0]} name={p.name} price={p.price} />)}
           </Grid>
         </Grid>
