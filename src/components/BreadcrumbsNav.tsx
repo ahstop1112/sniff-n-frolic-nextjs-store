@@ -14,21 +14,15 @@ interface BreadcrumbsNavProps {
   hideProducts: any
 }
 
-const BreadcrumbsNav = ({ items, locale, hideProducts = false }: BreadcrumbsNavProps) => {
+const BreadcrumbsNav = ({ items, locale = "en", hideProducts = false }: BreadcrumbsNavProps) => {
   if (!items || items.length === 0) return null;
+  let navItems = [
+    { label: locale === "zh" ? "首頁" : "Home", href: locale === "zh" ? "/zh" : "/en" },
+    { label: locale === "zh" ? "全部商品" : "Collection", href: `/${locale}/products` }
+  ];
+ navItems.push(...items);
 
-  console.log(items);
-
-  const homeHref = locale === "zh" ? "/zh" : "/";
-  let navItems = [{ label: locale === "zh" ? "首頁" : "Home", href: homeHref }];
-  
-  if (!hideProducts){
-    navItems.push({
-      label: locale === "zh" ? "全部商品" : "Collection",
-      href: `/${locale}/products`,
-    });
-  }
-  navItems = [...navItems, ...items];
+  console.log(navItems);
 
   return (
     <Box component="nav" aria-label="Breadcrumb" sx={{ mb: 2, fontSize: 13 }}>
@@ -43,13 +37,14 @@ const BreadcrumbsNav = ({ items, locale, hideProducts = false }: BreadcrumbsNavP
         }}
       >
         {navItems.map((item, index) => {
-          const isLast = index === items.length - 1;
-
+          const isLast = index === navItems.length - 1;
+          console.log(item.label, isLast)
           return (
             <li
               key={`${item.label}-${index}`}
               style={{ display: "flex", alignItems: "center" }}
             >
+              {isLast}
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
@@ -65,7 +60,7 @@ const BreadcrumbsNav = ({ items, locale, hideProducts = false }: BreadcrumbsNavP
                       "&:hover": { textDecoration: "underline" },
                     }}
                   >
-                    {item.label}
+                    {item.label.replace("&amp;", "&")}
                   </Typography>
                 </Link>
               ) : (

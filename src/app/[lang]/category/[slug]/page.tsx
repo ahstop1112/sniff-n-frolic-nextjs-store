@@ -37,11 +37,10 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
 
   const allCats = await getCategories();
   const category = allCats.find((c) => c.slug === slug);
+  const parentCat = allCats.find((c) => c.id === category?.parent);
   if (!category) return notFound();
 
   const childCatgories = allCats.filter((c) => c.parent === category.id);
-
-  const collectionHref = `/${locale}/products`;
 
   const wooParams: Record<string, string | number> = {
     per_page: 50,
@@ -50,17 +49,12 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
   };
 
   // Breadcrumbs
-  const breadcrumbs: BreadcrumbItem[] = [
-    {
-      label: locale === "zh" ? "全部商品" : "Collection",
-      href: collectionHref,
-    },
-  ];
+  const breadcrumbs: BreadcrumbItem[] = [];
 
-  if (childCatgories && childCatgories.length > 0){
+  if (parentCat){
     breadcrumbs.push({
-      label: category.name,
-      href: `/${locale}/category/${category.slug}`,
+      label: parentCat.name,
+      href: `/${locale}/category/${parentCat.slug}`,
     });
   }
 

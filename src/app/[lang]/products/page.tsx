@@ -54,12 +54,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const finalProducts = categorySlug || inStockFlag ? products : shuffleArray(products);
 
   // Breadcrumbs
-  const breadcrumbs: BreadcrumbItem[] = [
-    {
-      label: locale === "zh" ? "全部商品" : "Collection",
-      href: `/${locale}/products`,
-    },
-  ];
+  const breadcrumbs: BreadcrumbItem[] = [];
 
   return (
     <Box mt={3}>
