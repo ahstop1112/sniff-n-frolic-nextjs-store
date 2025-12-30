@@ -22,8 +22,6 @@ const BreadcrumbsNav = ({ items = [], locale = "en", hideProducts = false }: Bre
   ];
  navItems.push(...items);
 
-  console.log(navItems);
-
   return (
     <Box component="nav" aria-label="Breadcrumb" sx={{ mb: 2, fontSize: 13 }}>
       <ol

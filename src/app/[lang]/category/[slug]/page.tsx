@@ -42,23 +42,21 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
 
   const childCatgories = allCats.filter((c) => c.parent === category.id);
 
-  const wooParams: Record<string, string | number> = {
+  const wooParams: Record<string, any> = {
     per_page: 50,
     status: "publish",
     category: category?.id
   };
 
-  // Breadcrumbs
-  const breadcrumbs: BreadcrumbItem[] = [];
+  const minPrice = typeof sp.min_price === "string" ? sp.min_price : undefined;
+  const maxPrice = typeof sp.max_price === "string" ? sp.max_price : undefined;
+  const onSaleFlag = typeof sp.on_sale === "string" ? sp.on_sale : undefined;
+  const sort = typeof sp.sort === "string" ? sp.sort : "new";
 
-  if (parentCat){
-    breadcrumbs.push({
-      label: parentCat.name,
-      href: `/${locale}/category/${parentCat.slug}`,
-    });
-  }
+  if (minPrice) wooParams.min_price = minPrice;
+  if (maxPrice) wooParams.max_price = maxPrice;
 
-  breadcrumbs.push({ label: category.name });
+  if (onSaleFlag === "1") wooParams.on_sale = true;
 
   const inStockFlag = typeof sp.in_stock === "string" ? sp.in_stock : undefined;
   const categorySlug = typeof sp.category === "string" ? sp.category : undefined;
@@ -74,9 +72,21 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
   const products = await getProducts(wooParams);
   const finalProducts = slug || inStockFlag ? products : shuffleArray(products);
 
+  // Breadcrumbs
+  const breadcrumbs: BreadcrumbItem[] = [];
+
+  if (parentCat){
+    breadcrumbs.push({
+      label: parentCat.name,
+      href: `/${locale}/category/${parentCat.slug}`,
+    });
+  }
+
+  breadcrumbs.push({ label: category.name });
+
   return (
     <Box>
-      <BreadcrumbsNav items={breadcrumbs} />
+      <BreadcrumbsNav items={[breadcrumbs]} />
       <Typography variant="h4" component="h1" gutterBottom>
         {category.name}
       </Typography>
