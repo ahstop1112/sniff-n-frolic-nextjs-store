@@ -50,8 +50,6 @@ const ProductsFilterSidebarClient = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const isZh = locale === "zh";
-
   const selectedCategorySlug = searchParams.get("category") ?? "";
   const inStock = searchParams.get("in_stock") === "1";
   const onSale = searchParams.get("on_sale") === "1";
