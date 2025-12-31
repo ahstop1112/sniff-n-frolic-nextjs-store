@@ -10,7 +10,7 @@ interface AboutPageProps {
 
 const AboutPage = async ({ params }: AboutPageProps) => {
     const { lang } = params;
-    if (!isValidLocale(lang)) return notFound();
+    if (!isValidLocale(lang)) notFound();
     const locale: Locale = lang;
     const dict = await getDictionary(locale);
 

@@ -12,7 +12,7 @@ import BreadcrumbsNav, {
 import CategoryGrid from "@/components/CategoryGrid";
 import ProductGrid from "@/components/ProductGrid";
 import ProductsFilterSidebarClient from "@/components/ProductsFilterSidebarClient";
-import { shuffleArray } from "@/utils/helpers";
+import { shuffleArray, getStr, collectDescendantIds } from "@/utils/helpers";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 interface CategoryPageProps {
@@ -31,7 +31,7 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
   const { lang, slug } = await params;
   const sp = await searchParams;
   
-  if (!isValidLocale(lang)) return notFound();
+  if (!isValidLocale(lang)) notFound();
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
@@ -42,35 +42,46 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
 
   const childCatgories = allCats.filter((c) => c.parent === category.id);
 
+  const inStockFlag = getStr(sp.in_stock);
+  const onSaleFlag = getStr(sp.on_sale);
+  const minPrice = getStr(sp.min_price);
+  const maxPrice = getStr(sp.max_price);
+  const sort = getStr(sp.sort) ?? "new";
+  const categorySlug = getStr(sp.category);
+  const selectedCategory = categorySlug ? allCats.find((item) => item.slug === categorySlug) : null;
+
   const wooParams: Record<string, any> = {
     per_page: 50,
     status: "publish",
     category: category?.id
   };
 
-  const minPrice = typeof sp.min_price === "string" ? sp.min_price : undefined;
-  const maxPrice = typeof sp.max_price === "string" ? sp.max_price : undefined;
-  const onSaleFlag = typeof sp.on_sale === "string" ? sp.on_sale : undefined;
-  const sort = typeof sp.sort === "string" ? sp.sort : "new";
+// ✅ category
+  const baseCategoryId = selectedCategory ? selectedCategory.id : category.id;
+  const categoryIds = collectDescendantIds(allCats, baseCategoryId);
+  wooParams.category = selectedCategory ? selectedCategory.id : category.id;
 
+  // ✅ price
   if (minPrice) wooParams.min_price = minPrice;
   if (maxPrice) wooParams.max_price = maxPrice;
 
+  // ✅ on sale
   if (onSaleFlag === "1") wooParams.on_sale = true;
 
-  const inStockFlag = typeof sp.in_stock === "string" ? sp.in_stock : undefined;
-  const categorySlug = typeof sp.category === "string" ? sp.category : undefined;
-
-  let selectedCategory = undefined as any;
-  selectedCategory = categorySlug ? allCats.find(item => item.slug === categorySlug) : null;
-
-  wooParams.category = selectedCategory ? selectedCategory.id : category.id;
-
+  // ✅ stock
   if (inStockFlag === "1") {
     (wooParams as any).stock_status = "instock";
   }
   const products = await getProducts(wooParams);
-  const finalProducts = slug || inStockFlag ? products : shuffleArray(products);
+  const hasAnyFilter =
+      Boolean(categorySlug) ||
+      inStockFlag === "1" ||
+      onSaleFlag === "1" ||
+      Boolean(minPrice) ||
+      Boolean(maxPrice) ||
+      sort !== "new";
+
+  const finalProducts = hasAnyFilter ? products : shuffleArray(products);
 
   // Breadcrumbs
   const breadcrumbs: BreadcrumbItem[] = [];
@@ -95,7 +106,7 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
         {childCatgories.length > 0 && (
           <>
             <Typography variant="h4" component="h1" gutterBottom>
-              Categories
+              {dict.common.categories}
             </Typography>
             <Grid container spacing={2}>
               {(childCatgories || []).map((cat) => <CategoryGrid key={cat.id} locale={locale} slug={cat.slug} image={cat?.image} name={cat.name} />)}
@@ -112,7 +123,7 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
         </Typography>
         <Grid container spacing={2}>
           <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
-            <ProductsFilterSidebarClient locale={locale} categories={childCatgories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))} />
+            <ProductsFilterSidebarClient locale={locale} categories={childCatgories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))} common={dict.common} />
           </Grid>
           <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
             {(finalProducts || []).map((p) => <ProductGrid key={p.id} locale={locale} slug={p.slug} image={p?.images[0]} name={p.name} price={p.price} />)}

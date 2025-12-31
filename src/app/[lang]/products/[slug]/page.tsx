@@ -77,19 +77,16 @@ const buildVariantOptions = (
 
 const ProductPage = async ({ params }: ProductPageProps) => {
   const { lang, slug } = await params;
-  if (!isValidLocale(lang)) return notFound();
+  if (!isValidLocale(lang)) notFound();
 
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
   const product = await getProductBySlug(slug);
-  console.log(product);
-  if (!product) return notFound();
+  if (!product) notFound();
 
   // Breadcrumbs
-  const collectionHref = `/${locale}/products`;
-  const mainCategory =
-    product && product.categories ? product.categories?.[0] : {};
+  const mainCategory = product.categories?.[0];
 
   const breadcrumbs: BreadcrumbItem[] = [];
 
@@ -142,7 +139,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
           {product.on_sale && (
             <Typography variant="body2" color="secondary">
-              {locale === "zh" ? "優惠中" : "On Sale"}
+              {dict.common.onSale}
             </Typography>
           )}
 

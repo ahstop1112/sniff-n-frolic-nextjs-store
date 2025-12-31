@@ -40,7 +40,14 @@ export interface WooImage {
   thumbnail: string;
 }
 
+export interface WooProductCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 export interface WooProduct {
+  categories?: WooProductCategory[];
   id: number;
   name: string;
   slug: string;
@@ -88,16 +95,19 @@ export interface WooProductVariation {
   image?: WooImage;
 }
 
+export interface WooCategoryImage {
+  id: number;
+  src: string;
+  alt?: string;
+  name?: string;
+}
+
 export interface WooCategory {
   id: number;
   name: string;
   slug: string;
   parent: number;
-  image?: {
-    id: number;
-    src: string;
-    alt: string;
-  } | null;
+  image?: WooCategoryImage | null;
 }
 
 interface WooFetchOptions {
@@ -173,6 +183,10 @@ export const getProducts = async (options?: {
   category?: number;
   search?: string;
   orderby?: "date" | "title" | "price";
+  order?: "asc" | "desc";
+  min_price?: string;
+  max_price?: string;
+  on_sale?: boolean;
   status?: "publish" | "draft" | "pending" | "private";
   stock_status?: "instock" | "outofstock" | "onbackorder";
 }): Promise<WooProduct[]> => {
@@ -182,6 +196,10 @@ export const getProducts = async (options?: {
     category: options?.category,
     search: options?.search,
     orderby: options?.orderby,
+    order: options?.order,
+    min_price: options?.min_price,
+    max_price: options?.max_price,
+    on_sale: options?.on_sale,
     status: options?.status ?? "publish",
     stock_status: options?.stock_status,
   });
@@ -193,10 +211,11 @@ export const getProductBySlug = async (
   const products = await wooFetch<WooProduct[]>("/products", {
     slug,
     per_page: 1,
+    status: "publish"
   });
 
-  if (!products.length) return null;
-  return products[0];
+  if (!Array.isArray(products) || products.length === 0) return null;
+  return products[0] ?? null;
 };
 
 export const getProductVariations = async (
@@ -218,12 +237,7 @@ export const getCategories = async (options?: {
 };
 
 export const getCategoryById = async (id: string) => {
-  const category = await wooFetch(`products/categories/${id}`, {
-    params: { per_page: 100 },
-    cache: "no-store",
-  });
-
-  console.log(category)
+  const category = await wooFetch(`products/categories/${id}`, { cache: "no-store" });
 
   return Array.isArray(category) ? category : null;
 };

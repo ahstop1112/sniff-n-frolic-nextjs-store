@@ -21,7 +21,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const { lang, slug } = await params;
   const sp = await searchParams;
 
-  if (!isValidLocale(lang)) return notFound();
+  if (!isValidLocale(lang)) notFound();
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
@@ -61,10 +61,10 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
       <BreadcrumbsNav locale={locale} items={breadcrumbs} />
       {/* All Top Level Categories */}
       <Typography variant="h4" component="h1" gutterBottom>
-        Categories
+        {dict.common.categories}
       </Typography>
       <Grid container spacing={2}>
-        {(topLevelCategories || []).map((cat) => <CategoryGrid key={cat.id} locale={locale} slug={cat.slug} image={cat?.image} name={cat.name} />)}
+        {(topLevelCategories || []).map((cat) => <CategoryGrid key={cat.id} locale={locale} slug={cat.slug} image={cat.image} name={cat.name} />)}
       </Grid>
       {/* All Product */}
       <Typography
@@ -77,7 +77,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
       </Typography>
       <Grid container spacing={2}>
         <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
-          <ProductsFilterSidebarClient locale={locale} categories={topLevelCategories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))} />
+          <ProductsFilterSidebarClient locale={locale} categories={topLevelCategories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))}  common={dict.common} />
         </Grid>
         <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
           {(finalProducts || []).map((p) => <ProductGrid key={p.id} locale={locale} slug={p.slug} image={p?.images[0]} name={p.name} price={p.price} />)}

@@ -18,7 +18,7 @@ interface LangLayoutProps {
 
 const LangLayout = async ({ children, params }: LangLayoutProps) => {
   const { lang } = await params;
-  if (!isValidLocale(lang)) return notFound();
+  if (!isValidLocale(lang)) notFound();
 
   const locale: Locale = lang;
   const dict = await getDictionary(locale);

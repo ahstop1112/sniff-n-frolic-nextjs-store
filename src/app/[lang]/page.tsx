@@ -23,7 +23,7 @@ export const generateMetadata = async (props: HomePageProps): Promise<Metadata> 
 
 const HomePage = async ({ params }: HomePageProps) => {
   const { lang } = await params;
-  if (!isValidLocale(lang)) return notFound();
+  if (!isValidLocale(lang)) notFound();
 
   const locale: Locale = lang;
   const dict = await getDictionary(locale);

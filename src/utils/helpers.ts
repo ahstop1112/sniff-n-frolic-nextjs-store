@@ -6,3 +6,15 @@ export const shuffleArray = (arr: any[]) => {
   }
   return a;
 };
+
+export const getStr = (v: string | string[] | undefined) => (typeof v === "string" ? v : undefined);
+
+export const collectDescendantIds = (all: any[], rootId: number) => {
+  const ids: number[] = [];
+  const walk = (id: number) => {
+    ids.push(id);
+    all.filter((c) => c.parent === id).forEach((child) => walk(child.id));
+  };
+  walk(rootId);
+  return ids;
+};

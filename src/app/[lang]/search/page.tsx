@@ -10,41 +10,40 @@ import { buildSearchMetadata } from "@/seo/buildSearchMetaTag";
 import ProductGrid from "@/components/ProductGrid";
 
 interface SearchPageProps {
-  params: Promise<{ lang: string }>;
-  searchParams: Promise<{ q?: string }>;
+  params: { lang: string };
+  searchParams: { q?: string | string[] };
 }
 
 export const generateMetadata = async (
   props: SearchPageProps
 ): Promise<Metadata> => {
   const { params, searchParams } = props;
-  const { lang } = await params;
-  const { q } = await searchParams;
+  const { lang } = params;
+  const { q: qRaw } = searchParams;
+  const q = Array.isArray(qRaw) ? qRaw[0] : (qRaw ?? "");
 
   return buildSearchMetadata({ lang, query: q });
 };
 
 const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
-  const { lang } = await params;
-  const sp = await searchParams;
-  if (!isValidLocale(lang)) return notFound();
+  const { lang } = params;
+  const sp = searchParams;
+  if (!isValidLocale(lang)) notFound();
 
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
-  const raw = sp?.search ?? "";
+  const raw = typeof sp.q === "string" ? sp.q : Array.isArray(sp.q) ? sp.q[0] : "";
   const search = raw.trim();
 
   if (!search) {
     return (
       <Box>
         <Typography variant="h4" gutterBottom>
-          {locale === "zh" ? "搜尋產品" : "Search products"}
+          {dict.search.searchProducts}
         </Typography>
         <Typography variant="body1" mt={2}>
-          {locale === "zh"
-            ? "請喺上面搜尋欄輸入產品關鍵字。"
-            : "Please type a product keyword in the search bar above."}
+          {dict.search.typeProductKeyword}
         </Typography>
       </Box>
     );
@@ -52,23 +51,16 @@ const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
 
   const products = await getProducts({ per_page: 24, search });
 
-  const title =
-    locale === "zh"
-      ? `搜尋結果：「${search}」`
-      : `Search results for: "${search}"`;
-
   return (
     <Box>
       <Typography variant="h4" component="h1" gutterBottom>
-        {title}
+        {dict.search.searchResultFor}
       </Typography>
 
       <Box mt={3}>
         {products.length === 0 ? (
           <Typography variant="body1">
-            {locale === "zh"
-              ? "未搵到相關產品。試試其他關鍵字？"
-              : "No products found. Try a different keyword?"}
+            {dict.search.noProductFound}
           </Typography>
         ) : (
           <Grid container spacing={2}>

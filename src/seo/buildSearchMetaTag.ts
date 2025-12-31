@@ -60,13 +60,7 @@ export const buildSearchMetadata = async ( args: BuildSearchMetadataArgs ): Prom
             url: seoConfig.defaultOgImage,
           },
         ],
-      },
-      // twitter: {
-      //   card: "summary_large_image",
-      //   title,
-      //   description,
-      //   images: [seoConfig.defaultOgImage],
-      // },
+      }
     };
   
     return metadata;

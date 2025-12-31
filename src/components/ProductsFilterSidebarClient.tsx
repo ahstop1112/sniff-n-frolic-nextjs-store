@@ -12,6 +12,10 @@ import {
   Button,
 } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import type { getDictionary } from "@/i18n/dictionaries";
+
+type Dict = Awaited<ReturnType<typeof getDictionary>>;
+type CommonDict = Dict["common"];
 
 interface SimpleCategory {
   id: number;
@@ -29,12 +33,14 @@ interface ProductsFilterSidebarClientProps {
   locale: "en" | "zh";
   categories: SimpleCategory[];
   colors?: SimpleTerm[];
+  common: CommonDict
 }
 
 const ProductsFilterSidebarClient = ({
   locale,
   categories,
   colors = [],
+  common
 }: ProductsFilterSidebarClientProps) => {
   // Local State
   const [minPriceInput, setMinPriceInput] = useState("");
@@ -124,6 +130,8 @@ const ProductsFilterSidebarClient = ({
     });
   };
 
+  
+
   return (
     <Box
       sx={{
@@ -143,7 +151,7 @@ const ProductsFilterSidebarClient = ({
           fontSize: 12,
         }}
       >
-        {isZh ? "篩選" : "Filters"}
+        {common.filters}
       </Typography>
 
       <Stack spacing={2}>
@@ -151,17 +159,17 @@ const ProductsFilterSidebarClient = ({
         <TextField
           select
           size="small"
-          label={isZh ? "分類" : "Category"}
+          label={common.category}
           value={selectedCategorySlug}
           onChange={(e) => handleCategoryChange(e.target.value)}
           sx={{ width: "100%" }}
         >
           <MenuItem value="">
-            {isZh ? "全部" : "All"}
+            {common.all}
           </MenuItem>
           {categories.map((cat) => (
             <MenuItem key={cat.id} value={cat.slug}>
-              {cat.name}
+              {cat.name.replace("&amp;", "&")}
             </MenuItem>
           ))}
         </TextField>
@@ -170,7 +178,7 @@ const ProductsFilterSidebarClient = ({
          <Stack direction="row" spacing={1}>
           <TextField
             size="small"
-            label={isZh ? "最低價" : "Min"}
+            label={common.min}
             value={minPriceInput}
             onChange={(e) => handleMinPriceChange(e.target.value)}
             onBlur={applyPriceFilter}
@@ -180,7 +188,7 @@ const ProductsFilterSidebarClient = ({
           />
           <TextField
             size="small"
-            label={isZh ? "最高價" : "Max"}
+            label={common.max}
             value={maxPriceInput}
             onChange={(e) => handleMaxPriceChange(e.target.value)}
             onBlur={applyPriceFilter}
@@ -194,16 +202,16 @@ const ProductsFilterSidebarClient = ({
         <TextField
           select
           size="small"
-          label={isZh ? "排序" : "Sort"}
+          label={common.sort}
           value={sort}
           onChange={(e) => handleSortChange(e.target.value)}
           sx={{ width: "100%" }}
         >
-          <MenuItem value="new">{isZh ? "最新" : "Newest"}</MenuItem>
-          <MenuItem value="popularity">{isZh ? "受歡迎" : "Popularity"}</MenuItem>
-          <MenuItem value="rating">{isZh ? "評分" : "Rating"}</MenuItem>
-          <MenuItem value="price_asc">{isZh ? "價錢：低至高" : "Price: Low → High"}</MenuItem>
-          <MenuItem value="price_desc">{isZh ? "價錢：高至低" : "Price: High → Low"}</MenuItem>
+          <MenuItem value="new">{common.newest}</MenuItem>
+          <MenuItem value="popularity">{common.popularity}</MenuItem>
+          <MenuItem value="rating">{common.rating}</MenuItem>
+          <MenuItem value="price_asc">{common.priceLowHigh}</MenuItem>
+          <MenuItem value="price_desc">{common.priceHighLow}</MenuItem>
         </TextField>
 
         {/* Color (optional) */}
@@ -211,12 +219,12 @@ const ProductsFilterSidebarClient = ({
           <TextField
             select
             size="small"
-            label={isZh ? "顏色" : "Color"}
+            label={common.color}
             value={color}
             onChange={(e) => handleColorChange(e.target.value)}
             sx={{ width: "100%" }}
           >
-            <MenuItem value="">{isZh ? "全部" : "All"}</MenuItem>
+            <MenuItem value="">{common.all}</MenuItem>
             {colors.map((t) => (
               <MenuItem key={t.id} value={t.slug}>
                 {t.name}
@@ -236,18 +244,28 @@ const ProductsFilterSidebarClient = ({
           }
           label={
             <Typography variant="body2">
-              {isZh ? "只顯示有貨" : "In stock only"}
+              {common.inStockOnly}
             </Typography>
           }
         />
-
+        {/* On sale only */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={onSale}
+              onChange={(e) => handleOnSaleChange(e.target.checked)}
+            />
+          }
+          label={<Typography variant="body2">{common.onSaleOnly}</Typography>}
+        />
         <Button
           size="small"
           variant="text"
           onClick={handleClear}
           sx={{ alignSelf: "flex-start" }}
         >
-          {isZh ? "清除篩選" : "Clear filters"}
+          {common.clearFilter}
         </Button>
       </Stack>
     </Box>

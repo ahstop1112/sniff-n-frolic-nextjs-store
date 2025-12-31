@@ -12,7 +12,7 @@ interface ProductGridProps {
   locale: Locale;
   image: WooImage;
   name: string;
-  price: number;
+  price: string;
 }
 
 const ProductGrid = ({ slug, locale, image, name, price }: ProductGridProps) => {
@@ -30,7 +30,7 @@ const ProductGrid = ({ slug, locale, image, name, price }: ProductGridProps) => 
             {name}
           </Link>
           <Typography variant="body2" color="text.secondary">
-            {formatPrice(price)}
+            {formatPrice(+price)}
           </Typography>
         </CardContent>
       </Card>

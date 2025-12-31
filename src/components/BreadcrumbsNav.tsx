@@ -4,23 +4,21 @@ import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 
 export interface BreadcrumbItem {
-  label: string;
+  label?: string;
   href?: string;
 }
 
 interface BreadcrumbsNavProps {
-  locale: Locale
-  items: BreadcrumbItem[];
-  hideProducts: Boolean
+  locale?: Locale;
+  items?:  BreadcrumbItem[];
 }
 
-const BreadcrumbsNav = ({ items = [], locale = "en", hideProducts = false }: BreadcrumbsNavProps) => {
-  // if (!items || items.length === 0) return null;
-  let navItems = [
+const BreadcrumbsNav = ({ items = [], locale = "en" }: BreadcrumbsNavProps) => {
+  const navItems: BreadcrumbItem[] = [
     { label: locale === "zh" ? "首頁" : "Home", href: locale === "zh" ? "/zh" : "/en" },
-    { label: locale === "zh" ? "全部商品" : "Collection", href: `/${locale}/products` }
+    { label: locale === "zh" ? "全部商品" : "Collection", href: `/${locale}/products` },
+    ...items
   ];
-  items && items.length > 0 && navItems.push(...items);
 
   return (
     <Box component="nav" aria-label="Breadcrumb" sx={{ mb: 2, fontSize: 13 }}>
@@ -36,14 +34,12 @@ const BreadcrumbsNav = ({ items = [], locale = "en", hideProducts = false }: Bre
       >
         {navItems.map((item, index) => {
           const isLast = index === navItems.length - 1;
-          console.log(item.label, isLast)
           return (
             <li
               key={`${item.label}-${index}`}
               style={{ display: "flex", alignItems: "center" }}
             >
-              {isLast}
-              {item.href && !isLast ? (
+              {item.href && item.label && !isLast ? (
                 <Link
                   href={item.href}
                   style={{
