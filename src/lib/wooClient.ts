@@ -189,6 +189,8 @@ export const getProducts = async (options?: {
   on_sale?: boolean;
   status?: "publish" | "draft" | "pending" | "private";
   stock_status?: "instock" | "outofstock" | "onbackorder";
+  attribute?: string; // e.g. "pa_color"
+  attribute_term?: number;
 }): Promise<WooProduct[]> => {
   return wooFetch<WooProduct[]>("/products", {
     per_page: options?.per_page ?? 20,
@@ -202,6 +204,8 @@ export const getProducts = async (options?: {
     on_sale: options?.on_sale,
     status: options?.status ?? "publish",
     stock_status: options?.stock_status,
+    attribute: options?.attribute,
+    attribute_term: options?.attribute_term
   });
 };
 

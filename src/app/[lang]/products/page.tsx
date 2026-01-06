@@ -1,10 +1,10 @@
 // src/app/[lang]/products/page.tsx
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
+import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
 import BreadcrumbsNav, { type BreadcrumbItem } from "@/components/BreadcrumbsNav";
 import ProductsFilterSidebarClient from "@/components/ProductsFilterSidebarClient";
 import CategoryGrid from "@/components/CategoryGrid";
@@ -19,14 +19,10 @@ interface ProductsPageProps {
 
 const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const { lang, slug } = await params;
-  const sp = await searchParams;
 
   if (!isValidLocale(lang)) notFound();
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
-
-  const categorySlug = typeof sp.category === "string" ? sp.category : undefined;
-  const inStockFlag = typeof sp.in_stock === "string" ? sp.in_stock : undefined;
 
   const allCats = await getCategories();
   const topLevelCategories = allCats
@@ -34,13 +30,15 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
     .sort((a, b) => a.id - b.id);
 
   // Show the first level of Categoryes
+  const { sp, wooParams } = await buildWooParamsForListPage({
+    searchParams,
+    perPage: 50,
+  });
+  const categorySlug = typeof sp.category === "string" ? sp.category : undefined;
+  const inStockFlag = typeof sp.in_stock === "string" ? sp.in_stock : undefined;
+
   let selectedCategory = undefined as any;
   selectedCategory = categorySlug ? topLevelCategories.find(item => item.slug === categorySlug) : null;
-
-  const wooParams: Record<string, string | number> = {
-    per_page: 50,
-    status: "publish"
-  };
 
   if (selectedCategory?.id) {
     wooParams.category = selectedCategory.id;

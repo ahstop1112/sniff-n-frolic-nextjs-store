@@ -29,7 +29,7 @@ export const SearchBar = ({ locale }: SearchBarProps) => {
     }
 
     const params = new URLSearchParams();
-    params.set("search", trimmed);
+    params.set("q", trimmed);
     router.push(`/${locale}/search?${params.toString()}`);
   };
 

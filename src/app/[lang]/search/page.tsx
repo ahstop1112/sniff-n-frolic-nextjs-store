@@ -1,40 +1,41 @@
-// src/app/[lang]/search/page.tsx
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
+import { Typography, Box, Grid } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
+import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
 import { buildSearchMetadata } from "@/seo/buildSearchMetaTag";
 import ProductGrid from "@/components/ProductGrid";
 
 interface SearchPageProps {
-  params: { lang: string };
-  searchParams: { q?: string | string[] };
+  params: Promise<{ lang: string; slug: string }>;
+  searchParams: Promise<{ q?: string | string[] }>;
 }
 
-export const generateMetadata = async (
-  props: SearchPageProps
-): Promise<Metadata> => {
-  const { params, searchParams } = props;
-  const { lang } = params;
-  const { q: qRaw } = searchParams;
-  const q = Array.isArray(qRaw) ? qRaw[0] : (qRaw ?? "");
+export const generateMetadata = async ( { params, searchParams }: SearchPageProps ): Promise<Metadata> => {
+  const { lang } = await params;
+  const sp = await searchParams;
+  const qRaw = sp.q;
+  const q = typeof qRaw === "string" ? qRaw : Array.isArray(qRaw) ? qRaw[0] : "";
 
   return buildSearchMetadata({ lang, query: q });
 };
 
 const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
-  const { lang } = params;
-  const sp = searchParams;
+  const { lang } = await params;
   if (!isValidLocale(lang)) notFound();
 
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
-  const raw = typeof sp.q === "string" ? sp.q : Array.isArray(sp.q) ? sp.q[0] : "";
-  const search = raw.trim();
+  const { wooParams, hasQuery } = await buildWooParamsForListPage({
+    searchParams,
+    perPage: 50,
+    searchKey: "q"
+  });
+
+  const search = (typeof wooParams.search === "string" ? wooParams.search : "").trim();
 
   if (!search) {
     return (
@@ -54,7 +55,7 @@ const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
   return (
     <Box>
       <Typography variant="h4" component="h1" gutterBottom>
-        {dict.search.searchResultFor}
+        {dict.search.searchResultFor} <b>{search}</b>
       </Typography>
 
       <Box mt={3}>
