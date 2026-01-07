@@ -28,13 +28,17 @@ const getWooEnv = () => {
 
 const buildAuthHeader = () => {
   const { consumerKey, consumerSecret } = getWooEnv();
-  const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
+  const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString(
+    "base64"
+  );
   return `Basic ${auth}`;
 };
 
 export const wooFetchServer = async <T>(
   path: string,
-  paramsOrOptions?: Record<string, string | number | boolean | undefined> | WooFetchOptions
+  paramsOrOptions?:
+    | Record<string, string | number | boolean | undefined>
+    | WooFetchOptions
 ): Promise<T> => {
   const { baseUrl } = getWooEnv();
 
@@ -46,7 +50,9 @@ export const wooFetchServer = async <T>(
   if (
     paramsOrOptions &&
     typeof paramsOrOptions === "object" &&
-    ("method" in paramsOrOptions || "bodyJson" in paramsOrOptions || "searchParams" in paramsOrOptions)
+    ("method" in paramsOrOptions ||
+      "bodyJson" in paramsOrOptions ||
+      "searchParams" in paramsOrOptions)
   ) {
     const opts = paramsOrOptions as WooFetchOptions;
     params = opts.searchParams;
@@ -80,7 +86,13 @@ export const wooFetchServer = async <T>(
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    console.error("Woo API error:", res.status, res.statusText, url.toString(), text);
+    console.error(
+      "Woo API error:",
+      res.status,
+      res.statusText,
+      url.toString(),
+      text
+    );
     throw new Error(`Woo API error: ${res.status}`);
   }
 
@@ -88,37 +100,37 @@ export const wooFetchServer = async <T>(
 };
 
 const getWooAuthHeader = () => {
-    const ck = process.env.WOO_CONSUMER_KEY;
-    const cs = process.env.WOO_CONSUMER_SECRET;
-    if (!ck || !cs) throw new Error("Missing WOO_CONSUMER_KEY/WOO_CONSUMER_SECRET");
-    const auth = Buffer.from(`${ck}:${cs}`).toString("base64");
-    return `Basic ${auth}`;
-  };
-  
-const getWooBase = () => {
-    const base = process.env.WOO_BASE_URL;
-    if (!base) throw new Error("Missing WOO_BASE_URL");
-    return base;
+  const ck = process.env.WOO_CONSUMER_KEY;
+  const cs = process.env.WOO_CONSUMER_SECRET;
+  if (!ck || !cs)
+    throw new Error("Missing WOO_CONSUMER_KEY/WOO_CONSUMER_SECRET");
+  const auth = Buffer.from(`${ck}:${cs}`).toString("base64");
+  return `Basic ${auth}`;
 };
-  
-export const wooPost = async <T,>(path: string, body: any): Promise<T> => {
-const base = getWooBase();
-const url = new URL(`${base}/wp-json/wc/v3/${path}`);
 
-const res = await fetch(url.toString(), {
+const getWooBase = () => {
+  const base = process.env.WOO_BASE_URL;
+  if (!base) throw new Error("Missing WOO_BASE_URL");
+  return base;
+};
+
+export const wooPost = async <T>(path: string, body: any): Promise<T> => {
+  const base = getWooBase();
+  const url = new URL(`${base}/wp-json/wc/v3/${path}`);
+
+  const res = await fetch(url.toString(), {
     method: "POST",
     headers: {
-    Authorization: getWooAuthHeader(),
-    "Content-Type": "application/json",
+      Authorization: getWooAuthHeader(),
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
     cache: "no-store",
-});
+  });
 
-if (!res.ok) {
+  if (!res.ok) {
     const text = await res.text();
     throw new Error(`Woo POST failed: ${res.status} ${text}`);
-}
-return res.json() as Promise<T>;
+  }
+  return res.json() as Promise<T>;
 };
-  
