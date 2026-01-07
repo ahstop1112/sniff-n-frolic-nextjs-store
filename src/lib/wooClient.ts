@@ -40,14 +40,8 @@ export interface WooImage {
   thumbnail: string;
 }
 
-export interface WooProductCategory {
-  id: number;
-  name: string;
-  slug: string;
-}
-
 export interface WooProduct {
-  categories?: WooProductCategory[];
+  categories: WooProduct;
   id: number;
   name: string;
   slug: string;
@@ -95,86 +89,86 @@ export interface WooProductVariation {
   image?: WooImage;
 }
 
-export interface WooCategoryImage {
-  id: number;
-  src: string;
-  alt?: string;
-  name?: string;
-}
-
 export interface WooCategory {
   id: number;
   name: string;
   slug: string;
   parent: number;
-  image?: WooCategoryImage | null;
+  image?: {
+    id: number;
+    src: string;
+    alt: string;
+  } | null;
 }
 
 interface WooFetchOptions {
-    searchParams?: Record<string, any>;
-    method?: "GET" | "POST" | "PUT" | "DELETE";
-    bodyJson?: any;
-  }
+  searchParams?: Record<string, any>;
+  method?: "GET" | "POST" | "PUT" | "DELETE";
+  bodyJson?: any;
+}
 
 export const wooFetch = async <T>(
   path: string,
-  paramsOrOptions?: Record<string, string | number | boolean | undefined> | WooFetchOptions
+  paramsOrOptions?:
+    | Record<string, string | number | boolean | undefined>
+    | WooFetchOptions
 ): Promise<T> => {
-    let params: Record<string, any> | undefined;
-    let method: "GET" | "POST" | "PUT" | "DELETE" = "GET";
-    let bodyJson: any | undefined;
-  
-    if (paramsOrOptions && ("method" in paramsOrOptions || "bodyJson" in paramsOrOptions)) {
-      const opts = paramsOrOptions as WooFetchOptions;
-      params = opts.searchParams;
-      method = opts.method ?? "GET";
-      bodyJson = opts.bodyJson;
-    } else {
-      params = paramsOrOptions as Record<string, any> | undefined;
-    }
-  
-    if (!baseUrl || !baseUrl.startsWith("http")) {
-      throw new Error(
-        `WC_API_BASE_URL is invalid. Current value: "${baseUrl}". It must start with http(s)://`
-      );
-    }
-  
-    const cleanPath = path.replace(/^\/+/, "");
-    const trimmedBase = baseUrl.replace(/\/+$/, "");
-    const url = new URL(`${trimmedBase}/${cleanPath}`);
-  
-    url.searchParams.set("consumer_key", consumerKey);
-    url.searchParams.set("consumer_secret", consumerSecret);
-  
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value === undefined || value === null) return;
-        url.searchParams.set(key, String(value));
-      });
-    }
-  
-    const res = await fetch(url.toString(), {
-      method,
-      headers: bodyJson
-        ? { "Content-Type": "application/json" }
-        : undefined,
-      body: bodyJson ? JSON.stringify(bodyJson) : undefined,
-      cache: "no-store",
+  let params: Record<string, any> | undefined;
+  let method: "GET" | "POST" | "PUT" | "DELETE" = "GET";
+  let bodyJson: any | undefined;
+
+  if (
+    paramsOrOptions &&
+    ("method" in paramsOrOptions || "bodyJson" in paramsOrOptions)
+  ) {
+    const opts = paramsOrOptions as WooFetchOptions;
+    params = opts.searchParams;
+    method = opts.method ?? "GET";
+    bodyJson = opts.bodyJson;
+  } else {
+    params = paramsOrOptions as Record<string, any> | undefined;
+  }
+
+  if (!baseUrl || !baseUrl.startsWith("http")) {
+    throw new Error(
+      `WC_API_BASE_URL is invalid. Current value: "${baseUrl}". It must start with http(s)://`
+    );
+  }
+
+  const cleanPath = path.replace(/^\/+/, ""); // 去走 path 頭部多餘 /
+  const trimmedBase = baseUrl.replace(/\/+$/, ""); // 去走 baseUrl 尾部多餘 /
+  const url = new URL(`${trimmedBase}/${cleanPath}`);
+
+  url.searchParams.set("consumer_key", consumerKey);
+  url.searchParams.set("consumer_secret", consumerSecret);
+
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      url.searchParams.set(key, String(value));
     });
-  
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      console.error(
-        "Woo API error:",
-        res.status,
-        res.statusText,
-        url.toString(),
-        text
-      );
-      throw new Error(`Woo API error: ${res.status}`);
-    }
-  
-    return res.json() as Promise<T>;
+  }
+
+  const res = await fetch(url.toString(), {
+    method,
+    headers: bodyJson ? { "Content-Type": "application/json" } : undefined,
+    body: bodyJson ? JSON.stringify(bodyJson) : undefined,
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    console.error(
+      "Woo API error:",
+      res.status,
+      res.statusText,
+      url.toString(),
+      text
+    );
+    throw new Error(`Woo API error: ${res.status}`);
+  }
+
+  return res.json() as Promise<T>;
 };
 
 export const getProducts = async (options?: {
@@ -182,13 +176,19 @@ export const getProducts = async (options?: {
   per_page?: number;
   category?: number;
   search?: string;
-  orderby?: "date" | "title" | "price";
+
+  orderby?: "date" | "title" | "price" | "popularity" | "rating";
   order?: "asc" | "desc";
-  min_price?: string;
-  max_price?: string;
-  on_sale?: boolean;
+
   status?: "publish" | "draft" | "pending" | "private";
   stock_status?: "instock" | "outofstock" | "onbackorder";
+
+  min_price?: number;
+  max_price?: number;
+  on_sale?: boolean;
+
+  attribute?: string;
+  attribute_term?: number;
 }): Promise<WooProduct[]> => {
   return wooFetch<WooProduct[]>("/products", {
     per_page: options?.per_page ?? 20,
@@ -197,11 +197,13 @@ export const getProducts = async (options?: {
     search: options?.search,
     orderby: options?.orderby,
     order: options?.order,
+    status: options?.status ?? "publish",
+    stock_status: options?.stock_status,
     min_price: options?.min_price,
     max_price: options?.max_price,
     on_sale: options?.on_sale,
-    status: options?.status ?? "publish",
-    stock_status: options?.stock_status,
+    attribute: options?.attribute,
+    attribute_term: options?.attribute_term,
   });
 };
 
@@ -211,11 +213,10 @@ export const getProductBySlug = async (
   const products = await wooFetch<WooProduct[]>("/products", {
     slug,
     per_page: 1,
-    status: "publish"
   });
 
-  if (!Array.isArray(products) || products.length === 0) return null;
-  return products[0] ?? null;
+  if (!products.length) return null;
+  return products[0];
 };
 
 export const getProductVariations = async (
@@ -234,10 +235,4 @@ export const getCategories = async (options?: {
     parent: options?.parent,
     hide_empty: options?.hide_empty ?? true,
   });
-};
-
-export const getCategoryById = async (id: string) => {
-  const category = await wooFetch(`products/categories/${id}`, { cache: "no-store" });
-
-  return Array.isArray(category) ? category : null;
 };
