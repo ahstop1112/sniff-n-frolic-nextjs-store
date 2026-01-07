@@ -30,13 +30,13 @@ export const POST = async (req: Request) => {
       );
     }
 
-    // Woo 需要 line_items：[{ product_id, quantity }]
+    // Woo needs line_items：[{ product_id, quantity }]
     const lineItems = body.cartItems.map((item) => ({
       product_id: item.id,
       quantity: item.quantity,
     }));
 
-    // 建立 Woo order（pending）
+    // Create Woo order（pending）
     const order = await wooFetch<any>("orders", {
       method: "POST",
       bodyJson: {

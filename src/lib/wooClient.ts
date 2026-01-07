@@ -1,16 +1,7 @@
-const baseUrlEnv = process.env.WC_API_BASE_URL!;
-const consumerKey = process.env.WC_CONSUMER_KEY!;
-const consumerSecret = process.env.WC_CONSUMER_SECRET!;
+import "server-only";
+import { wooFetchServer } from "@/lib/woo/server";
 
-// const WC_API_BASE_URL = "https://sniffnfrolic.com/wp-json/wc/v3";
-// const WC_CONSUMER_KEY = "ck_bf0a526f957a7322b4cfcdc9f211845cf3ca9324";
-// const WC_CONSUMER_SECRET = "cs_2d25614235bf5e2c04d8b3734d55568bf094de18";
-
-if (!baseUrlEnv || !consumerKey || !consumerSecret) {
-  throw new Error("WooCommerce API env vars are missing");
-}
-
-const baseUrl = baseUrlEnv.replace(/\/$/, "");
+const baseUrl = process.env.WC_API_BASE_URL!.replace(/\/$/, "");
 
 export interface YoastOgImage {
   url: string;
@@ -116,66 +107,7 @@ interface WooFetchOptions {
     bodyJson?: any;
   }
 
-export const wooFetch = async <T>(
-  path: string,
-  paramsOrOptions?: Record<string, string | number | boolean | undefined> | WooFetchOptions
-): Promise<T> => {
-    let params: Record<string, any> | undefined;
-    let method: "GET" | "POST" | "PUT" | "DELETE" = "GET";
-    let bodyJson: any | undefined;
-  
-    if (paramsOrOptions && ("method" in paramsOrOptions || "bodyJson" in paramsOrOptions)) {
-      const opts = paramsOrOptions as WooFetchOptions;
-      params = opts.searchParams;
-      method = opts.method ?? "GET";
-      bodyJson = opts.bodyJson;
-    } else {
-      params = paramsOrOptions as Record<string, any> | undefined;
-    }
-  
-    if (!baseUrl || !baseUrl.startsWith("http")) {
-      throw new Error(
-        `WC_API_BASE_URL is invalid. Current value: "${baseUrl}". It must start with http(s)://`
-      );
-    }
-  
-    const cleanPath = path.replace(/^\/+/, "");
-    const trimmedBase = baseUrl.replace(/\/+$/, "");
-    const url = new URL(`${trimmedBase}/${cleanPath}`);
-  
-    url.searchParams.set("consumer_key", consumerKey);
-    url.searchParams.set("consumer_secret", consumerSecret);
-  
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value === undefined || value === null) return;
-        url.searchParams.set(key, String(value));
-      });
-    }
-  
-    const res = await fetch(url.toString(), {
-      method,
-      headers: bodyJson
-        ? { "Content-Type": "application/json" }
-        : undefined,
-      body: bodyJson ? JSON.stringify(bodyJson) : undefined,
-      cache: "no-store",
-    });
-  
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      console.error(
-        "Woo API error:",
-        res.status,
-        res.statusText,
-        url.toString(),
-        text
-      );
-      throw new Error(`Woo API error: ${res.status}`);
-    }
-  
-    return res.json() as Promise<T>;
-};
+export const wooFetch = wooFetchServer;
 
 export const getProducts = async (options?: {
   page?: number;
