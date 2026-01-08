@@ -11,14 +11,19 @@ import type { Locale } from "@/i18n/config";
 
 interface Props {
   locale: Locale;
+  orderId: number;
   paymentIntentId: string;
   onError: (msg: string) => void;
 }
 
-const CheckoutPaymentForm = ({ locale, paymentIntentId, onError }: Props) => {
+const CheckoutPaymentForm = ({
+  locale,
+  orderId,
+  paymentIntentId,
+  onError,
+}: Props) => {
   const stripe = useStripe();
   const elements = useElements();
-
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
@@ -33,7 +38,7 @@ const CheckoutPaymentForm = ({ locale, paymentIntentId, onError }: Props) => {
     try {
       setLoading(true);
 
-      const returnUrl = `${window.location.origin}/${locale}/order/confirm?pi=${paymentIntentId}`;
+      const returnUrl = `${window.location.origin}/${locale}/order/confirm?orderId=${orderId}`;
 
       const result = await stripe.confirmPayment({
         elements,
@@ -44,15 +49,28 @@ const CheckoutPaymentForm = ({ locale, paymentIntentId, onError }: Props) => {
       });
 
       if (result.error) {
-        const msg =
-          result.error.message || (isZh ? "付款失敗。" : "Payment failed.");
-        setLocalError(msg);
-        onError(msg);
-        return;
+        throw new Error(result.error.message ?? "Payment failed");
       }
 
-      // If no redirect required (most cases), we can go confirm directly.
-      window.location.href = returnUrl;
+      const status = result.paymentIntent?.status;
+
+      if (status !== "succeeded") {
+        const res = await fetch("/api/checkout/complete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId, paymentIntentId }),
+        });
+        const json = await res.json().catch(() => null);
+        if (!res.ok) {
+          throw new Error(json?.error || "Order completion failed");
+        }
+
+        window.location.href = `/checkout/success?orderId=${orderId}`;
+        return;
+      }
+      // Other Status, will return
+      window.location.href = `/checkout/return?orderId=${orderId}`;
+      return;
     } catch (e: any) {
       const msg = e?.message || (isZh ? "付款出現問題。" : "Payment error.");
       setLocalError(msg);
@@ -64,10 +82,6 @@ const CheckoutPaymentForm = ({ locale, paymentIntentId, onError }: Props) => {
 
   return (
     <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        {isZh ? "付款資料" : "Payment"}
-      </Typography>
-
       {localError ? (
         <Alert severity="error" sx={{ mb: 2 }}>
           {localError}
@@ -78,11 +92,17 @@ const CheckoutPaymentForm = ({ locale, paymentIntentId, onError }: Props) => {
 
       <Button
         variant="contained"
-        sx={{ mt: 2 }}
-        disabled={!stripe || !elements || loading}
         onClick={handlePay}
+        disabled={loading || !stripe || !elements}
+        sx={{ mt: 3 }}
       >
-        {loading ? (isZh ? "" : "Paying…") : isZh ? "確認付款" : "Pay now"}
+        {loading
+          ? isZh
+            ? "付款處理中…"
+            : "Processing…"
+          : isZh
+          ? "完成付款"
+          : "Pay now"}
       </Button>
     </Box>
   );

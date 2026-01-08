@@ -4,7 +4,7 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { stripe } from "@/lib/stripe";
 
 const wooGet = async (path: string) => {
-  const base = process.env.WOO_BASE_URL!;
+  const base = process.env.WOO_API_BASE_URL!;
   const url = new URL(`${base}/wp-json/wc/v3/${path}`);
 
   const auth = Buffer.from(
@@ -27,7 +27,8 @@ interface Props {
   searchParams: Promise<SearchParams>;
 }
 
-const getStr = (v: any) => (typeof v === "string" ? v : Array.isArray(v) ? v[0] : "");
+const getStr = (v: any) =>
+  typeof v === "string" ? v : Array.isArray(v) ? v[0] : "";
 
 const ConfirmPage = async ({ params, searchParams }: Props) => {
   const { lang } = await params;
@@ -82,7 +83,8 @@ const ConfirmPage = async ({ params, searchParams }: Props) => {
         <Typography variant="body2">{order.shipping.address_2}</Typography>
       ) : null}
       <Typography variant="body2">
-        {order.shipping?.city}, {order.shipping?.state} {order.shipping?.postcode}
+        {order.shipping?.city}, {order.shipping?.state}{" "}
+        {order.shipping?.postcode}
       </Typography>
 
       <Typography variant="h6" sx={{ mt: 3 }}>
@@ -102,7 +104,9 @@ const ConfirmPage = async ({ params, searchParams }: Props) => {
       <Typography variant="h6" sx={{ mt: 3 }}>
         {locale === "zh" ? "總額" : "Total"}
       </Typography>
-      <Typography variant="body2">{order.total} {order.currency}</Typography>
+      <Typography variant="body2">
+        {order.total} {order.currency}
+      </Typography>
     </Box>
   );
 };

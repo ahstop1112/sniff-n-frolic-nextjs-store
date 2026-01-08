@@ -1,10 +1,18 @@
 "use client";
 import { useState, useMemo, type FormEvent } from "react";
-import { Box, TextField, Typography, Button, Alert } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Alert,
+  Divider,
+} from "@mui/material";
 import { useCart } from "@/context/CartContext";
 import type { Locale } from "@/i18n/config";
 import StripeProvider from "./StripeProvider";
 import CheckoutPaymentForm from "./CheckoutPaymentForm";
+import CheckoutOrderSummary from "./CheckoutOrderSummary";
 
 interface CheckoutPageClientProps {
   locale: Locale;
@@ -24,9 +32,11 @@ type ShippingPayload = {
 
 const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
   const { items, subtotal } = useCart();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [orderId, setOrderId] = useState<number | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
 
@@ -35,8 +45,8 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
   const cartItemsForServer = useMemo(
     () =>
       items.map((it: any) => ({
-        productId: it.productId,
-        variationId: it.variationId,
+        product_id: it.id,
+        // variationId: it.variantKey,
         quantity: it.quantity,
       })),
     [items]
@@ -52,12 +62,12 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
     }
 
     const formData = new FormData(e.currentTarget);
-
     const email = (formData.get("email") as string) || "";
 
-    const shipping: ShippingPayload = {
+    const billing: ShippingPayload & { email: string } = {
       first_name: formData.get("first_name") as string,
       last_name: formData.get("last_name") as string,
+      email,
       phone: formData.get("phone") as string,
       address_1: formData.get("address_1") as string,
       address_2: formData.get("address_2") as string,
@@ -70,46 +80,42 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
     const payload = {
       locale,
       email,
-      shipping,
-      items: cartItemsForServer,
+      billing,
+      cartItems: cartItemsForServer,
       shipping_method: "flat_rate",
     };
 
     try {
       setLoading(true);
-      const res = await fetch("/api/checkout/create-intent", {
+      const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `HTTP ${res.status}`);
-      }
-
-      const raw = await res.text();
-      let data: any = null;
-      try {
-        data = raw ? JSON.parse(raw) : null;
-      } catch {
-        data = { error: raw };
-      }
+      const json = await res.json().catch(() => null);
 
       if (!res.ok) {
-        throw new Error(data?.error || data?.message || `HTTP ${res.status}`);
+        throw new Error(json?.error || json?.message || `HTTP ${res.status}`);
       }
 
+      const data = json?.data ?? json;
       if (!data?.clientSecret || !data?.paymentIntentId) {
         throw new Error("Missing clientSecret/paymentIntentId");
       }
 
       setClientSecret(data.clientSecret);
       setPaymentIntentId(data.paymentIntentId);
+
+      if (!data?.orderId) {
+        setOrderId(Number(data.orderId));
+      }
     } catch (err: any) {
       console.error(err);
       setError(
-        isZh ? "" : "There was a problem creating your order. Please try again."
+        isZh
+          ? "建立訂單／付款失敗，請再試一次。"
+          : "There was a problem creating your order. Please try again."
       );
     } finally {
       setLoading(false);
@@ -117,7 +123,7 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
   };
 
   return (
-    <Box maxWidth={600} mx="auto" mt={4} mb={6}>
+    <Box mx="auto" mt={4} mb={6}>
       <Typography variant="h4" component="h1" gutterBottom>
         {isZh ? "結帳" : "Checkout"}
       </Typography>
@@ -136,85 +142,143 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
         </Alert>
       )}
 
-      {/* Step 1: collect shipping + create PI */}
-      {!clientSecret ? (
-        <Box component="form" onSubmit={handleCreateIntent}>
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-              gap: 2,
-              mb: 2,
-            }}
-          >
-            <TextField
-              name="first_name"
-              label={isZh ? "名" : "First name"}
-              required
-            />
-            <TextField
-              name="last_name"
-              label={isZh ? "姓" : "Last name"}
-              required
-            />
-          </Box>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gap: 2,
+          mb: 2,
+        }}
+      >
+        {/* LEFT: form */}
+        <Box>
+          <Typography variant="h6">
+            {isZh ? "運送資料" : "Shipping Information"}
+          </Typography>
+          <Box component="form" onSubmit={handleCreateIntent}>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <TextField
+                name="first_name"
+                label={isZh ? "名" : "First name"}
+                required
+              />
+              <TextField
+                name="last_name"
+                label={isZh ? "姓" : "Last name"}
+                required
+              />
+            </Box>
 
-          <Box sx={{ display: "grid", gap: 2, mb: 2 }}>
-            <TextField name="email" type="email" label="Email" required />
-            <TextField name="phone" label={isZh ? "電話" : "Phone"} />
-            <TextField
-              name="address_1"
-              label={isZh ? "地址（第一行）" : "Address line 1"}
-              required
-            />
-            <TextField
-              name="address_2"
-              label={
-                isZh ? "地址（第二行，可選）" : "Address line 2 (optional)"
-              }
-            />
-            <TextField name="city" label={isZh ? "城市" : "City"} required />
-            <TextField
-              name="state"
-              label={isZh ? "省 / 州" : "State / Province"}
-            />
-            <TextField
-              name="postcode"
-              label={isZh ? "郵政編碼" : "Postal code"}
-              required
-            />
-            <TextField
-              name="country"
-              label={isZh ? "國家" : "Country"}
-              defaultValue="CA"
-              required
-            />
-          </Box>
+            <Box sx={{ display: "grid", gap: 2, mb: 2 }}>
+              <TextField name="email" type="email" label="Email" required />
+              <TextField name="phone" label={isZh ? "電話" : "Phone"} />
+              <TextField
+                name="address_1"
+                label={isZh ? "地址（第一行）" : "Address line 1"}
+                required
+              />
+              <TextField
+                name="address_2"
+                label={
+                  isZh ? "地址（第二行，可選）" : "Address line 2 (optional)"
+                }
+              />
+              <TextField name="city" label={isZh ? "城市" : "City"} required />
+              <TextField
+                name="state"
+                label={isZh ? "省 / 州" : "State / Province"}
+              />
+              <TextField
+                name="postcode"
+                label={isZh ? "郵政編碼" : "Postal code"}
+                required
+              />
+              <TextField
+                name="country"
+                label={isZh ? "國家" : "Country"}
+                defaultValue="CA"
+                required
+              />
+            </Box>
 
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={loading || items.length === 0}
-          >
-            {loading
-              ? isZh
-                ? "準備付款中…"
-                : "Preparing payment…"
-              : isZh
-              ? "下一步：付款"
-              : "Next: Pay"}
-          </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={loading || items.length === 0}
+            >
+              {loading
+                ? isZh
+                  ? "準備付款中…"
+                  : "Preparing payment…"
+                : isZh
+                ? clientSecret
+                  ? "已準備好，可付款"
+                  : "準備付款"
+                : clientSecret
+                ? "Ready — Pay on the right"
+                : "Prepare payment"}
+            </Button>
+
+            {clientSecret ? (
+              <Typography
+                variant="caption"
+                sx={{ display: "block", mt: 1, opacity: 0.7 }}
+              >
+                {isZh
+                  ? "右邊已顯示付款方式，請完成付款。"
+                  : "Payment methods are ready on the right."}
+              </Typography>
+            ) : null}
+          </Box>
         </Box>
-      ) : (
-        // Step 2: mount Stripe Elements and confirm payment
-        <StripeProvider clientSecret={clientSecret} locale={locale}>
-          <CheckoutPaymentForm
-            locale={locale}
-            paymentIntentId={paymentIntentId!}
-            onError={(msg) => setError(msg)}
-          />
-        </StripeProvider>
-      )}
+        {/* RIGHT: payment */}
+        <Box
+          sx={{
+            border: "1px solid rgba(0,0,0,0.12)",
+            borderRadius: 2,
+            p: 3,
+            position: { md: "sticky" },
+            top: { md: 24 },
+          }}
+        >
+          <CheckoutOrderSummary shippingFlatRate={16} />
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            {isZh ? "付款方式" : "Payment"}
+          </Typography>
+          {!clientSecret ? (
+            <Box sx={{ opacity: 0.75 }}>
+              <Typography variant="body2" sx={{ mb: 2 }}>
+                {isZh
+                  ? "請先喺左邊填資料，然後按「準備付款」。"
+                  : "Fill in the form on the left, then click “Prepare payment”."}
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="body2">
+                {isZh
+                  ? "完成準備後，呢度會出現信用卡／Apple Pay 等付款選項。"
+                  : "After preparing, card / Apple Pay options will appear here."}
+              </Typography>
+            </Box>
+          ) : (
+            // Step 2: mount Stripe Elements and confirm payment
+            <StripeProvider clientSecret={clientSecret} locale={locale}>
+              <CheckoutPaymentForm
+                locale={locale}
+                orderId={orderId!}
+                paymentIntentId={paymentIntentId!}
+                onError={(msg) => setError(msg)}
+              />
+            </StripeProvider>
+          )}
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -8,9 +8,9 @@ export type WooFetchOptions = {
 };
 
 const getWooEnv = () => {
-  const baseUrlEnv = process.env.WC_API_BASE_URL;
-  const consumerKey = process.env.WC_CONSUMER_KEY;
-  const consumerSecret = process.env.WC_CONSUMER_SECRET;
+  const baseUrlEnv = process.env.WOO_API_BASE_URL;
+  const consumerKey = process.env.WOO_CONSUMER_KEY;
+  const consumerSecret = process.env.WOO_CONSUMER_SECRET;
 
   if (!baseUrlEnv || !consumerKey || !consumerSecret) {
     throw new Error("WooCommerce API env vars are missing");
@@ -19,7 +19,7 @@ const getWooEnv = () => {
   const baseUrl = baseUrlEnv.replace(/\/$/, "");
   if (!baseUrl.startsWith("http")) {
     throw new Error(
-      `WC_API_BASE_URL is invalid. Current value: "${baseUrl}". It must start with http(s)://`
+      `WOO_API_BASE_URL is invalid. Current value: "${baseUrl}". It must start with http(s)://`
     );
   }
 
@@ -109,8 +109,8 @@ const getWooAuthHeader = () => {
 };
 
 const getWooBase = () => {
-  const base = process.env.WOO_BASE_URL;
-  if (!base) throw new Error("Missing WOO_BASE_URL");
+  const base = process.env.WOO_API_BASE_URL;
+  if (!base) throw new Error("Missing WOO_API_BASE_URL");
   return base;
 };
 
