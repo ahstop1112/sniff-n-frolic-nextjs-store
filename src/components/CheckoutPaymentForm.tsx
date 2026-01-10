@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Box, Button, Alert, Typography } from "@mui/material";
 import {
@@ -72,7 +71,7 @@ const CheckoutPaymentForm = ({
         return;
       }
       // Other Status, will return
-      window.location.href = `/checkout/return?orderId=${orderId}`;
+      window.location.href = `/${locale}/checkout/return?orderId=${orderId}`;
       return;
     } catch (e: any) {
       const msg = e?.message || (isZh ? "付款出現問題。" : "Payment error.");
