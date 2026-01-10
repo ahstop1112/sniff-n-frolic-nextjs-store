@@ -4,9 +4,20 @@ import { useMemo, useState } from "react";
 import { Box, Typography, Divider, TextField, Button } from "@mui/material";
 import { useCart } from "@/context/CartContext";
 
+type Pricing = {
+  currency?: "CAD";
+  subtotal?: number;
+  shipping?: number;
+  tax?: number;
+  gst?: number;
+  pst?: number;
+  total?: number;
+};
+
 type Props = {
   shippingFlatRate?: number; // default 16
   showCoupon?: boolean; // default true
+  pricing?: Pricing;
 };
 
 const money = (n: number) => `CAD $${n.toFixed(2)}`;
@@ -14,17 +25,38 @@ const money = (n: number) => `CAD $${n.toFixed(2)}`;
 const CheckoutOrderSummary = ({
   shippingFlatRate = 16,
   showCoupon = true,
+  pricing,
 }: Props) => {
   const { items, subtotal } = useCart();
   const [coupon, setCoupon] = useState("");
 
   const calc = useMemo(() => {
+    if (pricing?.total != null) {
+      return {
+        shipping: Number(pricing.shipping ?? 0),
+        gst: Number(pricing.gst ?? 0),
+        pst: Number(pricing.pst ?? 0),
+        tax: Number(pricing.tax ?? 0),
+        total: Number(pricing.total ?? 0),
+        subtotal: Number(pricing.subtotal ?? subtotal),
+        from: "server" as const,
+      };
+    }
+
     const shipping = shippingFlatRate;
     const gst = +(subtotal * 0.05).toFixed(2);
     const pst = +(subtotal * 0.07).toFixed(2);
     const total = +(subtotal + shipping + gst + pst).toFixed(2);
-    return { shipping, gst, pst, total };
-  }, [subtotal, shippingFlatRate]);
+    return {
+      shipping,
+      gst,
+      pst,
+      total,
+      subtotal,
+      tax: +(gst + pst).toFixed(2),
+      from: "local" as const,
+    };
+  }, [pricing, subtotal, shippingFlatRate]);
 
   return (
     <Box sx={{ mb: 2 }}>
@@ -119,7 +151,7 @@ const CheckoutOrderSummary = ({
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="body1">Shipping</Typography>
           <Typography variant="body1" sx={{ fontWeight: 600 }}>
-            Flat rate: {money(calc.shipping)}
+            {money(calc.shipping)}
           </Typography>
         </Box>
 

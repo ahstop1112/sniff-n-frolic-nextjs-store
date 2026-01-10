@@ -12,6 +12,7 @@ import type { Locale } from "@/i18n/config";
 interface Props {
   locale: Locale;
   orderId: number;
+  pricing?: any;
   paymentIntentId: string;
   onError: (msg: string) => void;
 }
@@ -19,6 +20,7 @@ interface Props {
 const CheckoutPaymentForm = ({
   locale,
   orderId,
+  pricing,
   paymentIntentId,
   onError,
 }: Props) => {
@@ -54,7 +56,7 @@ const CheckoutPaymentForm = ({
 
       const status = result.paymentIntent?.status;
 
-      if (status !== "succeeded") {
+      if (status === "succeeded") {
         const res = await fetch("/api/checkout/complete", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -65,6 +67,7 @@ const CheckoutPaymentForm = ({
           throw new Error(json?.error || "Order completion failed");
         }
 
+        // Redirect to success page
         window.location.href = `/checkout/success?orderId=${orderId}`;
         return;
       }

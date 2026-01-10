@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { useCart } from "@/context/CartContext";
 import type { Locale } from "@/i18n/config";
+import { cartItemsToServerItems } from "@/lib/cartToServer";
+
 import StripeProvider from "./StripeProvider";
 import CheckoutPaymentForm from "./CheckoutPaymentForm";
 import CheckoutOrderSummary from "./CheckoutOrderSummary";
@@ -31,24 +33,21 @@ type ShippingPayload = {
 };
 
 const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
-  const { items, subtotal } = useCart();
+  const { items, hydrated } = useCart();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [orderId, setOrderId] = useState<number | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
+
+  const [orderId, setOrderId] = useState<number | null>(null);
+  const [pricing, setPricing] = useState<any | null>(null);
 
   const isZh = locale === "zh";
 
   const cartItemsForServer = useMemo(
-    () =>
-      items.map((it: any) => ({
-        product_id: it.id,
-        // variationId: it.variantKey,
-        quantity: it.quantity,
-      })),
+    () => cartItemsToServerItems(items),
     [items]
   );
 
@@ -64,7 +63,7 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
     const formData = new FormData(e.currentTarget);
     const email = (formData.get("email") as string) || "";
 
-    const billing: ShippingPayload & { email: string } = {
+    const shipping: ShippingPayload & { email: string } = {
       first_name: formData.get("first_name") as string,
       last_name: formData.get("last_name") as string,
       email,
@@ -80,7 +79,7 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
     const payload = {
       locale,
       email,
-      billing,
+      shipping,
       cartItems: cartItemsForServer,
       shipping_method: "flat_rate",
     };
@@ -107,9 +106,8 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
       setClientSecret(data.clientSecret);
       setPaymentIntentId(data.paymentIntentId);
 
-      if (!data?.orderId) {
-        setOrderId(Number(data.orderId));
-      }
+      setOrderId(Number(data.orderId));
+      setPricing(data.pricing);
     } catch (err: any) {
       console.error(err);
       setError(
@@ -127,21 +125,11 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
       <Typography variant="h4" component="h1" gutterBottom>
         {isZh ? "結帳" : "Checkout"}
       </Typography>
-
-      <Typography variant="body2" sx={{ mb: 2 }}>
-        {isZh
-          ? `小計：CAD $${subtotal.toFixed(2)}（實際金額以結帳頁面為準）`
-          : `Subtotal: CAD $${subtotal.toFixed(
-              2
-            )} (final amount may vary on payment page).`}
-      </Typography>
-
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
         </Alert>
       )}
-
       <Box
         sx={{
           display: "grid",
@@ -211,7 +199,7 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
             <Button
               type="submit"
               variant="contained"
-              disabled={loading || items.length === 0}
+              disabled={!hydrated || loading || items.length === 0}
             >
               {loading
                 ? isZh
@@ -248,7 +236,7 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
             top: { md: 24 },
           }}
         >
-          <CheckoutOrderSummary shippingFlatRate={16} />
+          <CheckoutOrderSummary pricing={pricing} shippingFlatRate={16} />
           <Typography variant="h6" sx={{ mb: 2 }}>
             {isZh ? "付款方式" : "Payment"}
           </Typography>
@@ -272,6 +260,7 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
               <CheckoutPaymentForm
                 locale={locale}
                 orderId={orderId!}
+                pricing={pricing!}
                 paymentIntentId={paymentIntentId!}
                 onError={(msg) => setError(msg)}
               />
