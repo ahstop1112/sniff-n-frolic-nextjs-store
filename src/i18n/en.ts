@@ -26,7 +26,7 @@ export const enDictionary: Dictionary = {
       inStockOnly: "In stock only",
       onSale: "On Sale",
       onSaleOnly: "On sale only",
-      noResult: "No Results!"
+      noResults: "No Results!"
     },
     nav: {
       home: "Home",

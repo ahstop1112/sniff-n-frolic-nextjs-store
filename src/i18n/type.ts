@@ -24,7 +24,7 @@ export interface Dictionary{
       inStockOnly: string,
       onSale: string,
       onSaleOnly: string,
-      noResult: string
+      noResults: string
     },
     nav: {
       home: string,

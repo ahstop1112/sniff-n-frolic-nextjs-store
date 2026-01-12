@@ -44,7 +44,7 @@ export const POST = async (req: Request) => {
         payment_method_title: "Stripe",
         set_paid: false,
         billing: body.billing,
-        shipping: body.billing, // 假設同 billing 一樣
+        shipping: body.billing, // Same as billing
         line_items: lineItems,
         currency: "CAD",
       },
