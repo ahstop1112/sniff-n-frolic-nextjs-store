@@ -11,7 +11,7 @@ import {
 import { useCart } from "@/context/CartContext";
 import type { Locale } from "@/i18n/config";
 import { cartItemsToServerItems } from "@/lib/cartToServer";
-
+import PageLoading from "./common/PageLoading";
 import StripeProvider from "./StripeProvider";
 import CheckoutPaymentForm from "./CheckoutPaymentForm";
 import CheckoutOrderSummary from "./CheckoutOrderSummary";
@@ -122,6 +122,10 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
 
   return (
     <Box mx="auto" mt={4} mb={6}>
+      <PageLoading
+        open={loading}
+        label={isZh ? "準備付款中…" : "Preparing payment…"}
+      />
       <Typography variant="h4" component="h1" gutterBottom>
         {isZh ? "結帳" : "Checkout"}
       </Typography>

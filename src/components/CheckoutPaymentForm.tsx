@@ -7,6 +7,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import type { Locale } from "@/i18n/config";
+import PageLoading from "./common/PageLoading";
 
 interface Props {
   locale: Locale;
@@ -67,7 +68,7 @@ const CheckoutPaymentForm = ({
         }
 
         // Redirect to success page
-        window.location.href = `/checkout/success?orderId=${orderId}`;
+        window.location.href = `/${locale}/checkout/success?orderId=${orderId}`;
         return;
       }
       // Other Status, will return
@@ -84,6 +85,10 @@ const CheckoutPaymentForm = ({
 
   return (
     <Box>
+      <PageLoading
+        open={loading}
+        label={isZh ? "準備付款中…" : "Preparing payment…"}
+      />
       {localError ? (
         <Alert severity="error" sx={{ mb: 2 }}>
           {localError}
