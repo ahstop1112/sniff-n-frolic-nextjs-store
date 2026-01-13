@@ -13,6 +13,7 @@ import type { CartItem, CartState, AddToCartInput } from "@/lib/cartTypes";
 const STORAGE_KEY = "sniff-cart-v1";
 
 interface CartContextValue extends CartState {
+  hydrated: boolean;
   addItem: (input: AddToCartInput, quantity?: number) => void;
   removeItem: (id: number, variantKey?: string) => void;
   clearCart: () => void;
@@ -27,50 +28,47 @@ interface CartProviderProps {
   children: ReactNode;
 }
 
-const loadInitialCart = (): CartState => {
-  if (typeof window === "undefined") return { items: [] };
-
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { items: [] };
-    return JSON.parse(raw) as CartState;
-  } catch {
-    return { items: [] };
-  }
-};
-
 export const CartProvider = ({ children }: CartProviderProps) => {
   const [state, setState] = useState<CartState>({ items: [] });
+  const [hydrated, setHydrated] = useState(false);
 
-  // 初次 mount 時先 from localStorage 讀返
+  // 1) hydrate from localStorage (once)
   useEffect(() => {
-    const initial = loadInitialCart();
-    setState(initial);
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          setState({ items: parsed as CartItem[] });
+        }
+      }
+    } catch {
+      // ignore bad JSON
+    } finally {
+      setHydrated(true);
+    }
   }, []);
 
-  // 每次變更就寫入 localStorage
+  // 2) persist to localStorage (only after hydrated)
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch {
-      // ignore
-    }
-  }, [state]);
+    if (!hydrated) return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+  }, [state.items, hydrated]);
 
   const addItem = (input: AddToCartInput, quantity: number = 1) => {
     setState((prev) => {
       const items = [...prev.items];
       const key = `${input.id}-${input.variantKey ?? ""}`;
+      const safeQty = Math.max(1, Math.min(99, Number(quantity) || 1));
 
-      const existingIndex = items.findIndex(
+      const idx = items.findIndex(
         (it) => `${it.id}-${it.variantKey ?? ""}` === key
       );
 
-      if (existingIndex >= 0) {
-        items[existingIndex] = {
-          ...items[existingIndex],
-          quantity: items[existingIndex].quantity + quantity,
+      if (idx >= 0) {
+        items[idx] = {
+          ...items[idx],
+          quantity: Math.max(1, (Number(items[idx].quantity) || 1) + safeQty),
         };
       } else {
         items.push({
@@ -79,9 +77,9 @@ export const CartProvider = ({ children }: CartProviderProps) => {
           name: input.name,
           price: input.price,
           imageUrl: input.imageUrl,
-          quantity,
+          quantity: safeQty,
           variantKey: input.variantKey,
-        });
+        } as CartItem);
       }
 
       return { items };
@@ -98,7 +96,14 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     });
   };
 
-  const clearCart = () => setState({ items: [] });
+  const clearCart = () => {
+    setState({ items: [] });
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+  };
 
   const updateQuantity = (
     id: number,
@@ -107,27 +112,36 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   ) => {
     setState((prev) => {
       const key = `${id}-${variantKey ?? ""}`;
+      const nextQty = Math.max(1, Math.min(99, Number(quantity) || 1));
+
       const items = prev.items.map((it) =>
         `${it.id}-${it.variantKey ?? ""}` === key
-          ? { ...it, quantity: Math.max(1, quantity) }
+          ? { ...it, quantity: nextQty }
           : it
       );
+
       return { items };
     });
   };
 
   const totalItems = useMemo(
-    () => state.items.reduce((sum, it) => sum + it.quantity, 0),
+    () => state.items.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0),
     [state.items]
   );
 
   const subtotal = useMemo(
-    () => state.items.reduce((sum, it) => sum + it.price * it.quantity, 0),
+    () =>
+      state.items.reduce((sum, it) => {
+        const price = Number((it as any).price) || 0; // defensive
+        const qty = Number(it.quantity) || 0;
+        return sum + price * qty;
+      }, 0),
     [state.items]
   );
 
   const value: CartContextValue = {
     ...state,
+    hydrated,
     addItem,
     removeItem,
     clearCart,
@@ -141,8 +155,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
 
 export const useCart = (): CartContextValue => {
   const ctx = useContext(CartContext);
-  if (!ctx) {
-    throw new Error("useCart must be used within CartProvider");
-  }
+  if (!ctx) throw new Error("useCart must be used within CartProvider");
   return ctx;
 };

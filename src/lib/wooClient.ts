@@ -1,7 +1,7 @@
 import "server-only";
 import { wooFetchServer } from "@/lib/woo/server";
 
-const baseUrl = process.env.WC_API_BASE_URL!.replace(/\/$/, "");
+const baseUrl = process.env.WOO_API_BASE_URL!.replace(/\/$/, "");
 
 export interface YoastOgImage {
   url: string;
@@ -102,10 +102,10 @@ export interface WooCategory {
 }
 
 interface WooFetchOptions {
-    searchParams?: Record<string, any>;
-    method?: "GET" | "POST" | "PUT" | "DELETE";
-    bodyJson?: any;
-  }
+  searchParams?: Record<string, any>;
+  method?: "GET" | "POST" | "PUT" | "DELETE";
+  bodyJson?: any;
+}
 
 export const wooFetch = wooFetchServer;
 
@@ -137,7 +137,7 @@ export const getProducts = async (options?: {
     status: options?.status ?? "publish",
     stock_status: options?.stock_status,
     attribute: options?.attribute,
-    attribute_term: options?.attribute_term
+    attribute_term: options?.attribute_term,
   });
 };
 
@@ -147,7 +147,7 @@ export const getProductBySlug = async (
   const products = await wooFetch<WooProduct[]>("/products", {
     slug,
     per_page: 1,
-    status: "publish"
+    status: "publish",
   });
 
   if (!Array.isArray(products) || products.length === 0) return null;
@@ -173,7 +173,9 @@ export const getCategories = async (options?: {
 };
 
 export const getCategoryById = async (id: string) => {
-  const category = await wooFetch(`products/categories/${id}`, { cache: "no-store" });
+  const category = await wooFetch(`products/categories/${id}`, {
+    cache: "no-store",
+  });
 
   return Array.isArray(category) ? category : null;
 };

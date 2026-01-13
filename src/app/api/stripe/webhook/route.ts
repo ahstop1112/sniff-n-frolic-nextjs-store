@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { stripe, getStripeWebhookEvent } from "@/lib/stripe";
 import { wooPost } from "@/lib/woo/server";
 
-const safeJsonParse = <T,>(raw: string | undefined, fallback: T): T => {
+const safeJsonParse = <T>(raw: string | undefined, fallback: T): T => {
   if (!raw) return fallback;
   try {
     return JSON.parse(raw) as T;
@@ -55,10 +55,7 @@ export const POST = async (req: Request) => {
       null
     );
 
-    const items = safeJsonParse<MetaCartItem[]>(
-      pi.metadata?.items_json,
-      []
-    );
+    const items = safeJsonParse<MetaCartItem[]>(pi.metadata?.items_json, []);
 
     // ✅ validation
     if (!email) throw new Error("Missing email in metadata");
@@ -73,7 +70,9 @@ export const POST = async (req: Request) => {
 
       const variation_id_raw = it.variationId;
       const variation_id =
-        variation_id_raw == null ? undefined : clampInt(variation_id_raw, 1, 999999999);
+        variation_id_raw == null
+          ? undefined
+          : clampInt(variation_id_raw, 1, 999999999);
 
       return {
         product_id,
@@ -88,7 +87,7 @@ export const POST = async (req: Request) => {
       payment_method_title: "Credit Card (Stripe)",
       set_paid: true,
       transaction_id: pi.id,
-      billing: {
+      shipping: {
         ...shipping,
         email,
       },
