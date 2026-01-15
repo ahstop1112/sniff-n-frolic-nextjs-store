@@ -1,58 +1,34 @@
 // src/app/[lang]/layout.tsx
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Container, Box, Stack, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/dictionaries";
-import { CurrencyProvider } from "@/context/CurrencyContext";
-import { SearchBar } from "@/components/SearchBar";
 import { CartProviderClient } from "@/components/CartProviderClient";
-import { MiniCart } from "@/components/MiniCart";
-import Footer from "@/components/Footer";
+import { CurrencyProvider } from "@/context/CurrencyContext";
+import AppShell from "@/components/layout/AppShell";
+import "@/styles/globals.scss";
 
 interface LangLayoutProps {
   children: ReactNode;
   params: Promise<{ lang: string }>;
 }
 
+interface FooterProps {
+  locale: Locale;
+}
+
 const LangLayout = async ({ children, params }: LangLayoutProps) => {
   const { lang } = await params;
   if (!isValidLocale(lang)) notFound();
-
   const locale: Locale = lang;
-  const dict = await getDictionary(locale);
 
   return (
     <CartProviderClient>
-      <Container maxWidth="lg" sx={{ py: 3 }}>
-        <Box component="header" sx={{ mb: 4 }}>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            gap={2}
-          >
-            <Link href={`/${locale}`} style={{ textDecoration: "none" }}>
-              <Typography variant="h6">{dict.common.siteTitle}</Typography>
-            </Link>
-            <SearchBar locale={locale} />
-
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Link href={`/${locale}`}>{dict.nav.home}</Link>
-              <Link href={`/${locale}/products`}>{dict.nav.products}</Link>
-              <Link href={`/${locale}/about`}>{dict.nav.about}</Link>
-              <Link href="/en">EN</Link>
-              <Link href="/zh">中文</Link>
-              <MiniCart locale={locale} />
-            </Stack>
-          </Stack>
-        </Box>
+      <AppShell locale={locale} >
         <main>
-          <CurrencyProvider>{children}</CurrencyProvider>
+        <CurrencyProvider>{children}</CurrencyProvider>
         </main>
-        <Footer locale={locale} />
-      </Container>
+      </AppShell>
     </CartProviderClient>
   );
 };

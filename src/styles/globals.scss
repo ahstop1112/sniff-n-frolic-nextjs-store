@@ -1,0 +1,73 @@
+@use "./_tokens" as *;
+@use "./fonts" as *;
+
+:root {
+    --background: $white;
+    --foreground: $black;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #0a0a0a;
+      --foreground: #ededed;
+    }
+  }
+  
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: "Alberta", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    html {
+      color-scheme: dark;
+    }
+  }
+
+//   Wave Divider
+.wave--sunset {
+--wave-bg: #f2a46b;
+--wave-color: $sf-teal;
+--wave-ripple: $sf-teal;
+}
+
+.wave--night {
+--wave-bg: $sf-teal;
+--wave-color: $sf-orange;
+--wave-ripple: $sf-orange;
+}
+
+.wave--cream {
+--wave-bg: #fff7ed;
+--wave-color: $sf-teal;
+--wave-ripple: $sf-teal;
+}
+
+.mainBanner{
+    background-image: url("/images/banner_main.jpg");
+    background-size: cover;
+    background-position: center;
+    max-width: none !important;
+    height: 36vw;
+}

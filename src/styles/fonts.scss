@@ -1,0 +1,45 @@
+/* src/styles/globals.scss */
+
+/* Alberta – body */
+@font-face {
+    font-family: "Alberta";
+    src: url("/fonts/AlbertSans-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: "Alberta Bold";
+    src: url("/fonts/AlbertSans-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: "Alberta Semi Bold";
+    src: url("/fonts/AlbertSans-SemiBold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  
+  @font-face {
+    font-family: "Alberta Extra Bold";
+    src: url("/fonts/AlbertSans-ExtraBold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  /* Lilita One – title */
+  @font-face {
+    font-family: "Lilita One";
+    src: url("/fonts/LilitaOne-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  

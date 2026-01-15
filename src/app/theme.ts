@@ -10,6 +10,31 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: `"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
-  },
+    fontFamily:
+      '"Alberta", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif',
+    h1: {
+      fontFamily: '"Lilita One", Arial, sans-serif',
+      fontWeight: 400,
+    },
+    h2: {
+      fontFamily: '"Lilita One", Arial, sans-serif',
+      fontWeight: 400,
+    },
+    h3: {
+      fontFamily: '"Lilita One", Arial, sans-serif',
+      fontWeight: 400,
+    },
+    h4: {
+      fontFamily: '"Lilita One", Arial, sans-serif',
+      fontWeight: 400,
+    },
+    h5: {
+      fontFamily: '"Lilita One", Arial, sans-serif',
+      fontWeight: 400,
+    },
+    h6: {
+      fontFamily: '"Lilita One", Arial, sans-serif',
+      fontWeight: 400,
+    },
+  },  
 });

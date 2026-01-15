@@ -10,6 +10,8 @@ import { shuffleArray } from "@/utils/helpers";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
 import CategoryGrid from "@/components/CategoryGrid";
 import ProductGrid from "@/components/ProductGrid";
+import MainBanner from "@/components/Home/MainBanner";
+
 interface HomePageProps {
   params: Promise<{ lang: string }>;
 }
@@ -35,6 +37,7 @@ const HomePage = async ({ params }: HomePageProps) => {
 
   return (
     <>
+      <MainBanner />
       <Typography variant="subtitle1" gutterBottom>
         {dict.common.latestArrivals}
       </Typography>
@@ -44,7 +47,7 @@ const HomePage = async ({ params }: HomePageProps) => {
           {(finalProducts || []).map((p) => <ProductGrid key={p.id} locale={locale} slug={p.slug} image={p?.images[0]} name={p.name} price={p.price} />)}
         </Grid>
       </Box>
-
+      
       <Box mt={4}>
         <Link href={`/${locale}/products`}>{dict.common.viewAll} →</Link>
       </Box>

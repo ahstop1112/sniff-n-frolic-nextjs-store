@@ -1,0 +1,94 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  color: $white;
+  background: $sf-orange;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(2, 8, 23, 0.06);
+  font-family: "Alberta Semi Bold", Arial, Helvetica, sans-serif;
+  font-size: 1.125rem;
+
+  .headerContainer{
+    padding: $point * 2 $point * 4;
+    max-width: $container-width;
+    margin: 0 auto;
+
+    svg{
+      color: $white;
+      font-size: 1em;
+      margin-right: $point;
+    }
+  }
+
+  .headerLogo{
+    height: 70px;
+  }
+}
+
+.promo {
+  background: $brown; // 深啡
+  color: $white;
+  font-size: 1rem;
+  text-align: center;
+  padding: $point * 3;
+  font-family: "Alberta Semi Bold", Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg{
+    color: $white;
+    font-size: 1.1rem;
+    margin-right: $point;
+  }
+}
+
+
+.inner {
+  @include m.container;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: $sf-teal;
+}
+
+.nav {
+  margin-left: auto;
+  display: flex;
+  gap: $space-3;
+  align-items: center;
+}
+
+.link {
+  color: rgba($sf-text, .85);
+  padding: 10px 12px;
+  border-radius: 999px;
+
+  &:hover {
+    background: rgba($sf-teal, .06);
+    color: $sf-teal;
+  }
+}
+
+.cta {
+  @include m.pill;
+  background: $sf-orange;
+  color: white;
+  padding: 10px 14px;
+  font-weight: 700;
+
+  &:hover { filter: brightness(0.97); }
+}
