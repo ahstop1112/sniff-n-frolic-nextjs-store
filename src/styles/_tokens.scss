@@ -1,6 +1,7 @@
 /* Sniff & Frolic tokens */
 $sf-orange: #e16849;
 $sf-teal: #063F53;
+$sf-yellow: #FFBB30;
 
 $sf-bg: #fffaf7;     // 奶油暖白底
 $sf-surface: #ffffff;
@@ -14,6 +15,8 @@ $brown: #6b3e1e;
 $radius: 16px;
 $shadow: 0 10px 30px rgba(2, 8, 23, 0.10);
 
+$max-width: 1440px;
+
 $container-width: 1160px;
 
 $point: 4px;
@@ -25,3 +28,31 @@ $space-4: 24px;
 $space-5: 32px;
 
 $header-h: 72px;
+
+$bp-xs: 0;        // phone
+$bp-sm: 600px;    // large phone
+$bp-md: 900px;    // tablet
+$bp-lg: 1200px;   // desktop
+$bp-xl: 1536px;   // large desktop
+
+/* -------------------------
+   Media query mixins
+   ------------------------- */
+
+@mixin bp-up($bp) {
+  @media (min-width: $bp) {
+    @content;
+  }
+}
+
+@mixin bp-down($bp) {
+  @media (max-width: ($bp - 1px)) {
+    @content;
+  }
+}
+
+@mixin bp-between($min, $max) {
+  @media (min-width: $min) and (max-width: ($max - 1px)) {
+    @content;
+  }
+}

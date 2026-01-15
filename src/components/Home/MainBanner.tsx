@@ -12,7 +12,7 @@ type MainBannerProps = {
   subtitle?: string; // e.g. "Chew, sniff, chill — Fei Fei’s everyday must-haves."
   ctaLabel?: string; // e.g. "Read More"
   ctaHref?: string; // e.g. "/our-story"
-  imageSrc: string; // e.g. "/images/feifei-hero.jpg"
+  imageSrc?: string; // e.g. "/images/feifei-hero.jpg"
   imageAlt?: string;
 
   // theme colors (override per page/section)

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
+import { Typography, Box, Grid } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getCategories, getProducts } from "@/lib/wooClient";
@@ -10,10 +10,9 @@ import { buildCategoryMetadata } from "@/seo/buildCategoryMetaTag";
 import BreadcrumbsNav, {
   type BreadcrumbItem,
 } from "@/components/BreadcrumbsNav";
-import CategoryGrid from "@/components/CategoryGrid";
+import CategoryGrid from "@/components/Category/CategoryGrid";
 import ProductGrid from "@/components/ProductGrid";
 import ProductsFilterSidebarClient from "@/components/ProductsFilterSidebarClient";
-
 
 type SearchParams = Record<string, string | string[] | undefined>;
 interface CategoryPageProps {

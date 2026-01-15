@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import type { WooCategory } from "@/lib/wooClient";
 import { getTopLevelCategories } from "@/utils/category";
+import styles from "./Footer.module.scss";
 
 interface FooterProps {
   locale: Locale;

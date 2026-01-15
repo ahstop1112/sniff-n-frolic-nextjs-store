@@ -7,7 +7,7 @@ import { getProducts, getCategories } from "@/lib/wooClient";
 import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
 import BreadcrumbsNav, { type BreadcrumbItem } from "@/components/BreadcrumbsNav";
 import ProductsFilterSidebarClient from "@/components/ProductsFilterSidebarClient";
-import CategoryGrid from "@/components/CategoryGrid";
+import CategoryGrid from "@/components/Category/CategoryGrid";
 import ProductGrid from "@/components/ProductGrid";
 import { shuffleArray } from "@/utils/helpers";
 

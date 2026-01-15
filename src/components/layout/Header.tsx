@@ -6,7 +6,7 @@ import { type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { SearchBar } from "@/components/SearchBar";
 import { MiniCart } from "@/components/MiniCart";
-import styles from "./scss/Header.module.scss";
+import styles from "./Header.module.scss";
 
 const Header = async ({ locale }: Locale) => {
   const dict = await getDictionary(locale);
