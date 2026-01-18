@@ -54,17 +54,6 @@ const HomePage = async ({ params }: HomePageProps) => {
       <Box mt={4}>
         <Link href={`/${locale}/products`}>{dict.common.viewAll} →</Link>
       </Box>
-
-      {categories.length > 0 && (
-        <Box mt={6}>
-          <Typography variant="h5" gutterBottom>
-            {dict.common.shopByCategory}
-          </Typography>
-          <Grid container spacing={2}>
-            {(categories || []).map((cat) => <CategoryGrid key={cat.id} locale={locale} slug={cat.slug} image={cat?.image} name={cat.name} />)}
-          </Grid>
-        </Box>
-      )}
     </>
   );
 };

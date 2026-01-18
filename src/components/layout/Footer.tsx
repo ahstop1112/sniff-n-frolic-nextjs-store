@@ -14,6 +14,7 @@ import {
 import type { WooCategory } from "@/lib/wooClient";
 import { getTopLevelCategories } from "@/utils/category";
 import styles from "./Footer.module.scss";
+import { style } from "@mui/system";
 
 interface FooterProps {
   locale: Locale;
@@ -46,45 +47,34 @@ const Footer = ({ locale }:FooterProps) => {
   return (
     <Box
       component="footer"
-      sx={{
-        mt: 8,
-        borderTop: 1,
-        borderColor: "divider",
-        bgcolor: "background.paper",
-      }}
+      className={styles.footerSection}
     >
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container className={styles.footer}>
         <Grid container spacing={4}>
           {/* 左邊：Logo + 簡介 */}
-          <Grid size={{ xs: 6, sm: 4, md: 3 }} >
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Sniff & Frolic
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Cozy adventures for dogs & hoomans.
-            </Typography>
+          <Grid size={{ xs: 6, sm: 3, md: 4 }} className={styles.footerMenu}>
+           <p> <b>📬 Subscribe to Fei Fei’s Newsletter for exclusive deals & new arrivals!</b></p>
+           <TextField
+              type="email"
+              placeholder="your@email.com"
+              size="small"
+              fullWidth
+              variant="outlined"
+              className={styles.emailInput}
+            />
+            <Button
+              variant="contained"
+              size="small"
+              >
+                Subscribe
+              </Button>
+            <p><h6>Need Help?</h6>
+            <a href="mailto:woff@sniffnfrolic.com">woff@sniffnfrolic.com</a></p>
           </Grid>
 
-          <Grid size={{ xs: 6, sm: 6, md: 3 }}>
-            <Typography
-              variant="caption"
-              sx={{
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                color: "text.secondary",
-                fontWeight: 600,
-              }}
-            >
-              Shop
-            </Typography>
-            <Box
-              sx={{
-                mt: 1.5,
-                display: "flex",
-                flexDirection: "column",
-                gap: 0.5,
-              }}
-            >
+          <Grid size={{ xs: 6, sm: 6, md: 2 }} className={styles.footerMenu}>
+            <h5>Categories</h5>
+            <Box className={styles.link} >
               {loadingCats && (
                 <Typography variant="caption" color="text.secondary">
                   Loading...
@@ -119,156 +109,31 @@ const Footer = ({ locale }:FooterProps) => {
             </Box>
           </Grid>
 
-          <Grid size={{ xs: 6, sm: 4, md: 3 }} >
-            <Typography
-              variant="caption"
-              sx={{
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                color: "text.secondary",
-                fontWeight: 600,
-              }}
-            >
-              About
-            </Typography>
-            <Box
-              sx={{
-                mt: 1.5,
-                display: "flex",
-                flexDirection: "column",
-                gap: 0.5,
-              }}
-            >
-              <MuiLink
-                component={NextLink}
-                href="/about"
-                underline="hover"
-                color="text.primary"
-                sx={{ fontSize: 14 }}
-              >
-                About Us
-              </MuiLink>
-              <MuiLink
-                component={NextLink}
-                href="/faq"
-                underline="hover"
-                color="text.primary"
-                sx={{ fontSize: 14 }}
-              >
-                FAQ
-              </MuiLink>
-              <MuiLink
-                component={NextLink}
-                href="/contact"
-                underline="hover"
-                color="text.primary"
-                sx={{ fontSize: 14 }}
-              >
-                Contact
-              </MuiLink>
+          <Grid size={{ xs: 6, sm: 6, md: 2 }} className={styles.footerMenu}>
+            <h5>Information</h5>
+            <Box className={styles.link}>
+              <MuiLink component={NextLink} href={`/${locale}/sniff-frolic-story`}>Our Story</MuiLink>
+              <MuiLink component={NextLink} href={`/${locale}/how-to-buy`}>How To Buy</MuiLink>
+              <MuiLink component={NextLink} href={`/${locale}/faq`}>FAQ</MuiLink>
+              <MuiLink component={NextLink} href={`/${locale}/contact-us`}>Contact Us</MuiLink>
             </Box>
           </Grid>
-          <Grid size={{ xs: 6, sm: 4, md: 3 }} >
-            <Typography
-              variant="caption"
-              sx={{
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                color: "text.secondary",
-                fontWeight: 600,
-              }}
-            >
-              Stay in touch
-            </Typography>
 
-            <Box
-              component="form"
-              noValidate
-              autoComplete="off"
-              sx={{ mt: 1.5, display: "flex", gap: 1, maxWidth: 320 }}
-            >
-              <TextField
-                type="email"
-                placeholder="your@email.com"
-                size="small"
-                fullWidth
-                variant="outlined"
-                sx={{
-                  "& .MuiInputBase-input": { fontSize: 14 },
-                }}
-              />
-              <Button
-                variant="contained"
-                size="small"
-                sx={{
-                  fontSize: 12,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Subscribe
-              </Button>
-            </Box>
-
-            <Box
-              sx={{ mt: 1.5, display: "flex", alignItems: "center", gap: 1 }}
-            >
-              <Typography variant="caption" color="text.secondary">
-                Follow:
-              </Typography>
-              <MuiLink
-                component={NextLink}
-                href="https://www.instagram.com/sniffnfrolic"
-                target="_blank"
-                rel="noopener noreferrer"
-                underline="hover"
-                color="text.primary"
-                sx={{ fontSize: 12 }}
-              >
-                Instagram
-              </MuiLink>
+          <Grid size={{ xs: 6, sm: 4, md: 2 }} className={styles.footerMenu}>
+            <h5>Policy</h5>
+            <Box className={styles.link}>
+              <MuiLink component={NextLink} href={`/${locale}/refund-return-policy`}>Refund & Return Policy</MuiLink>
+              <MuiLink component={NextLink} href={`/${locale}/shipping-policy`}>Shipping Policy</MuiLink>
+              <MuiLink component={NextLink} href={`/${locale}/terms-and-conditions`}>Terms & Condition</MuiLink>
+              <MuiLink component={NextLink} href={`/${locale}/privacy-policy`}>Privacy Policy</MuiLink>
             </Box>
           </Grid>
         </Grid>
       </Container>
-
-      {/* 最底 bar */}
-      <Box sx={{ borderTop: 1, borderColor: "divider", mt: 2 }}>
-        <Container
-          maxWidth="lg"
-          sx={{
-            py: 2,
-            display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            alignItems: { xs: "flex-start", sm: "center" },
-            justifyContent: "space-between",
-            gap: 1,
-          }}
-        >
-          <Typography variant="caption" color="text.secondary">
-            © {year} Sniff & Frolic. All rights reserved.
-          </Typography>
-
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <MuiLink
-              component={NextLink}
-              href="/privacy"
-              underline="hover"
-              color="text.secondary"
-              sx={{ fontSize: 12 }}
-            >
-              Privacy Policy
-            </MuiLink>
-            <MuiLink
-              component={NextLink}
-              href="/terms"
-              underline="hover"
-              color="text.secondary"
-              sx={{ fontSize: 12 }}
-            >
-              Terms &amp; Conditions
-            </MuiLink>
-          </Box>
-        </Container>
+      <Box className={styles.copyright}>
+          <p>
+            Copyright © {year} Sniff & Frolic, For furry friends & the hoomans they love =)
+          </p>
       </Box>
     </Box>
   );

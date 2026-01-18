@@ -67,7 +67,7 @@ const CategorySlider = ({
                       <Box
                         component="img"
                         src={item.image?.src}
-                        alt={item.image?.alt || name}
+                        alt={item.image?.alt || item.name}
                         style={{ maxWidth: `100%` }}
                       />
                     ) : (

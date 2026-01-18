@@ -35,8 +35,9 @@
   }
   
   a {
-    color: inherit;
+    color: $sf-orange;
     text-decoration: none;
+    font-weight: 700;
   }
   
   @media (prefers-color-scheme: dark) {

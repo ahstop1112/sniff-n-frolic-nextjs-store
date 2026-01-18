@@ -1,0 +1,56 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.footerSection{
+    color: $brown;
+    background-color: $white
+}
+
+.footer{
+    padding: $point * 10 $point * 8;
+}
+.footerMenu a{
+    color: $brown !important;
+    font-size: 0.925rem !important;
+    font-weight: 600;
+    line-height: 2;
+    text-decoration: none;
+}
+.footerMenu a:hover{
+    text-decoration: underline;
+}
+
+.footerMenu h5{
+    color: $sf-orange;
+    font-size: 1.12rem;
+    margin-bottom: $point * 2;
+}
+
+.footerMenu h6{
+    color: $brown;
+    font-size: 1rem;
+    margin: $point * 4 0 $point 0;
+}
+
+.link{
+    margin-top: $point * 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5;
+};
+
+.emailInput{
+    margin: $point * 4 0 !important;
+    border: 1px solid $sf-orange ;
+}
+.emailInput input{
+    background-color: $white !important;
+    padding: $point * 2 !important;
+}
+
+.copyright{
+    background-color: $sf-orange;
+    color: $white;
+    padding: $point * 5;
+    text-align: center;
+}
