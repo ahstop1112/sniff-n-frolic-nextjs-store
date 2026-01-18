@@ -6,7 +6,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
 import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
 import { buildSearchMetadata } from "@/seo/buildSearchMetaTag";
-import ProductGrid from "@/components/ProductGrid";
+import ProductGrid from "@/components/Product/ProductGrid";
 
 interface SearchPageProps {
   params: Promise<{ lang: string; slug: string }>;

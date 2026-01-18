@@ -12,10 +12,10 @@ import {
 import BreadcrumbsNav, {
   type BreadcrumbItem,
 } from "@/components/BreadcrumbsNav";
-import ProductImageGallery from "@/components/ProductImageGallery";
+import ProductImageGallery from "@/components/Product/ProductImageGallery";
 import { buildProductMetadata } from "@/seo/buildProductMetaTag";
 // Add To Cart
-import { ProductPurchasePanel } from "@/components/ProductPurchasePanel";
+import { ProductPurchasePanel } from "@/components/Product/ProductPurchasePanel";
 import type { AddToCartInput } from "@/lib/cartTypes";
 // Currency
 import { formatPrice } from "@/lib/currency";

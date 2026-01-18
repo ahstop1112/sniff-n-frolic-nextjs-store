@@ -6,9 +6,9 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
 import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
 import BreadcrumbsNav, { type BreadcrumbItem } from "@/components/BreadcrumbsNav";
-import ProductsFilterSidebarClient from "@/components/ProductsFilterSidebarClient";
+import ProductsFilterSidebarClient from "@/components/Product/ProductsFilterSidebarClient";
 import CategoryGrid from "@/components/Category/CategoryGrid";
-import ProductGrid from "@/components/ProductGrid";
+import ProductGrid from "@/components/Product/ProductGrid";
 import { shuffleArray } from "@/utils/helpers";
 
 type SearchParams = Record<string, string | string[] | undefined>;

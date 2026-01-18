@@ -20,12 +20,16 @@
   }
   
   body {
-    color: var(--foreground);
-    background: var(--background);
+    color: $brown;
+    background: $white;
     font-family: "Alberta", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,h2,h3,h4,h5,h6{
+    color: $sf-teal;
   }
   
   * {
@@ -45,25 +49,6 @@
       color-scheme: dark;
     }
   }
-
-//   Wave Divider
-.wave--sunset {
---wave-bg: #f2a46b;
---wave-color: $sf-teal;
---wave-ripple: $sf-teal;
-}
-
-.wave--night {
---wave-bg: $sf-teal;
---wave-color: $sf-orange;
---wave-ripple: $sf-orange;
-}
-
-.wave--cream {
---wave-bg: #fff7ed;
---wave-color: $sf-teal;
---wave-ripple: $sf-teal;
-}
 
 .mainBanner{
     background-image: url("/images/banner_main.jpg");

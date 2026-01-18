@@ -13,9 +13,6 @@ export type CategorySliderItem = {
 export type CategorySliderProps = {
     title?: string;
     items: CategorySliderItem[];
-    bgColor?: string;     // teal
-    titleColor?: string;  // yellow
-    itemTextColor?: string;
     circleSize?: { xs: number; md: number };
     lang: string;
   };

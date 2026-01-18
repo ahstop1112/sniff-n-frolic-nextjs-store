@@ -1,17 +1,15 @@
 // src/app/[lang]/page.tsx
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import type { Metadata } from "next";
-import { Typography, Box, Grid } from "@mui/material";
+import { Typography } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
 import { shuffleArray } from "@/utils/helpers";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
-import CategoryGrid from "@/components/Category/CategoryGrid";
-import ProductGrid from "@/components/ProductGrid";
 import MainBanner from "@/components/Home/MainBanner";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
+import CategoryProductSliderSection from "@/components/CategoryProduct/CategoryProductSliderSection";
 
 
 interface HomePageProps {
@@ -22,8 +20,8 @@ export const generateMetadata = async (props: HomePageProps): Promise<Metadata> 
   const { params } = props;
   const { lang } = await params;
 
-  return buildHomeMetadata({ lang });c
-};
+  return buildHomeMetadata({ lang });
+}
 
 const HomePage = async ({ params }: HomePageProps) => {
   const { lang } = await params;
@@ -32,28 +30,44 @@ const HomePage = async ({ params }: HomePageProps) => {
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
-  const products = await getProducts({ per_page: 8, orderby: "date" });
+  const products = await getProducts({ per_page: 100, orderby: "date" });
   const finalProducts = shuffleArray(products);
 
   const categories = await getCategories({ parent: 0, hide_empty: true });
 
+  // Treats
+  const productTreats = await getProducts({ category: 139, per_page: 20 } as any);
+  const treatsTitle = productTreats.length > 0 && productTreats[0]?.categories ?
+    productTreats[0]?.categories[0].name : ``;
+  
+  // Bowl & Feeders
+  const productFeeder = await getProducts({ category: 82, per_page: 20 } as any);
+  const feederTitle = productFeeder.length > 0 && productFeeder[0]?.categories ?
+  productFeeder[0]?.categories[0].name : ``;
+  
   return (
     <>
       <MainBanner />
       <CategorySliderSection lang={lang} title="All Categories" includeSale items={categories} />
-      <Typography variant="subtitle1" gutterBottom>
-        {dict.common.latestArrivals}
-      </Typography>
-      
-      <Box mt={3}>
-        <Grid container spacing={2}>
-          {(finalProducts || []).map((p) => <ProductGrid key={p.id} locale={locale} slug={p.slug} image={p?.images[0]} name={p.name} price={p.price} />)}
-        </Grid>
-      </Box>
-      
-      <Box mt={4}>
-        <Link href={`/${locale}/products`}>{dict.common.viewAll} →</Link>
-      </Box>
+      {/* Pet Treats */}
+      <CategoryProductSliderSection
+        title={treatsTitle} desc="Everyday treats handpicked for mindful feeding, slow rewards, and daily routines."
+        style="white"
+        locale={locale}
+        items={productTreats}
+        tone="white"
+        topWave="teal"
+        bottomWave="orange"
+      />
+      {/* Pet Bowls & Feeders */}
+      <CategoryProductSliderSection
+        title={feederTitle} desc="Bowls, feeders and drinking accessories designed for everyday feeding and hydration."
+        style="orange"
+        locale={locale}
+        items={productFeeder}
+        tone="orange"
+        bottomWave="white"
+      />
     </>
   );
 };

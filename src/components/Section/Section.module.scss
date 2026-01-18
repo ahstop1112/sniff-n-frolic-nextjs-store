@@ -1,0 +1,38 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.section {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .inner {
+    position: relative;
+    z-index: 1;
+    padding: $point * 15 0;
+  }
+
+  .innerNoMarginTop{
+    position: relative;
+    z-index: 1;
+    padding: 0 0 $point * 15 0;
+  }
+  
+  /* background tones */
+  .teal {
+    background: $sf-teal;
+    color: white;
+  }
+  
+  .white {
+    background: $white;
+  }
+  
+  .yellow {
+    background: #ffe8a3;
+  }
+  
+  .orange {
+    background: $lightOrange;
+  }
+  

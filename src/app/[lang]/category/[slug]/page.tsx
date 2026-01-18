@@ -11,8 +11,8 @@ import BreadcrumbsNav, {
   type BreadcrumbItem,
 } from "@/components/BreadcrumbsNav";
 import CategoryGrid from "@/components/Category/CategoryGrid";
-import ProductGrid from "@/components/ProductGrid";
-import ProductsFilterSidebarClient from "@/components/ProductsFilterSidebarClient";
+import ProductGrid from "@/components/Product/ProductGrid";
+import ProductsFilterSidebarClient from "@/components/Product/ProductsFilterSidebarClient";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 interface CategoryPageProps {

@@ -1,55 +1,59 @@
 @use "../../styles/_tokens" as *;
 
-.section{
-    background: $sf-teal;
+.categoryProductSection{
+    background: $sf-orange;
     padding: $point * 10 0;
     overflow: hidden;
     --cs-slide-basis: calc(100% / 6);
 }
 
-.section h4{
-  color: $sf-yellow;
-}
-
 @include bp-up($bp-lg) {
-  .section {
+  .categoryProductSection {
     --cs-slide-basis: calc(100% / 6); // 4 items
   }
 }
 
 /* Tablet (md ~ lg) */
 @include bp-between($bp-md, $bp-lg) {
-  .section {
+  .categoryProductSection {
     --cs-slide-basis: calc(100% / 4); // 3 items
   }
 }
 
 /* Small tablet (sm ~ md) */
 @include bp-between($bp-sm, $bp-md) {
-  .section {
+  .categoryProductSection {
     --cs-slide-basis: calc(100% / 3); // 2 items
   }
 }
 
 /* Mobile (< sm) */
 @include bp-down($bp-sm) {
-  .section {
+  .categoryProductSection {
     --cs-slide-basis: calc(100% / 1.25) // 1 + peek
   }
 }
   
-.title{
+.categoryProductSection h2{
     text-align: center;
     color: $sf-yellow;
     font-family: "Lilita One", Arial, sans-serif;
-    font-size: 2rem;
+    font-size: 2.25rem;
     line-height: 1.6;
-    margin: 0 0 $point * 4;
+    margin: 0 0 $point * 2 0;
+}
+
+.categoryProductSection h4{
+  text-align: center;
+  color: $sf-yellow;
+  line-height: 1.6;
+  margin: 0 0 $point * 4;
 }
   
 .wrap{
     position: relative;
     margin: 0 auto;
+    margin-top: $point * 3;
     padding: 0 $point * 6;
     max-width: $max-width;
   }
@@ -77,25 +81,6 @@
   
   .link {
     text-decoration: none;
-  }
-  
-  .circle {
-    width: var(--cs-circle-md, 140px);
-    height: var(--cs-circle-md, 140px);
-    border-radius: 999px;
-    overflow: hidden;
-    margin: 0 auto 18px;
-    position: relative;
-  
-    background: $white;
-    border: 2px solid rgba(255, 255, 255, 0.85);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-  }
-  
-  .circle:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
   }
   
   .fallback {
@@ -193,4 +178,28 @@
       font-size: 36px;
     }
   }
-  
+
+  .bgWhite{
+    background-color: $white !important;
+    color: $brown !important;
+  }
+
+  .bgWhite h2{
+    color: $sf-orange !important;
+  }
+
+  .bgWhite h4{
+    color: $sf-teal;
+  }
+
+  .bgOrange{
+    background-color: $lightOrange !important;
+  }
+
+  .bgOrange h2{
+    color: $sf-teal !important;
+  }
+
+  .bgOrange h4{
+    color: $white;
+  }
