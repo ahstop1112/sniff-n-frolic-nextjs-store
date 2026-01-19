@@ -9,16 +9,15 @@ import {
   WooProduct,
   WooProductVariation,
 } from "@/lib/wooClient";
-import BreadcrumbsNav, {
-  type BreadcrumbItem,
-} from "@/components/Breadcrumb/BreadcrumbsNav";
+import Section from "@/components/Section/Section";
+import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
+import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import ProductImageGallery from "@/components/Product/ProductImageGallery";
 import { buildProductMetadata } from "@/seo/buildProductMetaTag";
+import ProductDetails from "@/components/ProductDetails/ProductsDetails";
 // Add To Cart
-import { ProductPurchasePanel } from "@/components/Product/ProductPurchasePanel";
+import ProductPurchasePanel from "@/components/ProductPurchasePanel/ProductPurchasePanel";
 import type { AddToCartInput } from "@/lib/cartTypes";
-// Currency
-import { formatPrice } from "@/lib/currency";
 
 interface ProductPageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -119,76 +118,16 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
   // Currency
   const price = Number(product.price || product.regular_price || 0);
-  const displayPrice = formatPrice(price);
 
   return (
-    <Box>
+    <Section tone="white" bottomWave="cream">
       <BreadcrumbsNav items={breadcrumbs} locale={locale} />
       <Grid container spacing={4}>
-        <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 6, lg: 5 }}>
           <ProductImageGallery images={images} productName={product.name} />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {product.name}
-          </Typography>
-
-          <Typography variant="h5" color="primary" gutterBottom>
-            {displayPrice}
-          </Typography>
-
-          {product.on_sale && (
-            <Typography variant="body2" color="secondary">
-              {dict.common.onSale}
-            </Typography>
-          )}
-
-          {variantOptions.length > 0 ? (
-            <Box mt={3}>
-              {variantOptions.length > 0 && (
-                <Box mt={3}>
-                  {variantOptions.map((group) => (
-                    <Box key={group.slug} mb={2}>
-                      <Typography variant="subtitle2" gutterBottom>
-                        {locale === "zh" ? group.name : group.name}
-                      </Typography>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: 1,
-                        }}
-                      >
-                        {group.values.map((value) => (
-                          <Box
-                            key={value}
-                            sx={{
-                              borderRadius: 1,
-                              border: "1px solid",
-                              borderColor: "divider",
-                              px: 1.2,
-                              py: 0.4,
-                              fontSize: 14,
-                            }}
-                          >
-                            {value}
-                          </Box>
-                        ))}
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-              )}
-            </Box>
-          ) : null}
-
-          {product.short_description && (
-            <Box mt={2}>
-              <div
-                dangerouslySetInnerHTML={{ __html: product.short_description }}
-              />
-            </Box>
-          )}
+        <Grid size={{ xs: 12, sm: 6, md: 6, lg: 7 }}>
+          <ProductDetails title={product.name} price={price} onSale={product.on_sale} shortDesc={product.short_description} variantOptions={variantOptions}  locale={locale} />
           <Box mt={4} display="flex" gap={2}>
             {/* Add To Cart */}
             <ProductPurchasePanel product={addToCartInput} locale={locale} />
@@ -203,7 +142,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           </Box>
         )}
       </Grid>
-    </Box>
+    </Section>
   );
 };
 

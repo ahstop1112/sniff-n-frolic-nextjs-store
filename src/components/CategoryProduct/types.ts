@@ -3,11 +3,15 @@ import type { WooImage } from "@/lib/wooClient";
 import type { Locale } from "@/i18n/config";
 
 export type CateogryProductSliderItem = {
+    id: string | ``;
     slug: string;
     locale: Locale;
     image: WooImage;
     name: string;
     price: string;
+    categories: [
+        name: string
+    ];
 };
 
 type SectionStyle = "teal" | "white" | "yellow" | "orange";

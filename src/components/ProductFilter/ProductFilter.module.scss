@@ -1,0 +1,7 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.productFilter{
+    padding: $point * 2;
+    padding-left: 0;
+}

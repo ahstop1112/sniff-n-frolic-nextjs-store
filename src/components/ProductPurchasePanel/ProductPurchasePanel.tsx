@@ -3,15 +3,10 @@
 import { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { useCart } from "@/context/CartContext";
-import type { AddToCartInput } from "@/lib/cartTypes";
-import type { Locale } from "@/i18n/config";
+import { ProductPurchasePanelProps } from "./types"
+import styles from "./ProductPurchasePanel.module.scss";
 
-interface ProductPurchasePanelProps {
-  locale: Locale;
-  product: AddToCartInput;
-}
-
-export const ProductPurchasePanel = ({ locale, product }: ProductPurchasePanelProps) => {
+const ProductPurchasePanel = ({ locale, product }: ProductPurchasePanelProps) => {
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
 
@@ -28,14 +23,7 @@ export const ProductPurchasePanel = ({ locale, product }: ProductPurchasePanelPr
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        gap: 2,
-        alignItems: "center",
-        flexWrap: "wrap",
-      }}
-    >
+    <Box className={styles.productPurchasePanel}>
       {/* Quantity */}
       <TextField
         type="number"
@@ -57,3 +45,5 @@ export const ProductPurchasePanel = ({ locale, product }: ProductPurchasePanelPr
     </Box>
   );
 };
+
+export default ProductPurchasePanel

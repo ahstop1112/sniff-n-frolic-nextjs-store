@@ -1,0 +1,27 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.productFilter{
+    padding: $point * 2;
+    padding-left: 0;
+}
+
+.title{
+    font-size: 2rem;
+    color: $sf-teal;
+    font-family: "Lilita One", Arial, sans-serif;
+    line-height: 1.25em;
+}
+
+.price{
+    font-size: 1.75rem;
+    color: $sf-orange;
+    margin: $point * 2 0;
+    font-family: "Alberta", Arial, sans-serif;
+}
+
+.shortDesc{
+    font-size: 1.15rem;
+    color: $brown;
+    line-height: 1.5;
+}

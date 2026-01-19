@@ -1,15 +1,16 @@
 // src/app/[lang]/products/page.tsx
 import { notFound } from "next/navigation";
-import { Typography, Box, Grid, Card, CardContent } from "@mui/material";
+import { Grid } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
 import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
-import BreadcrumbsNav, { type BreadcrumbItem } from "@/components/Breadcrumb/BreadcrumbsNav";
-import ProductsFilterSidebarClient from "@/components/Product/ProductsFilterSidebarClient";
+import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
+import { BreadcrumbItem } from "@/components/Breadcrumb/types";
+import ProductsFilterSidebarClient from "@/components/ProductFilter/ProductsFilterSidebarClient";
 import Section from "@/components/Section/Section";
 import ProductGrid from "@/components/Product/ProductGrid";
-import CategorytSliderSection from "@/components/Category/CategorySliderSection";
+import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import { shuffleArray } from "@/utils/helpers";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -56,8 +57,8 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const breadcrumbs: BreadcrumbItem[] = [];
 
   return (
-    <Box>
-      <CategorytSliderSection lang={lang} title="Collections" items={topLevelCategories} />
+    <>
+      <CategorySliderSection lang={lang} title="Collections" items={topLevelCategories} />
       <Section tone="white" topWave="teal"  bottomWave="cream">
         <BreadcrumbsNav locale={locale} items={breadcrumbs} />
         {/* All Product */}
@@ -73,7 +74,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
           </Grid>
           </Grid>
         </Section>
-    </Box>
+    </>
   );
 };
 

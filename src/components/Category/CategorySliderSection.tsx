@@ -15,8 +15,8 @@ const CategorySliderSection = ({
             component="section"
             className={styles.section}
         >
-            <h2 className={styles.title}>{title}</h2>
-            <CategorySlider items={items} lang={lang}/>
+            <h1 className={styles.title}>{title}</h1>
+            {items && items.length > 0 ? <CategorySlider items={items} lang={lang} /> : null}
     </Box>
   );
 };

@@ -12,29 +12,8 @@ import {
   Button,
 } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import type { getDictionary } from "@/i18n/dictionaries";
-
-type Dict = Awaited<ReturnType<typeof getDictionary>>;
-type CommonDict = Dict["common"];
-
-interface SimpleCategory {
-  id: number;
-  name: string;
-  slug: string;
-}
-
-interface SimpleTerm{
-  id: number;
-  name: string;
-  slug: string;
-}
-
-interface ProductsFilterSidebarClientProps {
-  locale: "en" | "zh";
-  categories: SimpleCategory[];
-  colors?: SimpleTerm[];
-  common: CommonDict
-}
+import { ProductsFilterSidebarClientProps } from "./types";
+import styles from './ProductFilter.module.scss';
 
 const ProductsFilterSidebarClient = ({
   locale,
@@ -131,15 +110,7 @@ const ProductsFilterSidebarClient = ({
   
 
   return (
-    <Box
-      sx={{
-        p: 2,
-        borderRadius: 2,
-        border: "1px solid",
-        borderColor: "divider",
-        bgcolor: "background.paper",
-      }}
-    >
+    <Box className={styles.productFilter}>
       <Typography
         variant="subtitle2"
         sx={{

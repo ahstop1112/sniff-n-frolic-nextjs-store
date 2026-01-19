@@ -27,7 +27,7 @@ const ProductGrid = ({
   const regular = toNum(regularPrice);
 
   return (
-    <Link href={`/${locale}/product/${slug}`} className={styles.productGrid}>
+    <Link href={`/${locale}/products/${slug}`} className={styles.productGrid}>
       <div className={styles.media}>
         {image?.thumbnail ? (
           <img

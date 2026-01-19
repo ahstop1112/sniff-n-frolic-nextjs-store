@@ -1,6 +1,5 @@
 // src/components/BreadcrumbsNav.tsx
-import { Locale } from "@/i18n/config";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Link from "next/link";
 import { BreadcrumbsNavProps, BreadcrumbItem } from "./types";
 import styles from './Breadcrumb.module.scss'

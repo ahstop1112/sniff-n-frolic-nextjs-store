@@ -1,0 +1,19 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.productPurchasePanel{
+    display: flex;
+    gap: 2;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.productPurchasePanel button{
+    box-shadow: none;
+    padding: $point * 2 $point * 5;
+    margin-left: $point * 2;
+}
+
+.productPurchasePanel h1{
+    font-size: 2rem;
+}
