@@ -4,9 +4,13 @@
 .section {
     position: relative;
     overflow: hidden;
+    width: 100%;
+    padding: $point * 12;
+    margin: 0 auto;
   }
   
   .inner {
+    max-width: $max-width;
     position: relative;
     z-index: 1;
     padding: $point * 15 0;
@@ -25,7 +29,11 @@
   }
   
   .white {
-    background: $white;
+    background: $sf-bg;
+  }
+  
+  .cream {
+    background: $cream;
   }
   
   .yellow {

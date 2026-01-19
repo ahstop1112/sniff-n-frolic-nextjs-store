@@ -9,7 +9,7 @@ import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPa
 import { buildCategoryMetadata } from "@/seo/buildCategoryMetaTag";
 import BreadcrumbsNav, {
   type BreadcrumbItem,
-} from "@/components/BreadcrumbsNav";
+} from "@/components/Breadcrumb/BreadcrumbsNav";
 import CategoryGrid from "@/components/Category/CategoryGrid";
 import ProductGrid from "@/components/Product/ProductGrid";
 import ProductsFilterSidebarClient from "@/components/Product/ProductsFilterSidebarClient";

@@ -11,7 +11,7 @@ import {
 } from "@/lib/wooClient";
 import BreadcrumbsNav, {
   type BreadcrumbItem,
-} from "@/components/BreadcrumbsNav";
+} from "@/components/Breadcrumb/BreadcrumbsNav";
 import ProductImageGallery from "@/components/Product/ProductImageGallery";
 import { buildProductMetadata } from "@/seo/buildProductMetaTag";
 // Add To Cart

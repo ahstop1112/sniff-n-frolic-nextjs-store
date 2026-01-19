@@ -26,8 +26,6 @@ const ProductGrid = ({
   const sale = toNum(price);
   const regular = toNum(regularPrice);
 
-  console.log(price, regularPrice)
-
   return (
     <Link href={`/${locale}/product/${slug}`} className={styles.productGrid}>
       <div className={styles.media}>

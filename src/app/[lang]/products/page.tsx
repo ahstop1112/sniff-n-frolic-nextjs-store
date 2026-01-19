@@ -5,10 +5,11 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts, getCategories } from "@/lib/wooClient";
 import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
-import BreadcrumbsNav, { type BreadcrumbItem } from "@/components/BreadcrumbsNav";
+import BreadcrumbsNav, { type BreadcrumbItem } from "@/components/Breadcrumb/BreadcrumbsNav";
 import ProductsFilterSidebarClient from "@/components/Product/ProductsFilterSidebarClient";
-import CategoryGrid from "@/components/Category/CategoryGrid";
+import Section from "@/components/Section/Section";
 import ProductGrid from "@/components/Product/ProductGrid";
+import CategorytSliderSection from "@/components/Category/CategorySliderSection";
 import { shuffleArray } from "@/utils/helpers";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -55,32 +56,23 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const breadcrumbs: BreadcrumbItem[] = [];
 
   return (
-    <Box mt={3}>
-      <BreadcrumbsNav locale={locale} items={breadcrumbs} />
-      {/* All Top Level Categories */}
-      <Typography variant="h4" component="h1" gutterBottom>
-        {dict.common.categories}
-      </Typography>
-      <Grid container spacing={2}>
-        {(topLevelCategories || []).map((cat) => <CategoryGrid key={cat.id} locale={locale} slug={cat.slug} image={cat.image} name={cat.name} />)}
-      </Grid>
-      {/* All Product */}
-      <Typography
-        variant="h4"
-        component="h1"
-        style={{ marginTop: 24 }}
-        gutterBottom
-      >
-        {dict.nav.products}
-      </Typography>
-      <Grid container spacing={2}>
-        <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
-          <ProductsFilterSidebarClient locale={locale} categories={topLevelCategories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))}  common={dict.common} />
-        </Grid>
-        <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
-          {(finalProducts || []).map((p) => <ProductGrid key={p.id} locale={locale} slug={p.slug} image={p?.images[0]} name={p.name} price={p.price} />)}
-        </Grid>
-      </Grid>
+    <Box>
+      <CategorytSliderSection lang={lang} title="Collections" items={topLevelCategories} />
+      <Section tone="white" topWave="teal"  bottomWave="cream">
+        <BreadcrumbsNav locale={locale} items={breadcrumbs} />
+        {/* All Product */}
+        <Grid container spacing={2}>
+          <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
+            <ProductsFilterSidebarClient locale={locale} categories={topLevelCategories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))}  common={dict.common} />
+          </Grid>
+          <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
+            {(finalProducts || []).map((item) =>
+              <Grid container size={{ lg: 3, xl: 2, md: 4, sm: 6, xs: 6 }} key={item.id}>
+                <ProductGrid locale={locale} categoryName={item?.categories[0].name || ``} slug={item.slug} image={item?.images[0]} name={item.name} onSale={item?.on_sale} price={item.price} regularPrice={item?.regular_price} />
+              </Grid>)}
+          </Grid>
+          </Grid>
+        </Section>
     </Box>
   );
 };

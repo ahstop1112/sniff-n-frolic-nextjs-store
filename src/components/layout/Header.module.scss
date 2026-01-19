@@ -5,7 +5,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  color: $white;
+  color: $cream;
   background: $sf-orange;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(2, 8, 23, 0.06);
@@ -18,7 +18,7 @@
     margin: 0 auto;
 
     svg{
-      color: $white;
+      color: $cream;
       font-size: 1em;
       margin-right: $point;
     }
@@ -29,13 +29,13 @@
   }
 
   a{
-    color: $white;
+    color: $cream;
   }
 }
 
 .promo {
   background: $brown; // 深啡
-  color: $white;
+  color: $cream;
   font-size: 1rem;
   text-align: center;
   padding: $point * 3;
@@ -45,7 +45,7 @@
   align-items: center;
 
   svg{
-    color: $white;
+    color: $cream;
     font-size: 1.1rem;
     margin-right: $point;
   }

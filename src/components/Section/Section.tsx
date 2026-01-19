@@ -1,18 +1,7 @@
 import clsx from "clsx";
+import WaveDivider from "../WaveDivider/WaveDivider";
+import { SectionProps } from "./types";
 import styles from "./Section.module.scss";
-import WaveDivider, { WaveTone } from "../WaveDivider/WaveDivider";
-
-type SectionTone = "teal" | "white" | "yellow" | "orange";
-
-type Props = {
-  children: React.ReactNode;
-  tone?: SectionTone;
-
-  topWave?: WaveTone;
-  bottomWave?: WaveTone;
-
-  className?: string;
-};
 
 const Section = ({
   children,
@@ -20,7 +9,7 @@ const Section = ({
   topWave,
   bottomWave,
   className,
-}: Props) => {
+}: SectionProps) => {
   return (
     <section className={clsx(styles.section, styles[tone], className)}>
       {topWave && <WaveDivider tone={topWave} position="top" />}

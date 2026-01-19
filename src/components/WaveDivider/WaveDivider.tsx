@@ -1,11 +1,11 @@
 import clsx from "clsx";
-import styles from "./WaveDivider.module.scss";
-
-export type WaveTone = "teal" | "white" | "yellow" | "orange";
+import { SectionTone } from "../Section/types";
 export type WavePosition = "top" | "bottom";
 
+import styles from "./WaveDivider.module.scss";
+
 type Props = {
-  tone?: WaveTone;
+  tone?: SectionTone;
   position?: WavePosition;
   height?: number; // px
   className?: string;
