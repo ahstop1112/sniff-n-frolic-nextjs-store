@@ -7,7 +7,15 @@
     width: 100%;
     padding: $point * 10;
     margin: 0 auto;
-  }
+
+    @media screen and (min-width: $bp-md){
+        padding: $point * 7.5;
+    }
+
+    @media screen and (min-width: $bp-xs){
+        padding: $point * 5;
+    }
+}
   
   .inner {
     max-width: $max-width;
