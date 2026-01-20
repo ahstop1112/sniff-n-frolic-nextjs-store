@@ -179,27 +179,39 @@
     }
   }
 
-  .bgWhite{
+  .white{
     background-color: $cream !important;
     color: $brown !important;
   }
 
-  .bgWhite h2{
+  .white h2{
     color: $sf-orange !important;
   }
 
-  .bgWhite h4{
+  .white h4{
     color: $sf-teal;
   }
 
-  .bgOrange{
+  .orange{
     background-color: $lightOrange !important;
   }
 
-  .bgOrange h2{
+  .orange h2{
     color: $sf-teal !important;
   }
 
-  .bgOrange h4{
+  .orange h4{
+    color: $cream;
+  }
+
+  .green{
+    background-color: $sf-green !important;
+  }
+
+  .green h2{
+    color: $sf-yellow !important;
+  }
+
+  .green h4{
     color: $cream;
   }

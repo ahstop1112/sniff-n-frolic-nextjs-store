@@ -31,8 +31,6 @@ const CateogryProductSlider = ({
     emblaApi.scrollTo(current + 1);
   };
 
-  console.log(items)
-
   return (
       <div className={styles.wrap}>
         <button

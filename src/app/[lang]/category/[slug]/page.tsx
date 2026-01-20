@@ -72,9 +72,11 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
 
   return (
     <>
-      <CategorySliderSection lang={lang} title={category.name} items={childCategories} />
-      <Section tone="white" topWave="teal"  bottomWave="cream">
+      <Section tone="teal" className="pageHeader">
         <BreadcrumbsNav locale={locale} items={breadcrumbs} />
+        <h1>{category.name} </h1>
+      </Section>
+      <Section tone="white" topWave="teal"  bottomWave="cream">
         {/* All Product */}
         <Grid container spacing={2}>
           <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
@@ -88,6 +90,7 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
           </Grid>
         </Grid>
       </Section>
+      <CategorySliderSection lang={lang} title={category.name} items={childCategories} />
     </>
   );
 };

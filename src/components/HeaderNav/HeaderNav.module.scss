@@ -46,6 +46,7 @@
 .itemLink { 
     display:flex; 
     justify-content:space-between; 
+    align-items: center;
     padding: 10px 12px; 
     text-decoration:none; 
     color: $brown; 
@@ -86,7 +87,7 @@
     position: relative; 
 }
 
-.rightIcon { opacity: .65; }
+.rightIcon { opacity: .65; color: $grey !important;}
 
 .itemActive {
     .itemLink { color: $sf-orange; font-weight: 800; }

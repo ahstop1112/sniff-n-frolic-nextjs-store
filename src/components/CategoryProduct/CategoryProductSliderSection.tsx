@@ -15,9 +15,9 @@ const CategoryProductSliderSection = ({
     topWave,
     bottomWave
 }: CateogryProductSliderProps) => {
-    const className = tone === "white" ? styles.bgWhite : tone === "orange" ? styles.bgOrange : ``;
+
     return (
-        <Section tone={tone} topWave={topWave} bottomWave={bottomWave} className={`${styles.categoryProductSection} ${className}`}>
+        <Section tone={tone} topWave={topWave} bottomWave={bottomWave} className={`${styles.categoryProductSection} ${tone ? styles[tone] : ``}`}>
             <h2 className={styles.title}>{title}</h2>
             <h4 className={styles.desc}>{desc}</h4>
             <CategoryProductSlider items={items} title={title} desc={desc} locale={locale} />

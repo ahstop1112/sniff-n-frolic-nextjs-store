@@ -48,7 +48,6 @@
   a {
     color: $sf-orange;
     text-decoration: none;
-    font-weight: 700;
   }
   
   @media (prefers-color-scheme: dark) {
@@ -65,3 +64,30 @@
     height: 36vw;
 }
 
+.pageHeader{
+  padding: $point * 10 $point * 15 !important;
+  display: flex;
+  align-items: center;
+}
+
+.pageHeader > div{
+  padding: 0;
+  margin: 0;
+}
+
+.pageHeader h1{
+  font-family: "Lilita One", Arial, sans-serif;
+  font-size: 3.2rem;
+  color: $sf-yellow;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+
+.pageHeader nav{
+  color: $cream !important;
+}
+
+.pageHeader a{
+  color: $sf-orange !important;
+}

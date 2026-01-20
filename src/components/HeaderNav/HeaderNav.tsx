@@ -9,7 +9,7 @@ import { HeaderNavProps } from "./types";
 import styles from "./HeaderNav.module.scss";
 
 const HeaderNav = ({ locale, items }: HeaderNavProps) => {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     
     // Level 2
     const [activeL2Idx, setActiveL2Idx] = useState<number | null>(null);
@@ -44,7 +44,7 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
     const closeMenu = () => {
         clearCloseTimer();
         closeTimerRef.current = window.setTimeout(() => {
-        setOpen(true);
+        setOpen(false);
         }, 180);
     };
 

@@ -1,4 +1,4 @@
-export type SectionTone = "teal" | "white" | "cream" | "yellow" | "orange";
+export type SectionTone = "teal" | "white" | "cream" | "yellow" | "orange" | "green";
 
 export type SectionProps = {
   children: React.ReactNode;
