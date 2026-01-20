@@ -1,5 +1,5 @@
-@use "./_tokens" as *;
-@use "./fonts" as *;
+@use "@/styles/_tokens" as *;
+@use "@/styles/fonts" as *;
 
 :root {
     --background: $cream;

@@ -1,5 +1,5 @@
 export interface ProductGridProps {
-    locale: "en" | "zh";
+    locale: Locale;
     slug: string;
     image?: { thumbnail: string; alt?: string };
     name: string;

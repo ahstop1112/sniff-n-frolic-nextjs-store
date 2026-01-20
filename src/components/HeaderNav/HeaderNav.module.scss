@@ -1,0 +1,109 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.nav {
+    position: relative;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+}
+
+.link,
+.linkBtn {
+    color: $cream;
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1;
+    letter-spacing: 0.2px;
+    background: none;
+    border: 0;
+    padding: $point * 3 0;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.linkBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.active {
+    opacity: 0.95;
+}
+
+.chev {
+    transition: transform 140ms ease;
+}
+
+.chevOpen {
+    transform: rotate(180deg);
+}
+
+.itemLink { 
+    display:flex; 
+    justify-content:space-between; 
+    padding: 10px 12px; 
+    text-decoration:none; 
+    color: $brown; 
+    font-size: 1.125rem; 
+    font-weight: 500; 
+}
+
+/* mega panel */
+.panel {
+    position: absolute;
+    top: calc(100% - 2px); /* ✅ 貼住 trigger，避免未到就閂 */
+    left: 0;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 0.9fr; /* 3 欄 */
+    color: $brown;
+}
+
+.panel2 { 
+    width: 240px;
+    padding: $point * 3; 
+    border-right: 1px solid rgba(0,0,0,0.08); 
+    background: $cream;
+    grid-template-columns: 1fr;
+    .itemLink { color:$brown;  }
+}
+
+.panel3 { 
+    padding: $point * 3; 
+    border-right: 1px solid rgba(0,0,0,0.08); 
+    background: $cream;
+    height: auto;
+
+    .itemLink { color:$brown; background: $cream;}
+}
+
+.colL3{
+    width: 240px;
+    position: relative; 
+}
+
+.rightIcon { opacity: .65; }
+
+.itemActive {
+    .itemLink { color: $sf-orange; font-weight: 800; }
+    .rightIcon { color:$grey; transform: translateX(4px); opacity: 1; }
+}
+
+.subRow{
+    padding: $point * 3; 
+    background: $cream;
+
+    .itemLink { color:$brown; }
+}
+.subItem { display:block; text-decoration:none; color:$sf-teal; font-weight: 650; }
+
+.subRowActive {
+    .subItem { color: $sf-orange; font-weight: 800; }
+    .itemLink { color:$sf-orange; }
+}
+
+.emptyHint { height: 1px; }

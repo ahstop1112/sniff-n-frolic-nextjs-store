@@ -14,8 +14,11 @@
 
   .headerContainer{
     padding: $point * 2 $point * 4;
-    max-width: $container-width;
     margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 
     svg{
       color: $cream;

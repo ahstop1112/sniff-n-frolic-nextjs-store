@@ -29,7 +29,9 @@ export interface Dictionary{
     nav: {
       home: string,
       products: string,
-      about: string,
+      ourStory: string,
+      howToBuy: string,
+      faq: string
     },
     search:{
       searchProducts: string,

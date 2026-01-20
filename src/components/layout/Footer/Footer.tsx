@@ -1,7 +1,7 @@
-'use client'
+'use client';
+
 import { useEffect, useMemo, useState } from "react";
 import NextLink from "next/link";
-import type { Locale } from "@/i18n/config";
 import {
   Box,
   Container,
@@ -13,12 +13,8 @@ import {
 } from "@mui/material";
 import type { WooCategory } from "@/lib/wooClient";
 import { getTopLevelCategories } from "@/utils/category";
+import { FooterProps } from "./types";
 import styles from "./Footer.module.scss";
-import { style } from "@mui/system";
-
-interface FooterProps {
-  locale: Locale;
-}
 
 const Footer = ({ locale }:FooterProps) => {
   const [topLevelCategories, setTopLevelCategories] = useState<WooCategory[]>([]);
@@ -51,8 +47,7 @@ const Footer = ({ locale }:FooterProps) => {
     >
       <Container className={styles.footer}>
         <Grid container spacing={4}>
-          {/* 左邊：Logo + 簡介 */}
-          <Grid size={{ xs: 6, sm: 3, md: 4 }} className={styles.footerMenu}>
+          <Grid size={{ xs: 6, sm: 6, md: 4 }} className={styles.footerMenu}>
            <p> <b>📬 Subscribe to Fei Fei’s Newsletter for exclusive deals & new arrivals!</b></p>
            <TextField
               type="email"

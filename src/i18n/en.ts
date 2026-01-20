@@ -30,8 +30,10 @@ export const enDictionary: Dictionary = {
     },
     nav: {
       home: "Home",
-      products: "Products",
-      about: "About",
+      products: "Collection",
+      ourStory: "Our Story",
+      howToBuy: "How To Buy",
+      faq: "FAQ",
     },
     search:{
       searchProducts:"Search products",

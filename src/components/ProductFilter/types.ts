@@ -1,4 +1,5 @@
 import type { getDictionary } from "@/i18n/dictionaries";
+import type { Locale } from "@/i18n/config";
 
 type Dict = Awaited<ReturnType<typeof getDictionary>>;
 type CommonDict = Dict["common"];
@@ -16,7 +17,7 @@ export interface SimpleTerm{
 }
 
 export interface ProductsFilterSidebarClientProps {
-  locale: "en" | "zh";
+  locale: Locale;
   categories: SimpleCategory[];
   colors?: SimpleTerm[];
   common: CommonDict
