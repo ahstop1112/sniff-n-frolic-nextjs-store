@@ -90,7 +90,7 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
           </Grid>
         </Grid>
       </Section>
-      <CategorySliderSection lang={lang} title={category.name} items={childCategories} />
+      {childCategories && childCategories.length > 0 ? <CategorySliderSection lang={lang} title={category.name} items={childCategories} /> : null}
     </>
   );
 };

@@ -5,27 +5,27 @@ export const NAV_ITEMS = (locale: Locale) => [
   {
     label: "Collection",
     mega: [
-      { label: "Pet Treats", href: `/${locale}/c/pet-treats` },
+      { label: "Pet Treats", href: `/${locale}/category/pet-treats` },
       {
         label: "Bowls Feeders",
-        href: `/${locale}/c/bowls-feeders`,
+        href: `/${locale}/category/bowls-feeders`,
         children: [
           { label: "Slow Feeders", href: `/${locale}/category/slow-feeders` },
           { label: "Lick Mats", href: `/${locale}/category/lick-mats` },
           { label: "Water Bottles", href: `/${locale}/category/water-bottles` },
         ],
       },
-      { label: "Pet Toys", href: `/${locale}/c/pet-toys` },
-      { label: "Pet Clothing", href: `/${locale}/c/pet-clothing` },
+      { label: "Pet Toys", href: `/${locale}/category/pet-toys` },
+      { label: "Pet Clothing", href: `/${locale}/category/pet-clothing` },
       {
         label: "Travel Gear",
-        href: `/${locale}/c/travel-gear`,
+        href: `/${locale}/category/travel-gear`,
         children: [
-          { label: "Car Seat Covers", href: `/${locale}/c/car-seat` },
-          { label: "Seat Belts", href: `/${locale}/c/seat-belt` },
+          { label: "Car Seat Covers", href: `/${locale}/category/car-seat` },
+          { label: "Seat Belts", href: `/${locale}/category/seat-belt` },
         ],
       },
-      { label: "Everyday Care", href: `/${locale}/c/everyday-care` },
+      { label: "Everyday Care", href: `/${locale}/category/everyday-care` },
     ],
   },
   { label: "Our Story", href: `/${locale}/about` },

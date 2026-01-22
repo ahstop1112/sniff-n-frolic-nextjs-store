@@ -1,3 +1,5 @@
+import { Locale } from "@/i18n/config";
+
 export type NavItem = { label: string; href: string };
 
 export type CategoryGroup = {
@@ -7,9 +9,7 @@ export type CategoryGroup = {
 };
 
 export type MobileMenuProps = {
-  locale: "en" | "zh";
-  /** top-level nav links */
-  links?: NavItem[];
-  /** category tree for menu */
-  categories?: CategoryGroup[];
+    locale: Locale;
+    open: Boolean;
+    onClose: () => void;
 };
