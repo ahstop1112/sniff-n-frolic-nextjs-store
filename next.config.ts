@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, "src")],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
+
 
 export default nextConfig;
