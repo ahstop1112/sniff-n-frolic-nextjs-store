@@ -10,12 +10,15 @@ const CategorySliderSection = ({
     title = "All items",
     items,
     lang,
+    tone,
+    topWave,
+    bottomWave
 }: CategorySliderProps) => {
     return (
         <Section
-            tone="green"
-            topWave="white"
-            bottomWave="cream"
+            tone={tone || "green"}
+            topWave={topWave}
+            bottomWave={bottomWave}
         >
             <h1 className={styles.title}>{title}</h1>
             {items && items.length > 0 ? <CategorySlider items={items} lang={lang} /> : null}

@@ -8,7 +8,7 @@ export const NAV_ITEMS = (locale: Locale) => [
       { label: "Pet Treats", href: `/${locale}/category/pet-treats` },
       {
         label: "Bowls Feeders",
-        href: `/${locale}/category/bowls-feeders`,
+        href: `/${locale}/category/bowls-feeder`,
         children: [
           { label: "Slow Feeders", href: `/${locale}/category/slow-feeders` },
           { label: "Lick Mats", href: `/${locale}/category/lick-mats` },

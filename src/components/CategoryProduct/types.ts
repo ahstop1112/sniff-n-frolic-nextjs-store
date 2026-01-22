@@ -1,8 +1,11 @@
 
 import type { WooImage } from "@/lib/wooClient";
 import type { Locale } from "@/i18n/config";
+import type { SectionTone } from "../Section/types";
 
 export type CateogryProductSliderItem = {
+    regular_price: string | undefined;
+    on_sale: boolean | undefined;
     id: string | ``;
     slug: string;
     locale: Locale;
@@ -14,14 +17,12 @@ export type CateogryProductSliderItem = {
     ];
 };
 
-type SectionStyle = "teal" | "white" | "yellow" | "orange";
-  
 export type CateogryProductSliderProps = {
     title?: string;
     desc?: string;
     items: CateogryProductSliderItem[];
-    tone?: SectionStyle
+    tone?: SectionTone;
     locale: Locale;
-    topWave?: SectionStyle;
-    bottomWave?: SectionStyle;
+    topWave?: SectionTone;
+    bottomWave?: SectionTone;
   };

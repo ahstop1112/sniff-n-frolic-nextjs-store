@@ -58,22 +58,25 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
 
   return (
     <>
-      <CategorySliderSection lang={lang} title="Collections" items={topLevelCategories} />
-      <Section tone="white" topWave="teal"  bottomWave="cream">
+      <Section tone="teal" className="pageHeader">
         <BreadcrumbsNav locale={locale} items={breadcrumbs} />
+        <h1>Collections</h1>
+      </Section>
+      <Section tone="white" topWave="teal"  bottomWave="green">
         {/* All Product */}
-        <Grid container spacing={2}>
-          <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
-            <ProductsFilterSidebarClient locale={locale} categories={topLevelCategories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))}  common={dict.common} />
+        <Grid container spacing={3}>
+            <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
+              <ProductsFilterSidebarClient locale={locale} categories={topLevelCategories.map(c => ({ id: c.id, name: c.name, slug: c.slug }))}  common={dict.common} />
+            </Grid>
+            <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
+              {(finalProducts || []).map((item) =>
+                <Grid container size={{ lg: 3, xl: 2, md: 4, sm: 6, xs: 6 }} key={item.id}>
+                  <ProductGrid locale={locale} categoryName={item?.categories[0].name || ``} slug={item.slug} image={item?.images[0]} name={item.name} onSale={item?.on_sale} price={item.price} regularPrice={item?.regular_price} />
+                </Grid>)}
+            </Grid>
           </Grid>
-          <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
-            {(finalProducts || []).map((item) =>
-              <Grid container size={{ lg: 3, xl: 2, md: 4, sm: 6, xs: 6 }} key={item.id}>
-                <ProductGrid locale={locale} categoryName={item?.categories[0].name || ``} slug={item.slug} image={item?.images[0]} name={item.name} onSale={item?.on_sale} price={item.price} regularPrice={item?.regular_price} />
-              </Grid>)}
-          </Grid>
-          </Grid>
-        </Section>
+      </Section>
+      <CategorySliderSection lang={lang} title="All Categories" items={topLevelCategories} bottomWave="cream" />
     </>
   );
 };
