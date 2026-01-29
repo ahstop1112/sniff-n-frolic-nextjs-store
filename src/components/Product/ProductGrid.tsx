@@ -1,8 +1,8 @@
 // src/components/ProductGrid.tsx
 "use client";
 import Link from "next/link";
-import { ProductGridProps } from './types';
-import styles from './Product.module.scss';
+import { ProductGridProps } from "./types";
+import styles from "./Product.module.scss";
 
 const formatMoney = (n: number, currency = "CAD") =>
   new Intl.NumberFormat("en-CA", { style: "currency", currency }).format(n);
@@ -21,7 +21,7 @@ const ProductGrid = ({
   onSale,
   price,
   regularPrice,
-  currency = "CAD"
+  currency = "CAD",
 }: ProductGridProps) => {
   const sale = toNum(price);
   const regular = toNum(regularPrice);
@@ -42,20 +42,22 @@ const ProductGrid = ({
       </div>
 
       <div className={styles.productInfo}>
-        {categoryName ? <div className={styles.category}>{categoryName}</div> : null}
+        {categoryName ? (
+          <div className={styles.category}>{categoryName}</div>
+        ) : null}
 
         <div className={styles.title}>{name}</div>
 
         <div className={styles.priceBlock}>
           {onSale ? (
-            <div>
+            <>
               <span className={styles.saleOnRegular}>
                 {formatMoney(regular!, currency)}
               </span>
               <span className={styles.sale}>
                 {formatMoney(sale!, currency)}
               </span>
-            </div>
+            </>
           ) : (
             <div className={styles.sale}>
               {sale !== null ? formatMoney(sale, currency) : ""}

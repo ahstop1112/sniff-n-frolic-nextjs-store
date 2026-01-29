@@ -2,92 +2,118 @@
 @use "@/styles/fonts" as *;
 
 :root {
-    --background: $cream;
-    --foreground: $black;
-  }
-  
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: #0a0a0a;
-      --foreground: #ededed;
-    }
-  }
-  
-  html,
-  body {
-    max-width: 100vw;
-    overflow-x: hidden;
-  }
-  
-  body {
-    color: $brown;
-    background: $cream;
-    font-family: "Alberta", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    padding: 0;
-    margin: 0;
-  }
-
-  main{
-    padding: 0;
-    margin: 0;
-  }
-
-  h1,h2,h3,h4,h5,h6{
-    color: $sf-teal;
-  }
-  
-  * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-  }
-  
-  a {
-    color: $sf-orange;
-    text-decoration: none;
-  }
-  
-  @media (prefers-color-scheme: dark) {
-    html {
-      color-scheme: dark;
-    }
-  }
-
-.mainBanner{
-    background-image: url("/images/banner_main.jpg");
-    background-size: cover;
-    background-position: center;
-    max-width: none !important;
-    height: 36vw;
+  --background: $cream;
+  --foreground: $black;
 }
 
-.pageHeader{
-  padding: $point * 10 $point * 15 !important;
-  display: flex;
-  align-items: center;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 }
 
-.pageHeader > div{
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: $brown;
+  background: $cream;
+  font-family:
+    "Alberta",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   padding: 0;
   margin: 0;
 }
 
-.pageHeader h1{
+main {
+  padding: 0;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $sf-teal;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: $sf-orange;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+.mainBanner {
+  background-image: url("/images/banner_main.jpg");
+  background-size: cover;
+  background-position: center;
+  max-width: none !important;
+  height: 36vw;
+
+  @media (max-width: $bp-sm) {
+    height: 100vw;
+    background-position: left;
+  }
+}
+
+.pageHeader {
+  padding: $point * 10 $point * 15;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: $bp-sm) {
+    padding: $point * 5 $point * 7.5;
+  }
+}
+
+.pageHeader > div {
+  padding: 0;
+  margin: 0;
+}
+
+.pageHeader h1 {
   font-family: "Lilita One", Arial, sans-serif;
   font-size: 3.2rem;
   color: $sf-yellow;
   font-weight: 500;
   padding: 0;
   margin: 0;
+
+  @media (max-width: $bp-sm) {
+    font-size: 2.5rem;
+  }
 }
 
-.pageHeader nav{
+.pageHeader nav {
   color: $cream !important;
 }
 
-.pageHeader a{
+.pageHeader a {
   color: $sf-orange !important;
 }

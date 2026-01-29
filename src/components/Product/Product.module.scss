@@ -2,84 +2,86 @@
 @use "@/styles/mixins" as m;
 
 .productGrid {
-    display: block;
-    text-decoration: none;
-    overflow: hidden;
-  }
-  
-  .media {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1; 
-  }
+  display: block;
+  text-decoration: none;
+  overflow: hidden;
+}
 
-  .media img{
-    width: 100%;
-  }
-  
-  .img {
-    object-fit: cover;
-  }
-  
-  .imgFallback {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .productInfo {
-    padding: 0 $point * 2;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-  }
+.media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
 
-  .productInfo > div {
-    flex: 0 0 100%;
-  }
-  
-  .category {
-    font-size: 0.925rem;
-    font-weight: 700;
-    color: $sf-orange; /* S&F 橙 */
-    margin-bottom: $point;
-  }
-  
-  .title {
-    height: 60px;
-    font-size: 1.125rem;
-    line-height: 1.12;
-    font-weight: 800;
-    color: $sf-teal; 
-    margin-bottom: $point;
-    text-align: left;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .priceBlock {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .regular {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: $sf-orange;
-    text-decoration: line-through;
-    opacity: 0.75;
-  }
-  
-  .sale {
-    font-size: 1.25rem;
-    font-weight: 900;
-    color: $sf-orange;
-  }
+.media img {
+  width: 100%;
+}
 
-  .saleOnRegular{
-    font-size: 0.925rem;
-    text-decoration: line-through;
-    margin-right: $point;
-  }
+.img {
+  object-fit: cover;
+}
+
+.imgFallback {
+  width: 100%;
+  height: 100%;
+}
+
+.productInfo {
+  padding: 0 $point * 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.productInfo > div {
+  flex: 0 0 100%;
+}
+
+.category {
+  font-size: 0.925rem;
+  font-weight: 700;
+  color: $sf-orange; /* S&F 橙 */
+  margin-bottom: $point;
+}
+
+.title {
+  height: 60px;
+  font-size: 1.125rem;
+  line-height: 1.12;
+  font-weight: 800;
+  color: $sf-teal;
+  margin-bottom: $point;
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.priceBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.regular {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: $sf-orange;
+  text-decoration: line-through;
+  opacity: 0.75;
+}
+
+.sale {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: $sf-orange;
+  text-align: left;
+}
+
+.saleOnRegular {
+  font-size: 0.925rem;
+  text-decoration: line-through;
+  margin-right: $point;
+  text-align: left;
+}

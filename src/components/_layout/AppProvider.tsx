@@ -5,7 +5,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 
 import { theme } from "@/styles/theme";
-import { CartProviderClient } from "@/components/CartProviderClient";
+import { CartProviderClient } from "@/components/Cart/CartProviderClient";
 import { CurrencyProvider } from "@/context/CurrencyContext";
 
 export const AppProviders = ({ children }: { children: ReactNode }) => {

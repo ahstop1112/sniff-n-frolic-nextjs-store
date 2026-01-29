@@ -30,7 +30,7 @@ interface VariantOptionGroup {
 }
 
 export const generateMetadata = async (
-  props: ProductPageProps
+  props: ProductPageProps,
 ): Promise<Metadata> => {
   const { params } = props;
   const { lang, slug } = await params;
@@ -40,7 +40,7 @@ export const generateMetadata = async (
 
 const buildVariantOptions = (
   product: WooProduct,
-  variations: WooProductVariation[]
+  variations: WooProductVariation[],
 ): VariantOptionGroup[] => {
   const attrs = product.attributes ?? [];
   const variationAttrs = attrs.filter((a) => a.variation);
@@ -127,7 +127,14 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           <ProductImageGallery images={images} productName={product.name} />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 6, lg: 7 }}>
-          <ProductDetails title={product.name} price={price} onSale={product.on_sale} shortDesc={product.short_description} variantOptions={variantOptions}  locale={locale} />
+          <ProductDetails
+            title={product.name}
+            price={price}
+            onSale={product.on_sale}
+            shortDesc={product.short_description}
+            variantOptions={variantOptions}
+            locale={locale}
+          />
           <Box mt={4} display="flex" gap={2}>
             {/* Add To Cart */}
             <ProductPurchasePanel product={addToCartInput} locale={locale} />

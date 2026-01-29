@@ -8,20 +8,25 @@ import { useTheme } from "@mui/material/styles";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-
+// Components
 import HeaderNav from "@/components/HeaderNav/HeaderNav";
 import SearchOverlay from "@/components/SearchBar/SearchOverlay";
 import MobileMenu from "@/components/MobileMenu/MobileMenu";
-import { MiniCart } from "@/components/MiniCart";
+import MiniCart from "@/components/Cart/MiniCart";
+// Context & Config
+import { useCategories } from "@/context/CategoriesContext";
 import { NAV_ITEMS } from "@/config/nav.config";
 import { HeaderProps } from "./types";
 import styles from "./Header.module.scss";
 
 const Header = ({ locale }: HeaderProps) => {
-  const { t } = useTranslation(); // ✅ 用 default，避免你 t("common.siteTitle") 但 namespace="nav" 出唔到
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+
+  const categories = useCategories();
+  const navItems = NAV_ITEMS(locale, categories);
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -44,7 +49,7 @@ const Header = ({ locale }: HeaderProps) => {
             alignItems="center"
             justifyContent="space-between"
             className={styles.headerContainer}
-            >
+          >
             <Link href={`/${locale}`} style={{ textDecoration: "none" }}>
               <img
                 src="/images/logo_snf_light2.png"
@@ -53,13 +58,14 @@ const Header = ({ locale }: HeaderProps) => {
               />
             </Link>
             {/* Left: Nav */}
-            <HeaderNav locale={locale} items={NAV_ITEMS(locale)} />
-
-            
+            <HeaderNav locale={locale} items={navItems} />
 
             {/* Right: Search + Cart */}
             <Stack direction="row" spacing={1} alignItems="center">
-              <IconButton onClick={() => setSearchOpen(true)} aria-label="Open search">
+              <IconButton
+                onClick={() => setSearchOpen(true)}
+                aria-label="Open search"
+              >
                 <SearchRoundedIcon />
               </IconButton>
               <MiniCart locale={locale} />
@@ -94,11 +100,16 @@ const Header = ({ locale }: HeaderProps) => {
           </Stack>
         </Box>
       </Box>
-
-      {/* overlays 放 header 外面，避免 z-index/position 問題 */}
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} locale={locale} />
-
-      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} locale={locale} />
+      <SearchOverlay
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        locale={locale}
+      />
+      <MobileMenu
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        locale={locale}
+      />
     </>
   );
 };

@@ -24,7 +24,7 @@ const StripeProvider = ({ clientSecret, children, locale = "en" }: Props) => {
       // appearance: { theme: "stripe" }, // optional
       locale: locale === "zh" ? "zh" : "en",
     }),
-    [clientSecret, locale]
+    [clientSecret, locale],
   );
 
   return (

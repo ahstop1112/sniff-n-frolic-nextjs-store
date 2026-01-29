@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
-import CartPageClient from "@/components/CartPageClient";
+import CartPageClient from "@/components/Cart/CartPageClient";
 
 interface CartPageProps {
   params: Promise<{ lang: string }>;
 }
 
-export const generateMetadata = async (props: CartPageProps): Promise<Metadata> => {
+export const generateMetadata = async (
+  props: CartPageProps,
+): Promise<Metadata> => {
   const { params } = props;
   const { lang } = await params;
 

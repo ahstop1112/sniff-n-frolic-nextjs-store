@@ -1,0 +1,34 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.pageLayout {
+  padding: $point * 10;
+  margin: 0 auto;
+  background-color: $white;
+  position: relative;
+
+  @media screen and (max-width: $bp-lg) {
+    padding: $point * 7.5;
+  }
+
+  @media screen and (max-width: $bp-md) {
+    padding: $point * 5;
+  }
+}
+
+.pageLayoutContent {
+  max-width: $container-width;
+  margin: 0 auto;
+  margin-bottom: $point * 15;
+  display: block;
+
+  h1 {
+    color: $sf-orange;
+    font-family: "Lilita One", Arial, sans-serif;
+    font-size: 2.5rem;
+  }
+  h4 {
+    font-size: 1.5rem;
+    margin-bottom: $point * 4;
+  }
+}

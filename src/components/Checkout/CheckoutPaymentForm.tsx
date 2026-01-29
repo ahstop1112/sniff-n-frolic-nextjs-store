@@ -1,13 +1,15 @@
 "use client";
 import { useState } from "react";
-import { Box, Button, Alert, Typography } from "@mui/material";
+import { Button, Alert } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import {
   PaymentElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
 import type { Locale } from "@/i18n/config";
-import PageLoading from "./common/PageLoading";
+import PageLoading from "../common/PageLoading";
+import Section from "../Section/Section";
 
 interface Props {
   locale: Locale;
@@ -29,7 +31,7 @@ const CheckoutPaymentForm = ({
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const isZh = locale === "zh";
+  const { t } = useTranslation("checkout");
 
   const handlePay = async () => {
     setLocalError(null);
@@ -75,7 +77,7 @@ const CheckoutPaymentForm = ({
       window.location.href = `/${locale}/checkout/return?orderId=${orderId}`;
       return;
     } catch (e: any) {
-      const msg = e?.message || (isZh ? "付款出現問題。" : "Payment error.");
+      const msg = e?.message || t("paymentError");
       setLocalError(msg);
       onError(msg);
     } finally {
@@ -84,11 +86,8 @@ const CheckoutPaymentForm = ({
   };
 
   return (
-    <Box>
-      <PageLoading
-        open={loading}
-        label={isZh ? "準備付款中…" : "Preparing payment…"}
-      />
+    <Section>
+      <PageLoading open={loading} label={t("preparingPayment")} />
       {localError ? (
         <Alert severity="error" sx={{ mb: 2 }}>
           {localError}
@@ -103,15 +102,9 @@ const CheckoutPaymentForm = ({
         disabled={loading || !stripe || !elements}
         sx={{ mt: 3 }}
       >
-        {loading
-          ? isZh
-            ? "付款處理中…"
-            : "Processing…"
-          : isZh
-          ? "完成付款"
-          : "Pay now"}
+        {loading ? t("processingPayment") : t("payNow")}
       </Button>
-    </Box>
+    </Section>
   );
 };
 

@@ -5,6 +5,9 @@ export type WooFetchOptions = {
   method?: WooHttpMethod;
   bodyJson?: any;
   cache?: RequestCache;
+  next?: {
+    revalidate?: number | false;
+  };
 };
 
 const getWooEnv = () => {
@@ -19,7 +22,7 @@ const getWooEnv = () => {
   const baseUrl = baseUrlEnv.replace(/\/$/, "");
   if (!baseUrl.startsWith("http")) {
     throw new Error(
-      `WOO_API_BASE_URL is invalid. Current value: "${baseUrl}". It must start with http(s)://`
+      `WOO_API_BASE_URL is invalid. Current value: "${baseUrl}". It must start with http(s)://`,
     );
   }
 
@@ -29,7 +32,7 @@ const getWooEnv = () => {
 const buildAuthHeader = () => {
   const { consumerKey, consumerSecret } = getWooEnv();
   const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString(
-    "base64"
+    "base64",
   );
   return `Basic ${auth}`;
 };
@@ -38,7 +41,7 @@ export const wooFetchServer = async <T>(
   path: string,
   paramsOrOptions?:
     | Record<string, string | number | boolean | undefined>
-    | WooFetchOptions
+    | WooFetchOptions,
 ): Promise<T> => {
   const { baseUrl } = getWooEnv();
 
@@ -46,19 +49,23 @@ export const wooFetchServer = async <T>(
   let method: WooHttpMethod = "GET";
   let bodyJson: any | undefined;
   let cache: RequestCache = "no-store";
+  let nextOptions: { revalidate?: number | false } | undefined;
 
   if (
     paramsOrOptions &&
     typeof paramsOrOptions === "object" &&
     ("method" in paramsOrOptions ||
       "bodyJson" in paramsOrOptions ||
-      "searchParams" in paramsOrOptions)
+      "searchParams" in paramsOrOptions ||
+      "cache" in paramsOrOptions ||
+      "next" in paramsOrOptions)
   ) {
     const opts = paramsOrOptions as WooFetchOptions;
     params = opts.searchParams;
     method = opts.method ?? "GET";
     bodyJson = opts.bodyJson;
     cache = opts.cache ?? "no-store";
+    nextOptions = opts.next;
   } else {
     params = paramsOrOptions as Record<string, any> | undefined;
   }
@@ -82,6 +89,7 @@ export const wooFetchServer = async <T>(
     },
     body: bodyJson ? JSON.stringify(bodyJson) : undefined,
     cache,
+    next: nextOptions,
   });
 
   if (!res.ok) {
@@ -91,7 +99,7 @@ export const wooFetchServer = async <T>(
       res.status,
       res.statusText,
       url.toString(),
-      text
+      text,
     );
     throw new Error(`Woo API error: ${res.status}`);
   }

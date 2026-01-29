@@ -3,15 +3,17 @@
 import { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { useCart } from "@/context/CartContext";
-import { ProductPurchasePanelProps } from "./types"
+import { ProductPurchasePanelProps } from "./types";
 import styles from "./ProductPurchasePanel.module.scss";
 
-const ProductPurchasePanel = ({ locale, product }: ProductPurchasePanelProps) => {
+const ProductPurchasePanel = ({
+  locale,
+  product,
+}: ProductPurchasePanelProps) => {
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
 
-  const labelAdd =
-    locale === "zh" ? "加入購物車" : "Add to cart";
+  const labelAdd = locale === "zh" ? "加入購物車" : "Add to cart";
 
   const handleQtyChange = (value: number) => {
     if (Number.isNaN(value)) return;
@@ -35,15 +37,11 @@ const ProductPurchasePanel = ({ locale, product }: ProductPurchasePanelProps) =>
       />
 
       {/* Add to cart button */}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleAdd}
-      >
+      <Button variant="contained" color="primary" onClick={handleAdd}>
         {labelAdd}
       </Button>
     </Box>
   );
 };
 
-export default ProductPurchasePanel
+export default ProductPurchasePanel;

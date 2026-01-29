@@ -27,7 +27,7 @@ interface MiniCartProps {
   locale: Locale;
 }
 
-export const MiniCart = ({ locale }: MiniCartProps) => {
+const MiniCart = ({ locale }: MiniCartProps) => {
   const { items, subtotal, totalItems, updateQuantity, removeItem } = useCart();
   const [open, setOpen] = useState(false);
 
@@ -35,9 +35,7 @@ export const MiniCart = ({ locale }: MiniCartProps) => {
 
   const cartTitle = locale === "zh" ? "購物車" : "Cart";
   const emptyText =
-    locale === "zh"
-      ? "購物車暫時係空嘅。"
-      : "Your cart is currently empty.";
+    locale === "zh" ? "購物車暫時係空嘅。" : "Your cart is currently empty.";
   const viewCartLabel = locale === "zh" ? "查看購物車" : "View cart";
   const checkoutLabel = locale === "zh" ? "前往結帳" : "Checkout";
   const subtotalLabel = locale === "zh" ? "小計：" : "Subtotal:";
@@ -75,10 +73,7 @@ export const MiniCart = ({ locale }: MiniCartProps) => {
               justifyContent: "space-between",
             }}
           >
-            <Typography
-              variant="h6"
-              sx={{ letterSpacing: 1, fontWeight: 600 }}
-            >
+            <Typography variant="h6" sx={{ letterSpacing: 1, fontWeight: 600 }}>
               {cartTitle.toUpperCase()}
             </Typography>
             <IconButton onClick={toggle(false)}>
@@ -157,7 +152,7 @@ export const MiniCart = ({ locale }: MiniCartProps) => {
                               updateQuantity(
                                 item.id,
                                 Number(e.target.value || 1),
-                                item.variantKey
+                                item.variantKey,
                               )
                             }
                           />
@@ -241,3 +236,5 @@ export const MiniCart = ({ locale }: MiniCartProps) => {
     </>
   );
 };
+
+export default MiniCart;

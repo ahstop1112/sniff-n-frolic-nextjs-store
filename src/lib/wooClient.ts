@@ -1,5 +1,6 @@
 import "server-only";
 import { wooFetchServer } from "@/lib/woo/server";
+import { CACHE_CONFIG } from "@/lib/cache";
 
 const baseUrl = process.env.WOO_API_BASE_URL!.replace(/\/$/, "");
 
@@ -124,30 +125,43 @@ export const getProducts = async (options?: {
   attribute?: string; // e.g. "pa_color"
   attribute_term?: number;
 }): Promise<WooProduct[]> => {
+  // Don't cache search results (search=true means it's a search query)
+  const isSearch = !!options?.search;
+
   return wooFetch<WooProduct[]>("/products", {
-    per_page: options?.per_page ?? 20,
-    page: options?.page ?? 1,
-    category: options?.category,
-    search: options?.search,
-    orderby: options?.orderby,
-    order: options?.order,
-    min_price: options?.min_price,
-    max_price: options?.max_price,
-    on_sale: options?.on_sale,
-    status: options?.status ?? "publish",
-    stock_status: options?.stock_status,
-    attribute: options?.attribute,
-    attribute_term: options?.attribute_term,
+    searchParams: {
+      per_page: options?.per_page ?? 20,
+      page: options?.page ?? 1,
+      category: options?.category,
+      search: options?.search,
+      orderby: options?.orderby,
+      order: options?.order,
+      min_price: options?.min_price,
+      max_price: options?.max_price,
+      on_sale: options?.on_sale,
+      status: options?.status ?? "publish",
+      stock_status: options?.stock_status,
+      attribute: options?.attribute,
+      attribute_term: options?.attribute_term,
+    },
+    next: {
+      revalidate: isSearch ? 0 : CACHE_CONFIG.PRODUCTS, // No cache for search, cache others
+    },
   });
 };
 
 export const getProductBySlug = async (
-  slug: string
+  slug: string,
 ): Promise<WooProduct | null> => {
   const products = await wooFetch<WooProduct[]>("/products", {
-    slug,
-    per_page: 1,
-    status: "publish",
+    searchParams: {
+      slug,
+      per_page: 1,
+      status: "publish",
+    },
+    next: {
+      revalidate: CACHE_CONFIG.PRODUCT_DETAIL,
+    },
   });
 
   if (!Array.isArray(products) || products.length === 0) return null;
@@ -155,10 +169,15 @@ export const getProductBySlug = async (
 };
 
 export const getProductVariations = async (
-  productId: number
+  productId: number,
 ): Promise<WooProductVariation[]> =>
   wooFetch<WooProductVariation[]>(`products/${productId}/variations`, {
-    per_page: 100,
+    searchParams: {
+      per_page: 100,
+    },
+    next: {
+      revalidate: CACHE_CONFIG.PRODUCT_DETAIL,
+    },
   });
 
 export const getCategories = async (options?: {
@@ -166,15 +185,22 @@ export const getCategories = async (options?: {
   hide_empty?: boolean;
 }): Promise<WooCategory[]> => {
   return wooFetch<WooCategory[]>("/products/categories", {
-    per_page: 100,
-    parent: options?.parent,
-    hide_empty: options?.hide_empty ?? true,
+    searchParams: {
+      per_page: 100,
+      parent: options?.parent,
+      hide_empty: options?.hide_empty ?? true,
+    },
+    next: {
+      revalidate: CACHE_CONFIG.CATEGORIES,
+    },
   });
 };
 
 export const getCategoryById = async (id: string) => {
   const category = await wooFetch(`products/categories/${id}`, {
-    cache: "no-store",
+    next: {
+      revalidate: CACHE_CONFIG.CATEGORIES,
+    },
   });
 
   return Array.isArray(category) ? category : null;

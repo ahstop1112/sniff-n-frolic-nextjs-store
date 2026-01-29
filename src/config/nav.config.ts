@@ -1,34 +1,71 @@
 import type { Locale } from "@/i18n/config";
+import type { WooCategory } from "@/lib/wooClient";
 
-export const NAV_ITEMS = (locale: Locale) => [
-  { label: "Home", href: `/${locale}` },
-  {
-    label: "Collection",
-    mega: [
-      { label: "Pet Treats", href: `/${locale}/category/pet-treats` },
-      {
-        label: "Bowls Feeders",
-        href: `/${locale}/category/bowls-feeder`,
-        children: [
-          { label: "Slow Feeders", href: `/${locale}/category/slow-feeders` },
-          { label: "Lick Mats", href: `/${locale}/category/lick-mats` },
-          { label: "Water Bottles", href: `/${locale}/category/water-bottles` },
-        ],
-      },
-      { label: "Pet Toys", href: `/${locale}/category/pet-toys` },
-      { label: "Pet Clothing", href: `/${locale}/category/pet-clothing` },
-      {
-        label: "Travel Gear",
-        href: `/${locale}/category/travel-gear`,
-        children: [
-          { label: "Car Seat Covers", href: `/${locale}/category/car-seat` },
-          { label: "Seat Belts", href: `/${locale}/category/seat-belt` },
-        ],
-      },
-      { label: "Everyday Care", href: `/${locale}/category/everyday-care` },
-    ],
-  },
-  { label: "Our Story", href: `/${locale}/about` },
-  { label: "How To Buy", href: `/${locale}/how-to-buy` },
-  { label: "FAQ", href: `/${locale}/faq` },
-];
+export const NAV_ITEMS = (locale: Locale, categories?: WooCategory[]) => {
+  const defaultMega = [
+    { label: "petTreats", href: `/${locale}/category/pet-treats` },
+    {
+      label: "bowlsFeeders",
+      href: `/${locale}/category/bowls-feeder`,
+      children: [
+        {
+          label: "slowFeeders",
+          href: `/${locale}/category/slow-feeders`,
+        },
+        { label: "lickMats", href: `/${locale}/category/lick-mats` },
+        {
+          label: "waterBottles",
+          href: `/${locale}/category/water-bottles`,
+        },
+      ],
+    },
+    { label: "petToys", href: `/${locale}/category/pet-toys` },
+    { label: "petClothing", href: `/${locale}/category/pet-clothing` },
+    {
+      label: "travelGear",
+      href: `/${locale}/category/travel-gear`,
+      children: [
+        {
+          label: "carSeatCovers",
+          href: `/${locale}/category/car-seat`,
+        },
+        { label: "seatBelts", href: `/${locale}/category/seat-belt` },
+      ],
+    },
+    {
+      label: "everydayCare",
+      href: `/${locale}/category/everyday-care`,
+    },
+  ];
+
+  const buildMegaFromCategories = (cats: WooCategory[]) => {
+    const top = cats.filter((c) => c.parent === 0);
+    return top.map((t) => {
+      const children = cats
+        .filter((c) => c.parent === t.id)
+        .map((ch) => ({
+          label: ch.name.replace(/&amp;/g, "&"),
+          href: `/${locale}/category/${ch.slug}`,
+        }));
+      return {
+        label: t.name.replace(/&amp;/g, "&"),
+        href: `/${locale}/category/${t.slug}`,
+        ...(children.length ? { children } : {}),
+      };
+    });
+  };
+
+  return [
+    { label: "home", href: `/${locale}` },
+    {
+      label: "collection",
+      mega:
+        categories && categories.length > 0
+          ? buildMegaFromCategories(categories)
+          : defaultMega,
+    },
+    { label: "ourStory", href: `/${locale}/about` },
+    { label: "howToBuy", href: `/${locale}/how-to-buy` },
+    { label: "faq", href: `/${locale}/faq` },
+  ];
+};

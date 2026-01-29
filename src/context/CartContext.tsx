@@ -62,7 +62,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
       const safeQty = Math.max(1, Math.min(99, Number(quantity) || 1));
 
       const idx = items.findIndex(
-        (it) => `${it.id}-${it.variantKey ?? ""}` === key
+        (it) => `${it.id}-${it.variantKey ?? ""}` === key,
       );
 
       if (idx >= 0) {
@@ -90,7 +90,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     setState((prev) => {
       const key = `${id}-${variantKey ?? ""}`;
       const items = prev.items.filter(
-        (it) => `${it.id}-${it.variantKey ?? ""}` !== key
+        (it) => `${it.id}-${it.variantKey ?? ""}` !== key,
       );
       return { items };
     });
@@ -108,7 +108,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const updateQuantity = (
     id: number,
     quantity: number,
-    variantKey?: string
+    variantKey?: string,
   ) => {
     setState((prev) => {
       const key = `${id}-${variantKey ?? ""}`;
@@ -117,7 +117,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
       const items = prev.items.map((it) =>
         `${it.id}-${it.variantKey ?? ""}` === key
           ? { ...it, quantity: nextQty }
-          : it
+          : it,
       );
 
       return { items };
@@ -126,7 +126,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
 
   const totalItems = useMemo(
     () => state.items.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0),
-    [state.items]
+    [state.items],
   );
 
   const subtotal = useMemo(
@@ -136,7 +136,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         const qty = Number(it.quantity) || 0;
         return sum + price * qty;
       }, 0),
-    [state.items]
+    [state.items],
   );
 
   const value: CartContextValue = {
