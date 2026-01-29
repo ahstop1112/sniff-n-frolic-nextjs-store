@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import CartPageClient from "@/components/Cart/CartPageClient";
+import PageLayout from "@/components/PageLayout/PageLayout";
+import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
+import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 
 interface CartPageProps {
   params: Promise<{ lang: string }>;
@@ -37,8 +40,14 @@ const CartPage = async ({ params }: CartPageProps) => {
   const { lang } = await params;
 
   const locale = isValidLocale(lang) ? (lang as Locale) : ("en" as Locale);
+  const breadcrumbs: BreadcrumbItem[] = [];
 
-  return <CartPageClient locale={locale} />;
+  return (
+    <PageLayout>
+      {/* <BreadcrumbsNav locale={locale} items={breadcrumbs} /> */}
+      <CartPageClient locale={locale} />
+    </PageLayout>
+  );
 };
 
 export default CartPage;

@@ -15,7 +15,7 @@ import PageLoading from "../common/PageLoading";
 import StripeProvider from "../StripeProvider";
 import CheckoutPaymentForm from "./CheckoutPaymentForm";
 import CheckoutOrderSummary from "./CheckoutOrderSummary";
-import { CheckoutPageClientProps } from "./types";
+import { CheckoutPageClientProps, ShippingPayload } from "./types";
 
 const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
   const { items, hydrated } = useCart();
@@ -48,10 +48,10 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
     const formData = new FormData(e.currentTarget);
     const email = (formData.get("email") as string) || "";
 
-    const shipping: ShippingPayload & { email: string } = {
+    const shipping: ShippingPayload = {
       first_name: formData.get("first_name") as string,
       last_name: formData.get("last_name") as string,
-      email,
+      email: formData.get("email") as string,
       phone: formData.get("phone") as string,
       address_1: formData.get("address_1") as string,
       address_2: formData.get("address_2") as string,
@@ -104,7 +104,7 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
   return (
     <>
       <PageLoading open={loading} label={t("preparingPayment")} />
-      <Typography component="h1" gutterBottom>
+      <Typography component="h2" gutterBottom>
         {t("heading")}
       </Typography>
       {error && (
@@ -112,6 +112,18 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
           {error}
         </Alert>
       )}
+      {/* Step indicator */}
+      <Box mb={3}>
+        <Typography
+          variant="subtitle2"
+          sx={{ letterSpacing: 1, mb: 1, textAlign: "center" }}
+        >
+          <span style={{ opacity: 0.4 }}>1 SHOPPING CART</span>
+          &nbsp;—&nbsp; 2 CHECKOUT &nbsp;—&nbsp;{" "}
+          <span style={{ opacity: 0.4 }}>3 ORDER STATUS</span>
+        </Typography>
+        <Divider />
+      </Box>
       <Box
         sx={{
           display: "grid",

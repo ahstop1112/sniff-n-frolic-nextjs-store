@@ -24,13 +24,7 @@ interface CartPageClientProps {
 }
 
 const CartPageClient = ({ locale }: CartPageClientProps) => {
-  const {
-    items,
-    subtotal,
-    updateQuantity,
-    removeItem,
-    clearCart,
-  } = useCart();
+  const { items, subtotal, updateQuantity, removeItem, clearCart } = useCart();
 
   const [coupon, setCoupon] = useState("");
   const [applying, setApplying] = useState(false);
@@ -87,23 +81,37 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
     <Box maxWidth="lg" mx="auto" my={4}>
       {/* Step indicator */}
       <Box mb={3}>
-        <Typography variant="subtitle2" sx={{ letterSpacing: 1, mb: 1 }}>
+        <Typography
+          variant="subtitle2"
+          sx={{ letterSpacing: 1, mb: 1, textAlign: "center" }}
+        >
           1 {labelShoppingCart.toUpperCase()}
-          <span style={{ opacity: 0.4 }}> &nbsp;—&nbsp; 2 {labelCheckout.toUpperCase()} &nbsp;—&nbsp; 3 {labelOrderStatus.toUpperCase()}</span>
+          <span style={{ opacity: 0.4 }}>
+            {" "}
+            &nbsp;—&nbsp; 2 {labelCheckout.toUpperCase()} &nbsp;—&nbsp; 3{" "}
+            {labelOrderStatus.toUpperCase()}
+          </span>
         </Typography>
         <Divider />
       </Box>
+
+      <Typography component="h2" gutterBottom>
+        Shopping Cart
+      </Typography>
 
       {items.length === 0 ? (
         <Typography variant="body1">{emptyText}</Typography>
       ) : (
         <Grid container spacing={4}>
-          {/* 左邊：商品列表 */}
+          {/* Left Product List */}
           <Grid size={{ xs: 12, lg: 8 }}>
             <Card variant="outlined">
               <CardContent>
                 {/* 表頭 */}
-                <Grid container sx={{ mb: 2, display: { xs: "none", sm: "flex" } }}>
+                <Grid
+                  container
+                  sx={{ mb: 2, display: { xs: "none", sm: "flex" } }}
+                >
                   <Grid size={{ xs: 6 }}>
                     <Typography variant="subtitle2">{labelProduct}</Typography>
                   </Grid>
@@ -122,7 +130,7 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
 
                 <Divider sx={{ mb: 2 }} />
 
-                {/* 每件商品 */}
+                {/* Every Product */}
                 {items.map((item) => {
                   const lineSubtotal = +(item.price * item.quantity).toFixed(2);
                   return (
@@ -153,11 +161,13 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                                 }}
                               />
                             )}
-                            {/* 名稱 + remove */}
                             <Box>
                               <Link
                                 href={`/en/products/${item.slug}`}
-                                style={{ textDecoration: "none", color: "#063F53" }}
+                                style={{
+                                  textDecoration: "none",
+                                  color: "#063F53",
+                                }}
                               >
                                 <Typography
                                   variant="body1"
@@ -209,7 +219,7 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                                 handleDecrease(
                                   item.id,
                                   item.quantity,
-                                  item.variantKey
+                                  item.variantKey,
                                 )
                               }
                             >
@@ -217,7 +227,11 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                             </IconButton>
                             <Box
                               component="span"
-                              sx={{ px: 1.5, minWidth: 24, textAlign: "center" }}
+                              sx={{
+                                px: 1.5,
+                                minWidth: 24,
+                                textAlign: "center",
+                              }}
                             >
                               {item.quantity}
                             </Box>
@@ -227,7 +241,7 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                                 handleIncrease(
                                   item.id,
                                   item.quantity,
-                                  item.variantKey
+                                  item.variantKey,
                                 )
                               }
                             >
@@ -381,7 +395,9 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                     variant="subtitle1"
                     sx={{ fontWeight: 700, color: "#e16849" }}
                   >
-                    {items.length === 0 ? "CAD $0.00" : `CAD $${total.toFixed(2)}`}
+                    {items.length === 0
+                      ? "CAD $0.00"
+                      : `CAD $${total.toFixed(2)}`}
                   </Typography>
                 </Box>
 

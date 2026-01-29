@@ -7,11 +7,12 @@ export interface CheckoutPageClientProps {
 export type ShippingPayload = {
   first_name: string;
   last_name: string;
+  phone?: string;
+  email: string;
   address_1: string;
   address_2?: string;
   city: string;
   state: string;
   postcode: string;
   country: string;
-  phone?: string;
 };
