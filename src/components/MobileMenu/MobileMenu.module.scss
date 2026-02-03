@@ -1,0 +1,161 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+/* MobileMenuDrawer.module.scss */
+.paper {
+  width: min(86vw, 360px);
+  padding: $point * 4;
+  overflow: hidden;
+  background-color: $cream !important;
+  color: $brown;
+}
+
+.wrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1$point * 2;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $point * 3;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.closeBtn {
+  border-radius: $point * 3;
+}
+
+.search {
+  margin-top: $point * 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px $point * 3;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+}
+
+.searchIcon {
+  opacity: 0.65;
+  cursor: pointer;
+}
+
+.searchInput {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 0.75rem;
+}
+
+/* ===== Nav scroll area ===== */
+.nav {
+  margin-top: 14px;
+  padding-top: 10px;
+  overflow: auto;
+  flex: 1;
+}
+
+.list {
+  padding: 0 !important;
+}
+
+/* ===== Shared ListItem button ===== */
+.liBtn {
+  height: 4$point * 2;
+  border-radius: $point * 3 !important;
+  margin: 4px 0;
+  padding-left: $point * 3 !important;
+  padding-right: $point * 3 !important;
+  text-align: left;
+
+  /* kill MUI ripple look */
+  &::after {
+    display: none;
+  }
+
+  :global(.MuiListItemText-primary) {
+    color: $sf-orange;
+    font-weight: 700;
+  }
+}
+
+/* icon on right */
+.rightIcon {
+  opacity: 0.6;
+}
+
+/* ===== Dividers & section label ===== */
+.divider {
+  margin: 10px 0 !important;
+  opacity: 0.5;
+}
+
+.sectionTitle {
+  font-size: $point * 3;
+  opacity: 0.6;
+  margin: 8px $point * 2;
+}
+
+/* ===== Level 2 ===== */
+.subList {
+  padding-left: 10px !important;
+  margin-left: $point * 2;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.subLiBtn {
+  height: 42px;
+  border-radius: 10px !important;
+  margin: 3px 0;
+  padding-left: $point * 3 !important;
+  padding-right: 10px !important;
+}
+
+/* ===== Level 3 ===== */
+.subSubList {
+  padding-left: $point * 3 !important;
+  margin-left: $point * 2;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.subSubLiBtn {
+  height: 40px;
+  border-radius: 10px !important;
+  margin: 2px 0;
+  padding-left: $point * 3 !important;
+  padding-right: 10px !important;
+}
+
+/* ===== Level 4 (optional) ===== */
+.l4List {
+  padding-left: $point * 3 !important;
+  margin-left: $point * 2;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.l4LiBtn {
+  height: 38px;
+  border-radius: 10px !important;
+  margin: 2px 0;
+  padding-left: $point * 3 !important;
+}
+
+.active {
+  position: relative;
+  font-weight: 600;
+
+  :global(.MuiListItemText-primary) {
+    font-weight: inherit;
+  }
+}

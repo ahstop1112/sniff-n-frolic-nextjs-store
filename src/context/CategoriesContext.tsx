@@ -7,7 +7,9 @@ interface CategoriesContextType {
   categories: WooCategory[];
 }
 
-const CategoriesContext = createContext<CategoriesContextType | undefined>(undefined);
+const CategoriesContext = createContext<CategoriesContextType | undefined>(
+  undefined,
+);
 
 export const CategoriesProvider = ({
   children,

@@ -1,112 +1,281 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-    Box,
-    Drawer,
-    IconButton,
-    List,
-    ListItemButton,
-    ListItemText,
-    Collapse,
-    Divider,
-    Typography,
-    Stack
-} from "@mui/material";
+import Image from "next/image";
+import { useEffect, useRef, useState, Fragment } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import clsx from "clsx";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
+import Divider from "@mui/material/Divider";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import IconButton from "@mui/material/IconButton";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import ExpandLessRoundedIcon from "@mui/icons-material/ExpandLessRounded";
-import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
-import { MobileMenuProps, NavItem } from "./types";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import type { Locale } from "@/i18n/config";
+import type { NavNode } from "@/domains/nav";
+import { findNavStateByPath, debugNavMatch } from "@/domains/nav";
+import styles from "./MobileMenu.module.scss";
 
-const MobileMenu = ({ open, onClose, locale }: MobileMenuProps) => {
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
+export type MobileMenuProps = {
+  open: boolean;
+  onClose: () => void;
+  locale: Locale;
+  items: NavNode[];
+  // if you want route matching to ignore locale prefix, pass your locale codes here
+  localeCodes?: string[];
+};
+
+const MobileMenu = ({
+  open,
+  onClose,
+  locale,
+  items,
+  localeCodes,
+}: MobileMenuProps) => {
+  const { t } = useTranslation("nav");
+  const router = useRouter();
   const pathname = usePathname();
 
-  const isActive = (href: string) => pathname?.startsWith(href);
+  const [q, setQ] = useState("");
+  const [openL1, setOpenL1] = useState<string | null>(null);
+  const [openL2, setOpenL2] = useState<string | null>(null);
+  const [openL3, setOpenL3] = useState<string | null>(null);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const { open: nextOpen, active } = findNavStateByPath(items, pathname, {
+    locales: localeCodes ?? [],
+  });
+
+  useEffect(() => {
+    if (!open) return;
+    // ✅ route -> auto open corresponding level
+    setOpenL1(active.activeL1);
+    setOpenL2(nextOpen.openL2);
+    setOpenL3(nextOpen.openL3);
+  }, [open, items, pathname, localeCodes]);
+
+  const toggleL2 = (key: string, hasChildren: boolean, href?: string) => {
+    if (!hasChildren) {
+      if (href) router.push(href);
+      onClose();
+      return;
+    }
+    setOpenL2((prev) => (prev === key ? null : key));
+    setOpenL3(null);
+  };
+
+  const toggleL3 = (key: string) =>
+    setOpenL3((prev) => (prev === key ? null : key));
+
+  const goSearch = () => {
+    const query = q.trim();
+    if (!query) return;
+    onClose();
+    router.push(`/search?q=${encodeURIComponent(query)}`);
+  };
 
   return (
-    <Drawer anchor="left" open={open} onClose={onClose}>
-        <Box sx={{ width: 320, p: 2 }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-            <Typography variant="h6" sx={{ fontFamily: `"Lilita One", system-ui` }}>
-              Sniff &amp; Frolic
-            </Typography>
-            <IconButton onClick={onClose} aria-label="Close menu">
-              <CloseRoundedIcon />
-            </IconButton>
-          </Stack>
+    <Drawer
+      open={open}
+      onClose={onClose}
+      anchor="left"
+      PaperProps={{ className: styles.paper }}
+      ModalProps={{ keepMounted: true }}
+    >
+      <div className={styles.wrap}>
+        {/* Header row */}
+        <div className={styles.header}>
+          <Link href={`/${locale}`} className={styles.logo} onClick={onClose}>
+            {/* 換成你真正 logo path */}
+            <Image
+              src="/logo.png"
+              alt="Sniff & Frolic"
+              width={132}
+              height={28}
+              priority
+            />
+          </Link>
 
-          <Divider sx={{ my: 1.5 }} />
+          <IconButton
+            onClick={onClose}
+            className={styles.closeBtn}
+            aria-label="Close menu"
+          >
+            <CloseRoundedIcon />
+          </IconButton>
+        </div>
 
-          <Typography variant="caption" sx={{ opacity: 0.7 }}>
-            Explore
-          </Typography>
+        {/* Search */}
+        <div className={styles.search}>
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") goSearch();
+            }}
+            placeholder={t("searchPlaceholder")}
+            className={styles.searchInput}
+          />
+          <SearchRoundedIcon
+            className={styles.searchIcon}
+            onClick={goSearch()}
+          />
+        </div>
 
-          {/* <List dense>
-            {finalLinks.map((x) => (
-              <ListItemButton
-                key={x.href}
-                component={Link}
-                href={x.href}
-                onClick={() => setOpen(false)}
-                selected={!!isActive(x.href)}
-                sx={{ borderRadius: 2 }}
-              >
-                <ListItemText primary={x.label} />
-              </ListItemButton>
-            ))}
-          </List> */}
+        {/* Nav scroll area */}
+        <div ref={scrollRef} className={styles.nav}>
+          {/* Top links */}
+          <List disablePadding className={styles.list}>
+            {items.map((l1) => {
+              const l1HasChildren = (l1.children?.length ?? 0) > 0;
 
-          {/* {categories.length ? (
-            <>
-              <Divider sx={{ my: 1.5 }} />
-              <Typography variant="caption" sx={{ opacity: 0.7 }}>
-                Categories
-              </Typography>
+              // L1 = link only
+              if (!l1HasChildren) {
+                return (
+                  <ListItem key={l1.key} disablePadding>
+                    <ListItemButton
+                      component={Link}
+                      href={l1.href ?? `/${locale}`}
+                      onClick={onClose}
+                      className={clsx(
+                        styles.liBtn,
+                        active.activeL1 === l1.key && styles.active,
+                      )}
+                    >
+                      <ListItemText primary={t(l1.label)} />
+                    </ListItemButton>
+                  </ListItem>
+                );
+              }
 
-              <List dense>
-                {categories.map((g) => {
-                  const expanded = openGroup === g.label;
-                  const hasChildren = !!g.items?.length;
+              // L1 = group (Collection)
+              const l1Expanded = openL1 === l1.key;
+              const l2List = l1.children ?? [];
 
-                  return (
-                    <Box key={g.label}>
-                      <ListItemButton
-                        onClick={() => setOpenGroup(expanded ? null : g.label)}
-                        component={g.href && !hasChildren ? Link : "button"}
-                        href={g.href && !hasChildren ? g.href : undefined}
-                        sx={{ borderRadius: 2 }}
-                      >
-                        <ListItemText primary={g.label} />
-                        {hasChildren ? (expanded ? <ExpandLessRoundedIcon /> : <ExpandMoreRoundedIcon />) : null}
-                      </ListItemButton>
-
-                      {hasChildren ? (
-                        <Collapse in={expanded} timeout="auto" unmountOnExit>
-                          <List dense sx={{ pl: 2 }}>
-                            {g.items!.map((c) => (
+              return (
+                <Fragment key={l1.key}>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      className={clsx(
+                        styles.liBtn,
+                        active.activeL1 === l1.key && styles.active,
+                      )}
+                      onClick={() =>
+                        setOpenL1((prev) => (prev === l1.key ? null : l1.key))
+                      }
+                      aria-expanded={l1Expanded}
+                    >
+                      <ListItemText primary={t(l1.label)} />
+                      {l1Expanded ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                  </ListItem>
+                  <Collapse in={l1Expanded} timeout="auto" unmountOnExit>
+                    <List disablePadding className={styles.subList}>
+                      {l2List.map((l2) => {
+                        const hasChildren = (l2.children?.length ?? 0) > 0;
+                        const expanded = openL2 === l2.key;
+                        return (
+                          <Fragment key={l2.key}>
+                            <ListItem disablePadding>
                               <ListItemButton
-                                key={c.href}
-                                component={Link}
-                                href={c.href}
-                                onClick={() => setOpen(false)}
-                                sx={{ borderRadius: 2 }}
+                                onClick={() =>
+                                  toggleL2(l2.key, hasChildren, l2.href)
+                                }
+                                className={clsx(
+                                  styles.subLiBtn,
+                                  active.activeL2 === l2.key && styles.active,
+                                )}
+                                aria-expanded={expanded}
                               >
-                                <ListItemText primary={c.label} />
+                                <ListItemText primary={t(l2.label)} />
+                                {hasChildren ? (
+                                  expanded ? (
+                                    <ExpandLess />
+                                  ) : (
+                                    <ExpandMore />
+                                  )
+                                ) : null}
                               </ListItemButton>
-                            ))}
-                          </List>
-                        </Collapse>
-                      ) : null}
-                    </Box>
-                  );
-                })}
-              </List>
-            </>
-          ) : null} */}
-        </Box>
+                            </ListItem>
+                            {hasChildren ? (
+                              <Collapse
+                                in={expanded}
+                                timeout="auto"
+                                unmountOnExit
+                              >
+                                <List
+                                  disablePadding
+                                  className={styles.subSubList}
+                                >
+                                  {(l2.children ?? []).map((l3) => {
+                                    const l3HasChildren =
+                                      (l3.children?.length ?? 0) > 0;
+                                    const l3Expanded = openL3 === l3.key;
+
+                                    return (
+                                      <Fragment key={l3.key}>
+                                        <ListItem disablePadding>
+                                          <ListItemButton
+                                            className={clsx(
+                                              styles.subSubLiBtn,
+                                              active.activeL3 === l3.key &&
+                                                styles.active,
+                                            )}
+                                            component={
+                                              l3HasChildren
+                                                ? "button"
+                                                : (Link as any)
+                                            }
+                                            {...(!l3HasChildren
+                                              ? {
+                                                  href: l3.href ?? "#",
+                                                  onClick: onClose,
+                                                }
+                                              : {})}
+                                            onClick={() => {
+                                              if (!l3HasChildren) return;
+                                              toggleL3(l3.key);
+                                            }}
+                                            aria-expanded={l3Expanded}
+                                          >
+                                            <ListItemText
+                                              primary={t(l3.label)}
+                                            />
+                                            {l3HasChildren ? (
+                                              l3Expanded ? (
+                                                <ExpandLess />
+                                              ) : (
+                                                <ExpandMore />
+                                              )
+                                            ) : null}
+                                          </ListItemButton>
+                                        </ListItem>
+                                      </Fragment>
+                                    );
+                                  })}
+                                </List>
+                              </Collapse>
+                            ) : null}
+                          </Fragment>
+                        );
+                      })}
+                    </List>
+                  </Collapse>
+                </Fragment>
+              );
+            })}
+          </List>
+        </div>
+        <Divider className={styles.divider} />
+      </div>
     </Drawer>
   );
 };

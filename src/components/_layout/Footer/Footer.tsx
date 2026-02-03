@@ -66,7 +66,7 @@ const Footer = ({ locale }: FooterProps) => {
               Subscribe
             </Button>
             <p>
-              <h6>Need Help?</h6>
+              <b>Need Help?</b><br/>
               <a href="mailto:woff@sniffnfrolic.com">woff@sniffnfrolic.com</a>
             </p>
           </Grid>

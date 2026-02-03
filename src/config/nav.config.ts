@@ -44,10 +44,12 @@ export const NAV_ITEMS = (locale: Locale, categories?: WooCategory[]) => {
       const children = cats
         .filter((c) => c.parent === t.id)
         .map((ch) => ({
+          key: ch.slug,
           label: ch.name.replace(/&amp;/g, "&"),
           href: `/${locale}/category/${ch.slug}`,
         }));
       return {
+        key: t.slug,
         label: t.name.replace(/&amp;/g, "&"),
         href: `/${locale}/category/${t.slug}`,
         ...(children.length ? { children } : {}),
@@ -59,7 +61,7 @@ export const NAV_ITEMS = (locale: Locale, categories?: WooCategory[]) => {
     { label: "home", href: `/${locale}` },
     {
       label: "collection",
-      mega:
+      children:
         categories && categories.length > 0
           ? buildMegaFromCategories(categories)
           : defaultMega,

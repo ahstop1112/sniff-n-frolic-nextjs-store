@@ -3,31 +3,41 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { Locale } from "@/i18n/config";
 import clsx from "clsx";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import { HeaderNavProps } from "./types";
+import type { NavNode } from "@/domains/nav";
 import styles from "./HeaderNav.module.scss";
+
+export type HeaderNavProps = {
+  locale: Locale;
+  items: NavNode[];
+};
 
 const HeaderNav = ({ locale, items }: HeaderNavProps) => {
   const { t } = useTranslation("nav");
   const [open, setOpen] = useState(false);
 
-  // Level 2
-  const [activeL2Idx, setActiveL2Idx] = useState<number | null>(null);
-  // Level 3
-  const [activeL3Idx, setActiveL3Idx] = useState(0);
+  // Level 2 /3 active (desktop hover)
+  const [activeL2Key, setActiveL2Key] = useState<number | null>(null);
+  const [activeL3Key, setActiveL3Key] = useState<number | null>(null);
 
   const zoneRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<number | null>(null);
 
-  const megaItem = useMemo(() => items.find((x) => x.mega?.length), [items]);
-  const megaLabel = megaItem?.label ? t(megaItem.label) : t("nav.collection");
-  const l2List = megaItem?.mega ?? [];
+  // pick the first nav item that has children => mega root
+  const megaRoot = useMemo(
+    () => items.find((x) => (x.children?.length ?? 0) > 0) ?? null,
+    [items],
+  );
+  const megaLabel = megaRoot?.label ? t(megaRoot.label) : t("nav.collection");
+  const l2List = megaRoot?.children ?? [];
+
   const l3List = useMemo(() => {
-    if (activeL2Idx === null) return [];
-    return l2List[activeL2Idx]?.children ?? [];
-  }, [l2List, activeL2Idx]);
+    if (activeL2Key === null) return [];
+    return l2List[activeL2Key]?.children ?? [];
+  }, [l2List, activeL2Key]);
 
   const hasL3 = l3List.length > 0;
 
@@ -80,8 +90,8 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
   // open reset highlight
   useEffect(() => {
     if (!open) return;
-    setActiveL2Idx(null);
-    setActiveL3Idx(0);
+    setActiveL2Key(null);
+    setActiveL3Key(null);
   }, [open]);
 
   return (
@@ -93,7 +103,7 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
     >
       <div className={styles.row}>
         {items.map((x) => {
-          const isMega = !!x.mega?.length;
+          const isMega = (x.children?.length ?? 0) > 0;
 
           if (!isMega) {
             return (
@@ -126,7 +136,7 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
         })}
       </div>
 
-      {open ? (
+      {open && megaRoot ? (
         <div
           className={styles.panel}
           role="menu"
@@ -136,7 +146,7 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
           {/* L2 column */}
           <div className={styles.panel2}>
             {l2List.map((l2, idx) => {
-              const active = idx === activeL2Idx;
+              const active = idx === activeL2Key;
               const hasL3 = !!l2.children?.length;
 
               return (
@@ -145,8 +155,8 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
                   className={clsx(styles.item, active && styles.itemActive)}
                   onMouseEnter={() => {
                     const hasChildren = !!l2.children?.length;
-                    setActiveL2Idx(hasChildren ? idx : null);
-                    setActiveL3Idx(0);
+                    setActiveL2Key(hasChildren ? idx : null);
+                    setActiveL3Key(0);
                   }}
                 >
                   <Link
@@ -170,7 +180,7 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
             <div className={styles.colL3}>
               {l3List.length ? (
                 l3List.map((l3, idx) => {
-                  const active = idx === activeL3Idx;
+                  const active = idx === activeL3Key;
                   return (
                     <div
                       key={l3.label}
@@ -178,7 +188,7 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
                         styles.subRow,
                         active && styles.subRowActive,
                       )}
-                      onMouseEnter={() => setActiveL3Idx(idx)}
+                      onMouseEnter={() => setActiveL3Key(idx)}
                     >
                       <Link
                         href={l3.href ?? "#"}

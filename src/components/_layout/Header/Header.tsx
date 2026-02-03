@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -39,7 +38,7 @@ const Header = ({ locale }: HeaderProps) => {
     <>
       <Box component="header" className={styles.header}>
         <div className={styles.promo}>
-          <StorefrontIcon /> Free shipping over $75
+          <StorefrontIcon />
         </div>
 
         {/* ✅ Desktop Row */}
@@ -95,7 +94,7 @@ const Header = ({ locale }: HeaderProps) => {
               />
             </Link>
 
-            {/* Right: Cart (你想 mobile 有 search 都可以加返) */}
+            {/* Right: Cart */}
             <MiniCart locale={locale} />
           </Stack>
         </Box>
@@ -109,6 +108,7 @@ const Header = ({ locale }: HeaderProps) => {
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         locale={locale}
+        items={navItems}
       />
     </>
   );

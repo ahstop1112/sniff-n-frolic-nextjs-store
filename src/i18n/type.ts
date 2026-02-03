@@ -25,6 +25,7 @@ export interface Dictionary {
     onSale: string;
     onSaleOnly: string;
     noResult: string;
+    freeShipping: string;
   };
   nav: {
     home: string;
@@ -43,6 +44,7 @@ export interface Dictionary {
     carSeatCovers: string;
     seatBelts: string;
     everydayCare: string;
+    searchPlaceholder: string;
   };
   search: {
     searchProducts: string;

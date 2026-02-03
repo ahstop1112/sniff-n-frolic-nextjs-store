@@ -27,6 +27,7 @@ export const enDictionary: Dictionary = {
     onSale: "On Sale",
     onSaleOnly: "On sale only",
     noResult: "No Results!",
+    freeShipping: "Free Shipping on orders over $75",
   },
   nav: {
     home: "Home",
@@ -45,6 +46,7 @@ export const enDictionary: Dictionary = {
     carSeatCovers: "Car Seat Covers",
     seatBelts: "Seat Belts",
     everydayCare: "Everyday Care",
+    searchPlaceholder: "Search products",
   },
   search: {
     searchProducts: "Search products",
