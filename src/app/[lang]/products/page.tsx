@@ -13,28 +13,31 @@ import ProductGrid from "@/components/Product/ProductGrid";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import { shuffleArray } from "@/utils/helpers";
 import { wooCategoriesToSliderItems } from "@/domains/categories/adapter";
-import { PageProps, LangSlugParamsObj } from "@/types/next";
+import {
+  PageProps,
+  LangSlugParamsObj,
+  unwrap,
+  unwrapSearchParams,
+} from "@/types/next";
 
 type ProductsPageProps = PageProps<LangSlugParamsObj>;
 
 const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
-  const { lang, slug } = await params;
+  const { lang, slug } = await unwrap(params);
+  const sp = await unwrapSearchParams(searchParams);
 
   if (!isValidLocale(lang)) notFound();
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
   const allCats = await getCategories();
-  const sliderItems = wooCategoriesToSliderItems(allCats, locale);
 
-  console.log(sliderItems);
-
-  const topLevelCategories = sliderItems
+  const topLevelCategories = allCats
     .filter((c) => c.parent === 0)
     .sort((a, b) => a.id - b.id);
 
   // Show the first level of Categoryes
-  const { sp, wooParams } = await buildWooParamsForListPage({
+  const { wooParams } = await buildWooParamsForListPage({
     searchParams: sp,
     perPage: 50,
   });
@@ -104,7 +107,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
         </Grid>
       </Section>
       <CategorySliderSection
-        lang={lang}
+        locale={locale}
         title={dict.search.allCategories}
         items={topLevelCategories}
         bottomWave="cream"

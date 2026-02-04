@@ -1,4 +1,5 @@
 "use client";
+
 import { useMemo } from "react";
 import { notFound } from "next/navigation";
 import { Grid } from "@mui/material";
@@ -9,8 +10,7 @@ import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import ProductGrid from "@/components/Product/ProductGrid";
 import ProductsFilterSidebarClient from "@/components/ProductFilter/ProductsFilterSidebarClient";
-import { topLevelFromWooCategories } from "@/domains/nav/fromWooCategories";
-import { normalizeNavTree } from "@/domains/nav/normalize";
+import { toCategorySliderItems } from "@/domains/categories/adapter";
 import { CategoryPageClientProps } from "./types";
 
 const CategoryPageClient = ({
@@ -20,42 +20,42 @@ const CategoryPageClient = ({
   finalProducts,
 }: CategoryPageClientProps) => {
   const allCats = useCategories();
-  const categoryNavItems = useMemo(() => {
-    if (!allCats?.length) return [];
-    const raw = topLevelFromWooCategories(allCats, locale);
-    return normalizeNavTree(raw, "wooCats");
-  }, [allCats, locale]);
 
-  const category = categoryNavItems.find((c) => c.slug === slug);
-  console.log(categoryNavItems, slug);
+  if (!allCats?.length) return null;
 
-  if (!category) notFound();
+  const category = allCats.find((c) => c.slug === slug);
+  if (!category) return notFound();
 
-  // const parentCat = categoryNavItems.find((c) => c.id === category.parent);
-  // const childCategories = categoryNavItems.filter(
-  //   (c) => c.parent === category.id,
-  // );
+  const parentCat = allCats.find((c) => c.id === category.parent);
+  const childCategories = allCats.filter((c) => c.parent === category.id);
+
+  const childSliderItems = useMemo(() => {
+    return toCategorySliderItems({
+      categories: childCategories,
+      locale,
+    });
+  }, [childCategories, locale]);
 
   // Breadcrumbs
   const breadcrumbs: BreadcrumbItem[] = [];
 
-  // if (parentCat) {
-  //   breadcrumbs.push({
-  //     label: parentCat.name,
-  //     href: `/${locale}/category/${parentCat.slug}`,
-  //   });
-  // }
+  if (parentCat) {
+    breadcrumbs.push({
+      label: parentCat.name,
+      href: `/${locale}/category/${parentCat.slug}`,
+    });
+  }
 
-  breadcrumbs.push({ label: category.label });
+  breadcrumbs.push({ label: category.name });
 
   return (
     <>
       <Section tone="teal" className="pageHeader">
         <BreadcrumbsNav locale={locale} isProduct={true} items={breadcrumbs} />
-        <h1>{category.label}</h1>
+        <h1>{category.name}</h1>
       </Section>
+
       <Section tone="white" topWave="teal" bottomWave="cream">
-        {/* All Product */}
         <Grid container spacing={2}>
           <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
             <ProductsFilterSidebarClient
@@ -64,6 +64,7 @@ const CategoryPageClient = ({
               common={dict.common}
             />
           </Grid>
+
           <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
             {(finalProducts || []).map((p) => (
               <Grid
@@ -85,11 +86,12 @@ const CategoryPageClient = ({
           </Grid>
         </Grid>
       </Section>
-      {childCategories && childCategories.length > 0 ? (
+
+      {childSliderItems.length > 0 ? (
         <CategorySliderSection
-          lang={lang}
-          title={category.label}
-          items={childCategories}
+          locale={locale}
+          title={category.name}
+          items={childSliderItems} // ✅ 呢度先係 CategorySliderItem[]
         />
       ) : null}
     </>

@@ -13,20 +13,28 @@ import { unwrap, unwrapSearchParams } from "@/types/next";
 
 type CategoryPageProps = PageProps<LangSlugParamsObj>;
 
+console.log(">>> CategoryPage module loaded");
+
 export const generateMetadata = async ({
   params,
 }: CategoryPageProps): Promise<Metadata> => {
   const { lang, slug } = await unwrap(params);
+  if (!isValidLocale(lang)) return {};
   return buildCategoryMetadata({ lang, slug });
 };
 
 const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
-  const { lang, slug } = await unwrap(params);
+  const p = await unwrap(params);
   const sp = await unwrapSearchParams(searchParams);
 
-  if (!isValidLocale(lang)) notFound();
+  console.log("params:", p);
+  console.log("searchParams:", sp);
 
-  const locale: Locale = lang;
+  const { lang, slug } = p;
+
+  if (!isValidLocale(lang)) notFound();
+  const locale = lang as Locale;
+
   const dict = await getDictionary(locale);
 
   const { wooParams, hasAnyFilter } = await buildWooParamsForListPage({

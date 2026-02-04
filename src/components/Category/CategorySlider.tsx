@@ -5,7 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import styles from "./Category.module.scss";
-import { CategorySliderProps } from "./types";
+import type { CategorySliderProps } from "./types";
 import { Box } from "@mui/material";
 
 const CategorySlider = ({ items, locale }: CategorySliderProps) => {
@@ -17,16 +17,8 @@ const CategorySlider = ({ items, locale }: CategorySliderProps) => {
 
   const scrollByOne = (dir: "prev" | "next") => {
     if (!emblaApi) return;
-
     const current = emblaApi.selectedScrollSnap();
-    const total = emblaApi.scrollSnapList().length;
-
-    if (dir === "prev") {
-      emblaApi.scrollTo(current - 1); // loop=true 時可照用
-      return;
-    }
-
-    emblaApi.scrollTo(current + 1);
+    emblaApi.scrollTo(dir === "prev" ? current - 1 : current + 1);
   };
 
   return (
@@ -52,7 +44,7 @@ const CategorySlider = ({ items, locale }: CategorySliderProps) => {
       <div className={styles.viewport} ref={emblaRef}>
         <div className={styles.track}>
           {items.map((item) => (
-            <div className={styles.slide} key={String(item.id)}>
+            <div className={styles.slide} key={item.slug}>
               <Link
                 href={`/${locale}/category/${item.slug}`}
                 className={styles.link}
@@ -61,9 +53,9 @@ const CategorySlider = ({ items, locale }: CategorySliderProps) => {
                   {item.image ? (
                     <Box
                       component="img"
-                      src={item.image?.src}
-                      alt={item.image?.alt || item.name}
-                      style={{ maxWidth: `100%` }}
+                      src={item.image.src}
+                      alt={item.name}
+                      style={{ maxWidth: "100%" }}
                     />
                   ) : (
                     <div className={styles.fallback}>

@@ -17,7 +17,7 @@ export type CategorySliderItem = {
 
 export type CategorySliderSectionProps = {
   title?: string;
-  items: NavNode[];
+  items: CategorySliderItem[];
   circleSize?: { xs: number; md: number };
   tone?: SectionTone;
   topWave?: SectionTone;

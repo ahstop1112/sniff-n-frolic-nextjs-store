@@ -40,7 +40,7 @@ export const buildCategoryMetadata = async (
       : `Discover more "${category.name}" goodies from ${seoConfig.siteName} – treats, toys and adventure-ready gear for happy pets.`;
 
   // 假設 Woo 用預設 product category URL 結構：
-  const canonical = `https://sniffnfrolic.com/product-category/${category.slug}/`;
+  const canonical = `${seoConfig.siteUrl}/${lang}/category/${category.slug}`;
 
   const metadata: Metadata = {
     title: baseTitle,

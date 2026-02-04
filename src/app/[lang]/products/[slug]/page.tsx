@@ -18,10 +18,10 @@ import ProductsDetailsTop from "@/components/ProductDetails/ProductsDetailsTop";
 // Add To Cart
 import ProductPurchasePanel from "@/components/ProductPurchasePanel/ProductPurchasePanel";
 import type { AddToCartInput } from "@/lib/cartTypes";
+import type { PageProps, LangSlugParamsObj } from "@/types/next";
+import { unwrap, unwrapSearchParams } from "@/types/next";
 
-interface ProductPageProps {
-  params: Promise<{ lang: string; slug: string }>;
-}
+type ProductPageProps = PageProps<LangSlugParamsObj>;
 
 interface VariantOptionGroup {
   name: string; // "Color"
@@ -29,11 +29,11 @@ interface VariantOptionGroup {
   values: string[]; // ["Red", "Blue"]
 }
 
-export const generateMetadata = async (
-  props: ProductPageProps,
-): Promise<Metadata> => {
-  const { params } = props;
-  const { lang, slug } = await params;
+export const generateMetadata = async ({
+  params,
+  searchParams,
+}: ProductPageProps): Promise<Metadata> => {
+  const { lang, slug } = await unwrap(params);
 
   return buildProductMetadata({ lang, slug });
 };
@@ -74,8 +74,10 @@ const buildVariantOptions = (
   return groups;
 };
 
-const ProductPage = async ({ params }: ProductPageProps) => {
-  const { lang, slug } = await params;
+const ProductPage = async ({ params, searchParams }: ProductPageProps) => {
+  const { lang, slug } = await unwrap(params);
+  const sp = await unwrapSearchParams(searchParams);
+
   if (!isValidLocale(lang)) notFound();
 
   const locale: Locale = lang;
