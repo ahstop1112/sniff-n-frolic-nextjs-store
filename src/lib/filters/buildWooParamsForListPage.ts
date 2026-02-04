@@ -3,7 +3,7 @@ import {
   type SimpleCategory,
   type WooQueryParams,
 } from "./buildWooParams";
-import { Term, SearchParamsObj, MaybePromise } from "@/types/next";
+import type { Term, SearchParamsObj, MaybePromise } from "@/types/next";
 
 const getParamString = (sp: SearchParamsObj, key: string): string => {
   const v = sp[key];
@@ -20,27 +20,28 @@ const isTruthyParam = (sp: SearchParamsObj, key: string) => {
 };
 
 export const buildWooParamsForListPage = async (args: {
-  searchParams: MaybePromise<SearchParamsObj> | SearchParamsObj;
+  searchParams: MaybePromise<SearchParamsObj>;
   baseCategoryId?: number;
   categories?: SimpleCategory[];
   perPage?: number;
   searchKey?: "q" | "search"; // default "q"
-  color?: { attribute: string; terms: Term[] }; // e.g. { attribute: "pa_color", terms: [...] }
-}) => {
-  const sp: SearchParamsObj =
-    typeof (args.searchParams as any)?.then === "function"
-      ? await (args.searchParams as Promise<SearchParamsObj>)
-      : (args.searchParams as SearchParamsObj);
-
+  color?: { attribute: string; terms: Term[] };
+}): Promise<{
+  sp: SearchParamsObj;
+  wooParams: WooQueryParams;
+  hasAnyFilter: boolean;
+  hasQuery: boolean;
+}> => {
+  const sp = await args.searchParams;
   const perPage = args.perPage ?? 50;
 
-  const wooParams = buildWooParamsFromSearchParams({
-    sp,
+  const wooParams = (await buildWooParamsFromSearchParams({
+    searchParams: sp,
     baseCategoryId: args.baseCategoryId,
     categories: args.categories ?? [],
     perPage,
     color: args.color,
-  }) as WooQueryParams;
+  })) as WooQueryParams;
 
   // Search alias: /search?q=xxx  -> wooParams.search
   const key = args.searchKey ?? "q";

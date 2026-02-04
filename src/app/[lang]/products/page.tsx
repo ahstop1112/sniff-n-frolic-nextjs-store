@@ -36,6 +36,11 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
     .filter((c) => c.parent === 0)
     .sort((a, b) => a.id - b.id);
 
+  const topLevelSliderItems = wooCategoriesToSliderItems(
+    topLevelCategories,
+    locale,
+  );
+
   // Show the first level of Categoryes
   const { wooParams } = await buildWooParamsForListPage({
     searchParams: sp,
@@ -77,11 +82,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
           <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
             <ProductsFilterSidebarClient
               locale={locale}
-              categories={topLevelCategories.map((c) => ({
-                id: c.id,
-                name: c.name,
-                slug: c.slug,
-              }))}
+              categories={topLevelSliderItems}
               common={dict.common}
             />
           </Grid>
@@ -109,7 +110,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
       <CategorySliderSection
         locale={locale}
         title={dict.search.allCategories}
-        items={topLevelCategories}
+        items={topLevelSliderItems}
         bottomWave="cream"
       />
     </>

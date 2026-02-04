@@ -17,14 +17,13 @@ type Props = PropsWithChildren<{
   locale?: "en" | "zh";
 }>;
 
-const StripeProvider = ({ clientSecret, children, locale = "en" }: Props) => {
+const StripeProvider = ({ clientSecret, children }: Props) => {
   const options = useMemo(
     () => ({
       clientSecret,
-      // appearance: { theme: "stripe" }, // optional
-      locale: locale === "zh" ? "zh" : "en",
+      locale: "auto" as const,
     }),
-    [clientSecret, locale],
+    [clientSecret],
   );
 
   return (

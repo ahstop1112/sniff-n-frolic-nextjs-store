@@ -50,10 +50,10 @@ const CategorySlider = ({ items, locale }: CategorySliderProps) => {
                 className={styles.link}
               >
                 <div className={styles.circle}>
-                  {item.image ? (
+                  {item.imageSrc ? (
                     <Box
                       component="img"
-                      src={item.image.src}
+                      src={item.imageSrc}
                       alt={item.name}
                       style={{ maxWidth: "100%" }}
                     />

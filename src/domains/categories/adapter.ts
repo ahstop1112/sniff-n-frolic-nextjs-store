@@ -29,17 +29,16 @@ export const wooCategoriesToSliderItems = (
   categories: WooCategory[],
   locale: Locale,
 ): CategorySliderItem[] => {
-  return categories
-    .filter((c) => (c.count ?? 0) > 0) // optional: hide empty
-    .map((c) => ({
-      id: c.id,
-      slug: c.slug,
-      name: c.name,
-      locale,
-      href: `/${locale}/category/${c.slug}`,
-      imageSrc: c.image?.src ?? "",
-      count: c.count ?? 0,
-    }));
+  return categories.map((c) => ({
+    id: c.id,
+    slug: c.slug,
+    name: c.name,
+    parent: c.parent ?? 0,
+    locale,
+    href: `/${locale}/category/${c.slug}`,
+    imageSrc: c.image?.src ?? "",
+    count: c.count ?? 0,
+  }));
 };
 
 type BuildHrefArgs = { locale: Locale; slug: string };
@@ -53,6 +52,13 @@ const slugFromHref = (href: string) => {
   return parts[parts.length - 1] ?? "";
 };
 
+const stableIdFromSlug = (slug: string) => {
+  // cheap stable hash to number
+  let h = 0;
+  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) >>> 0;
+  return h;
+};
+
 export const toCategorySliderItems = ({
   nodes,
   locale,
@@ -64,13 +70,14 @@ export const toCategorySliderItems = ({
     const n = normalizeCategoryNode(node);
     const slug = n.slug ?? slugFromHref(n.href ?? "");
     const href = n.href ?? buildCategoryHref({ locale, slug });
+    const id = typeof n.id === "number" ? n.id : stableIdFromSlug(slug);
 
     return {
-      id: n.id ?? 0,
+      id,
       locale,
       name: n.name ?? n.label,
+      parent: 0,
       slug,
-      label: n.label,
       href,
       count: n.count ?? 0,
       imageSrc: n.imageSrc ?? "",

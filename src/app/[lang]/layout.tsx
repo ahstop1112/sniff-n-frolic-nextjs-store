@@ -10,12 +10,12 @@ import { CurrencyProvider } from "@/context/CurrencyContext";
 import { CategoriesProvider } from "@/context/CategoriesContext";
 import { ProductsProvider } from "@/context/ProductsContext";
 import AppShell from "@/components/_layout/AppShell/AppShell";
-import { PageParams } from "@/types/next";
+import { LangParamsObj } from "@/types/next";
 import "./globals.scss";
 
 interface LangLayoutProps {
   children: ReactNode;
-  params: PageParams;
+  params: LangParamsObj;
 }
 
 const LangLayout = async ({ children, params }: LangLayoutProps) => {

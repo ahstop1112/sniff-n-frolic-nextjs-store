@@ -4,11 +4,10 @@ import CartPageClient from "@/components/Cart/CartPageClient";
 import PageLayout from "@/components/PageLayout/PageLayout";
 import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
-import { PageParams } from "@/types/next";
+import Section from "@/components/Section/Section";
+import { LangParamsObj, PageProps } from "@/types/next";
 
-interface CartPageProps {
-  params: PageParams;
-}
+type CartPageProps = PageProps<LangParamsObj>;
 
 export const generateMetadata = async (
   props: CartPageProps,
@@ -44,10 +43,10 @@ const CartPage = async ({ params }: CartPageProps) => {
   const breadcrumbs: BreadcrumbItem[] = [];
 
   return (
-    <PageLayout>
+    <Section>
       {/* <BreadcrumbsNav locale={locale} items={breadcrumbs} /> */}
       <CartPageClient locale={locale} />
-    </PageLayout>
+    </Section>
   );
 };
 

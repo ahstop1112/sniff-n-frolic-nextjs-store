@@ -32,7 +32,7 @@ export const POST = async (req: Request) => {
   } catch (err: any) {
     return NextResponse.json(
       { error: `Webhook error: ${err.message}` },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -52,7 +52,7 @@ export const POST = async (req: Request) => {
 
     const shipping = safeJsonParse<Record<string, any> | null>(
       pi.metadata?.shipping_json,
-      null
+      null,
     );
 
     const items = safeJsonParse<MetaCartItem[]>(pi.metadata?.items_json, []);
@@ -87,16 +87,29 @@ export const POST = async (req: Request) => {
       payment_method_title: "Credit Card (Stripe)",
       set_paid: true,
       transaction_id: pi.id,
-      shipping: {
-        ...shipping,
+
+      billing: {
         email,
+        first_name: shipping?.first_name,
+        last_name: shipping?.last_name,
+        phone: shipping?.phone,
+        address_1: shipping?.address_1,
+        address_2: shipping?.address_2,
+        city: shipping?.city,
+        state: shipping?.state,
+        postcode: shipping?.postcode,
+        country: shipping?.country,
       },
       shipping,
       line_items,
       meta_data: [{ key: "_stripe_payment_intent", value: pi.id }],
     };
 
-    const order = await wooPost("orders", orderPayload);
+    const order = (await wooPost("orders", orderPayload)) as {
+      id?: number | string;
+    };
+    if (!order?.id)
+      throw new Error("Woo order create failed: missing order id");
 
     // ✅ write back woo order id for confirm page lookup
     await stripe.paymentIntents.update(pi.id, {
@@ -110,7 +123,7 @@ export const POST = async (req: Request) => {
   } catch (e: any) {
     return NextResponse.json(
       { error: e?.message || "Webhook handler error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

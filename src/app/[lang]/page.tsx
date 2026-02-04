@@ -67,7 +67,7 @@ const HomePage = async ({ params }: HomePageProps) => {
         items={productTreatsItems}
         tone="white"
         topWave="green"
-        bottomWave="orange"
+        bottomWave="yellow"
       />
       {/* Pet Bowls & Feeders */}
       <CategoryProductSliderSection
@@ -75,7 +75,7 @@ const HomePage = async ({ params }: HomePageProps) => {
         desc="Bowls, feeders and drinking accessories designed for everyday feeding and hydration."
         locale={locale}
         items={productFeederItems}
-        tone="orange"
+        tone="yellow"
         bottomWave="cream"
       />
     </>

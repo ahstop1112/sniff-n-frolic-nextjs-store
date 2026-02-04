@@ -6,13 +6,11 @@ import { NavNode } from "@/domains/nav/types";
 export type CategorySliderItem = {
   id: string | number;
   slug: string;
-  locale: Locale;
   image?: WooCategoryImage | null;
   name: string;
-  parent: number;
+  parent?: number;
   count: number;
   href: string;
-  imageSrc: string;
 };
 
 export type CategorySliderSectionProps = {

@@ -7,8 +7,14 @@ export const toCategoryProductSliderItems = (
   locale: Locale,
 ): CateogryProductSliderItem[] => {
   return products.map((p) => ({
-    ...p,
+    id: p.id,
+    slug: p.slug,
     locale,
-    image: p.images?.[0]?.src ?? null,
+    name: p.name,
+    price: p.price,
+    regular_price: p.regular_price,
+    on_sale: p.on_sale,
+    categories: p.categories ?? [],
+    image: p.images ?? [],
   }));
 };

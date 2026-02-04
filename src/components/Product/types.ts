@@ -1,8 +1,10 @@
 import type { Locale } from "@/i18n/config";
+import type { WooImage } from "@/lib/wooClient";
+
 export interface ProductGridProps {
   locale: Locale;
   slug: string;
-  image?: { thumbnail?: string; alt?: string };
+  image: WooImage | null;
   name: string;
   categoryName?: string; // "Pet Treats"
   onSale?: boolean;

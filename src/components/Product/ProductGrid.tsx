@@ -1,17 +1,9 @@
-// src/components/ProductGrid.tsx
 "use client";
 import Link from "next/link";
 import Box from "@mui/material/Box";
+import { formatMoney, toNum } from "@/utils/helpers";
 import { ProductGridProps } from "./types";
 import styles from "./Product.module.scss";
-
-const formatMoney = (n: number, currency = "CAD") =>
-  new Intl.NumberFormat("en-CA", { style: "currency", currency }).format(n);
-
-const toNum = (v?: string) => {
-  const x = Number(v);
-  return Number.isFinite(x) ? x : null;
-};
 
 const ProductGrid = ({
   locale,
@@ -26,16 +18,22 @@ const ProductGrid = ({
 }: ProductGridProps) => {
   const sale = toNum(price);
   const regular = toNum(regularPrice);
+  const img = image as any;
+  const imgSrc: string =
+    img?.thumbnail ?? img?.src ?? img?.url ?? img?.imageSrc ?? "";
+  const imgAlt: string = (img?.alt ?? img?.name ?? name ?? "").toString();
+  const imgSizes: string | undefined =
+    typeof img?.sizes === "string" ? img.sizes : undefined;
 
   return (
     <Box className={styles.productGrid}>
       <Link href={`/${locale}/products/${slug}`}>
         <div className={styles.media}>
-          {image?.thumbnail ? (
+          {image ? (
             <img
-              src={image?.thumbnail}
-              alt={image?.alt || name}
-              sizes="(max-width: 600px) 80vw, (max-width: 1200px) 33vw, 20vw"
+              src={imgSrc}
+              alt={imgAlt}
+              sizes={imgSizes}
               className={styles.img}
             />
           ) : (

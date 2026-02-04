@@ -3,11 +3,9 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import PageLayout from "@/components/PageLayout/PageLayout";
 import CheckoutPageClient from "@/components/Checkout/CheckoutPageClient";
-import { PageParams } from "@/types/next";
+import { PageProps, LangParamsObj } from "@/types/next";
 
-interface CheckoutPageProps {
-  params: PageParams;
-}
+type CheckoutPageProps = PageProps<LangParamsObj>;
 
 export const generateMetadata = async (
   props: CheckoutPageProps,

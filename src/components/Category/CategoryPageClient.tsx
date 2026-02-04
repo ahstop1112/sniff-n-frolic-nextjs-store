@@ -10,7 +10,7 @@ import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import ProductGrid from "@/components/Product/ProductGrid";
 import ProductsFilterSidebarClient from "@/components/ProductFilter/ProductsFilterSidebarClient";
-import { toCategorySliderItems } from "@/domains/categories/adapter";
+import { wooCategoriesToSliderItems } from "@/domains/categories/adapter";
 import { CategoryPageClientProps } from "./types";
 
 const CategoryPageClient = ({
@@ -27,14 +27,16 @@ const CategoryPageClient = ({
   if (!category) return notFound();
 
   const parentCat = allCats.find((c) => c.id === category.parent);
-  const childCategories = allCats.filter((c) => c.parent === category.id);
 
-  const childSliderItems = useMemo(() => {
-    return toCategorySliderItems({
-      categories: childCategories,
-      locale,
-    });
-  }, [childCategories, locale]);
+  const childCategories = useMemo(
+    () => allCats.filter((c) => c.parent === category.id),
+    [allCats, category.id],
+  );
+
+  const childSliderItems = useMemo(
+    () => wooCategoriesToSliderItems(childCategories, locale),
+    [childCategories, locale],
+  );
 
   // Breadcrumbs
   const breadcrumbs: BreadcrumbItem[] = [];
@@ -60,7 +62,7 @@ const CategoryPageClient = ({
           <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
             <ProductsFilterSidebarClient
               locale={locale}
-              categories={childCategories}
+              categories={childSliderItems}
               common={dict.common}
             />
           </Grid>
@@ -91,7 +93,7 @@ const CategoryPageClient = ({
         <CategorySliderSection
           locale={locale}
           title={category.name}
-          items={childSliderItems} // ✅ 呢度先係 CategorySliderItem[]
+          items={childSliderItems}
         />
       ) : null}
     </>

@@ -74,21 +74,23 @@
 
 /* ===== Shared ListItem button ===== */
 .liBtn {
-  height: 4$point * 2;
-  border-radius: $point * 3 !important;
-  margin: 4px 0;
-  padding-left: $point * 3 !important;
-  padding-right: $point * 3 !important;
-  text-align: left;
+  &.liBtn {
+    height: 4$point * 2;
+    border-radius: $point * 3;
+    margin: 4px 0;
+    padding-left: $point * 3;
+    padding-right: $point * 3;
+    text-align: left;
 
-  /* kill MUI ripple look */
-  &::after {
-    display: none;
-  }
+    /* kill MUI ripple look */
+    &::after {
+      display: none;
+    }
 
-  :global(.MuiListItemText-primary) {
-    color: $sf-orange;
-    font-weight: 700;
+    :global(.MuiListItemText-primary) {
+      color: $sf-orange;
+      font-weight: 700;
+    }
   }
 }
 

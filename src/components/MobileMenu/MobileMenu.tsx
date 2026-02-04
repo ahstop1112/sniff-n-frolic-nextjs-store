@@ -42,7 +42,7 @@ const MobileMenu = ({
 }: MobileMenuProps) => {
   const { t } = useTranslation("nav");
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
   const searchParams = useSearchParams();
   const { runSearch } = useRunSearch({ locale, onClose });
 
@@ -65,17 +65,12 @@ const MobileMenu = ({
   useEffect(() => {
     if (!open) return;
     // ✅ route -> auto open corresponding level
-    setOpenL1(active.activeL1);
-    setOpenL2(nextOpen.openL2);
-    setOpenL3(nextOpen.openL3);
+    setOpenL1(active.activeL1 ?? null);
+    setOpenL2(nextOpen.openL2 ?? null);
+    setOpenL3(nextOpen.openL3 ?? null);
   }, [open, items, pathname, localeCodes]);
 
-  const toggleL2 = (key: string, hasChildren: boolean, href?: string) => {
-    if (!hasChildren) {
-      if (href) router.push(href);
-      onClose();
-      return;
-    }
+  const toggleL2 = (key: string) => {
     setOpenL2((prev) => (prev === key ? null : key));
     setOpenL3(null);
   };
@@ -169,9 +164,11 @@ const MobileMenu = ({
                         styles.liBtn,
                         active.activeL1 === l1.key && styles.active,
                       )}
-                      onClick={() =>
-                        setOpenL1((prev) => (prev === l1.key ? null : l1.key))
-                      }
+                      onClick={() => {
+                        const key = l1.key ?? null;
+                        if (!key) return;
+                        setOpenL1((prev) => (prev === key ? null : key));
+                      }}
                       aria-expanded={l1Expanded}
                     >
                       <ListItemText primary={t(l1.label)} />
@@ -187,9 +184,11 @@ const MobileMenu = ({
                           <Fragment key={l2.key}>
                             <ListItem disablePadding>
                               <ListItemButton
-                                onClick={() =>
-                                  toggleL2(l2.key, hasChildren, l2.href)
-                                }
+                                onClick={() => {
+                                  const key = l2.key ?? null;
+                                  if (!key) return;
+                                  toggleL2(key);
+                                }}
                                 className={clsx(
                                   styles.subLiBtn,
                                   active.activeL2 === l2.key && styles.active,
@@ -224,41 +223,62 @@ const MobileMenu = ({
                                     return (
                                       <Fragment key={l3.key}>
                                         <ListItem disablePadding>
-                                          <ListItemButton
-                                            className={clsx(
-                                              styles.subSubLiBtn,
-                                              active.activeL3 === l3.key &&
-                                                styles.active,
-                                            )}
-                                            component={
-                                              l3HasChildren
-                                                ? "button"
-                                                : (Link as any)
-                                            }
-                                            {...(!l3HasChildren
-                                              ? {
-                                                  href: l3.href ?? "#",
-                                                  onClick: onClose,
-                                                }
-                                              : {})}
-                                            onClick={() => {
-                                              if (!l3HasChildren) return;
-                                              toggleL3(l3.key);
-                                            }}
-                                            aria-expanded={l3Expanded}
-                                          >
-                                            <ListItemText
-                                              primary={t(l3.label)}
-                                            />
-                                            {l3HasChildren ? (
-                                              l3Expanded ? (
+                                          {l3HasChildren ? (
+                                            <ListItemButton
+                                              className={clsx(
+                                                styles.subSubLiBtn,
+                                                active.activeL3 === l3.key &&
+                                                  styles.active,
+                                              )}
+                                              component="button"
+                                              onClick={() => {
+                                                const key = l3.key ?? null;
+                                                if (!key) return;
+                                                toggleL3(key);
+                                              }}
+                                              aria-expanded={l3Expanded}
+                                            >
+                                              <ListItemText
+                                                primary={t(l3.label)}
+                                              />
+                                              {l3Expanded ? (
                                                 <ExpandLess />
                                               ) : (
                                                 <ExpandMore />
-                                              )
-                                            ) : null}
-                                          </ListItemButton>
+                                              )}
+                                            </ListItemButton>
+                                          ) : (
+                                            <ListItemButton
+                                              className={clsx(
+                                                styles.subSubLiBtn,
+                                                active.activeL3 === l3.key &&
+                                                  styles.active,
+                                              )}
+                                              component={Link}
+                                              href={l3.href ?? "#"}
+                                              onClick={onClose}
+                                            >
+                                              <ListItemText
+                                                primary={t(l3.label)}
+                                              />
+                                            </ListItemButton>
+                                          )}
                                         </ListItem>
+
+                                        {/* 如果你真係會有 L4，先開呢段；否則可以唔要 */}
+                                        {/* {l3HasChildren ? (
+        <Collapse in={l3Expanded} timeout="auto" unmountOnExit>
+          <List disablePadding className={styles.subSubSubList}>
+            {(l3.children ?? []).map((l4) => (
+              <ListItem key={l4.key} disablePadding>
+                <ListItemButton component={Link} href={l4.href ?? "#"} onClick={onClose}>
+                  <ListItemText primary={t(l4.label)} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Collapse>
+      ) : null} */}
                                       </Fragment>
                                     );
                                   })}

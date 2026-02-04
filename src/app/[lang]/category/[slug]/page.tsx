@@ -8,12 +8,11 @@ import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPa
 import { buildCategoryMetadata } from "@/seo/buildCategoryMetaTag";
 // components
 import CategoryPageClient from "@/components/Category/CategoryPageClient";
+import { getCategoryIdBySlug } from "@/lib/categories/getCategoryIdBySlug";
 import type { PageProps, LangSlugParamsObj } from "@/types/next";
 import { unwrap, unwrapSearchParams } from "@/types/next";
 
 type CategoryPageProps = PageProps<LangSlugParamsObj>;
-
-console.log(">>> CategoryPage module loaded");
 
 export const generateMetadata = async ({
   params,
@@ -24,22 +23,20 @@ export const generateMetadata = async ({
 };
 
 const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
-  const p = await unwrap(params);
+  const { lang, slug } = await unwrap(params);
   const sp = await unwrapSearchParams(searchParams);
-
-  console.log("params:", p);
-  console.log("searchParams:", sp);
-
-  const { lang, slug } = p;
 
   if (!isValidLocale(lang)) notFound();
   const locale = lang as Locale;
-
   const dict = await getDictionary(locale);
+
+  const baseCategoryId = await getCategoryIdBySlug(slug);
+  console.log(baseCategoryId);
 
   const { wooParams, hasAnyFilter } = await buildWooParamsForListPage({
     searchParams: sp,
     perPage: 50,
+    baseCategoryId,
   });
 
   const products = await getProducts(wooParams as any);

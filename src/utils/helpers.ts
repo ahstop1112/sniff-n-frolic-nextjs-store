@@ -7,7 +7,8 @@ export const shuffleArray = (arr: any[]) => {
   return a;
 };
 
-export const getStr = (v: string | string[] | undefined) => (typeof v === "string" ? v : undefined);
+export const getStr = (v: string | string[] | undefined) =>
+  typeof v === "string" ? v : undefined;
 
 export const collectDescendantIds = (all: any[], rootId: number) => {
   const ids: number[] = [];
@@ -17,4 +18,12 @@ export const collectDescendantIds = (all: any[], rootId: number) => {
   };
   walk(rootId);
   return ids;
+};
+
+export const formatMoney = (n: number, currency = "CAD") =>
+  new Intl.NumberFormat("en-CA", { style: "currency", currency }).format(n);
+
+export const toNum = (v?: string) => {
+  const x = Number(v);
+  return Number.isFinite(x) ? x : null;
 };

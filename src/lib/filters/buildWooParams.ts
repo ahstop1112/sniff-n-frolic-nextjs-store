@@ -1,4 +1,5 @@
-import type { SearchParams, Term } from "@/types/next";
+import type { SearchParamsObj, Term, MaybePromise } from "@/types/next";
+import { getCategoryIdBySlug } from "../categories/getCategoryIdBySlug";
 
 export type SimpleCategory = {
   id: number;
@@ -11,14 +12,17 @@ export type WooQueryParams = Record<
   string | number | boolean | undefined
 >;
 
-const getParamString = (sp: SearchParams, key: string): string => {
+const getParamString = (sp: SearchParamsObj, key: string): string => {
   const v = sp[key];
   if (typeof v === "string") return v;
   if (Array.isArray(v)) return v[0] ?? "";
   return "";
 };
 
-const getParamNumber = (sp: SearchParams, key: string): number | undefined => {
+const getParamNumber = (
+  sp: SearchParamsObj,
+  key: string,
+): number | undefined => {
   const raw = getParamString(sp, key).trim();
   if (!raw) return undefined;
   const n = Number(raw);
@@ -53,15 +57,16 @@ const mapSortToWoo = (sort: string) => {
   }
 };
 
-export const buildWooParamsFromSearchParams = (args: {
-  sp: SearchParams;
+export const buildWooParamsFromSearchParams = async (args: {
+  searchParams: MaybePromise<SearchParamsObj>;
   baseCategoryId?: number; // category page default
   categories?: SimpleCategory[]; // 用 slug → id
   perPage?: number;
   // optional: color attribute support
   color?: { attribute: string; terms: Term[] }; // attribute="pa_color"
-}): WooQueryParams => {
-  const { sp, baseCategoryId, categories = [], perPage = 50, color } = args;
+}): Promise<WooQueryParams> => {
+  const sp = await args.searchParams;
+  const { baseCategoryId, categories = [], perPage = 50, color } = args;
 
   const categorySlug = getParamString(sp, "category");
   const inStockFlag = getParamString(sp, "in_stock");
@@ -77,23 +82,32 @@ export const buildWooParamsFromSearchParams = (args: {
     status: "publish",
   };
 
-  // category: slug → id
-  const selectedCategory = categorySlug
-    ? categories.find((c) => c.slug === categorySlug)
-    : undefined;
+  console.log(categorySlug);
 
-  const categoryId = selectedCategory?.id ?? baseCategoryId;
+  // category: slug → id
+  let resolvedCategoryId: number | undefined;
+
+  if (categorySlug) {
+    // 1) local lookup (fast)
+    const local = categories.find((c) => c.slug === categorySlug);
+    if (local?.id) {
+      resolvedCategoryId = local.id;
+    } else {
+      // 2) remote lookup fallback (guaranteed)
+      resolvedCategoryId = await getCategoryIdBySlug(categorySlug);
+    }
+  }
+
+  // Prefer query category, fallback to baseCategoryId
+  const categoryId = resolvedCategoryId ?? baseCategoryId;
   if (typeof categoryId === "number") {
     params.category = categoryId;
   }
 
-  if (inStockFlag === "1") {
-    params.stock_status = "instock";
-  }
+  const toBool = (v: string) => v === "1" || v === "true";
 
-  if (onSaleFlag === "1") {
-    params.on_sale = true;
-  }
+  if (toBool(inStockFlag)) params.stock_status = "instock";
+  if (toBool(onSaleFlag)) params.on_sale = true;
 
   if (min !== undefined) params.min_price = min;
   if (max !== undefined) params.max_price = max;

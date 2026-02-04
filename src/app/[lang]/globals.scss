@@ -69,19 +69,6 @@ a {
   }
 }
 
-.mainBanner {
-  background-image: url("/images/banner_main.jpg");
-  background-size: cover;
-  background-position: center;
-  max-width: none !important;
-  height: 36vw;
-
-  @media (max-width: $bp-sm) {
-    height: 100vw;
-    background-position: left;
-  }
-}
-
 .pageHeader {
   padding: $point * 10 $point * 15;
   display: flex;
