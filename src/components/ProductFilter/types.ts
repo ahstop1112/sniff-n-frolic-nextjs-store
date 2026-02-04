@@ -1,5 +1,6 @@
 import type { getDictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
+import { CategorySliderItem } from "../Category/types";
 
 type Dict = Awaited<ReturnType<typeof getDictionary>>;
 type CommonDict = Dict["common"];
@@ -10,7 +11,7 @@ export interface SimpleCategory {
   slug: string;
 }
 
-export interface SimpleTerm{
+export interface SimpleTerm {
   id: number;
   name: string;
   slug: string;
@@ -18,7 +19,7 @@ export interface SimpleTerm{
 
 export interface ProductsFilterSidebarClientProps {
   locale: Locale;
-  categories: SimpleCategory[];
+  categories: CategorySliderItem[];
   colors?: SimpleTerm[];
-  common: CommonDict
+  common: CommonDict;
 }

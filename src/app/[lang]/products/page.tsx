@@ -13,12 +13,9 @@ import ProductGrid from "@/components/Product/ProductGrid";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import { shuffleArray } from "@/utils/helpers";
 import { wooCategoriesToSliderItems } from "@/domains/categories/adapter";
+import { PageProps, LangSlugParamsObj } from "@/types/next";
 
-type SearchParams = Record<string, string | string[] | undefined>;
-interface ProductsPageProps {
-  params: Promise<{ lang: string; slug: string }>;
-  searchParams: Promise<SearchParams>;
-}
+type ProductsPageProps = PageProps<LangSlugParamsObj>;
 
 const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const { lang, slug } = await params;
@@ -38,7 +35,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
 
   // Show the first level of Categoryes
   const { sp, wooParams } = await buildWooParamsForListPage({
-    searchParams,
+    searchParams: sp,
     perPage: 50,
   });
   const categorySlug =

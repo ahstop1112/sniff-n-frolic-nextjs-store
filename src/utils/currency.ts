@@ -1,4 +1,4 @@
-import { wooFetch } from "@/lib/wooClient";
+import { wooFetch, WooSystemStatus } from "@/lib/wooClient";
 
 export interface StoreCurrency {
   code: string; // e.g. "CAD"
@@ -6,11 +6,11 @@ export interface StoreCurrency {
 }
 
 export const getStoreCurrency = async (): Promise<StoreCurrency> => {
-  const status = await wooFetch("system_status");
+  const status = await wooFetch<WooSystemStatus>("system_status");
 
   // Woo system_status
-  const code = status && status.currency ? status.currency : "CAD";
-  const symbol = status ? status.currency_symbol : "$";
+  const code = status?.settings?.currency ?? "CAD";
+  const symbol = status?.settings?.currency_symbol ?? "$";
 
   return { code, symbol };
 };

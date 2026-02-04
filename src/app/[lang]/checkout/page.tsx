@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import PageLayout from "@/components/PageLayout/PageLayout";
-import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
-import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import CheckoutPageClient from "@/components/Checkout/CheckoutPageClient";
+import { PageParams } from "@/types/next";
 
 interface CheckoutPageProps {
-  params: Promise<{ lang: string }>;
+  params: PageParams;
 }
 
 export const generateMetadata = async (

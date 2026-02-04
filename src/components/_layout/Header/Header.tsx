@@ -15,7 +15,7 @@ import MiniCart from "@/components/Cart/MiniCart";
 // Context & Config
 import { useCategories } from "@/context/CategoriesContext";
 import { NAV_ITEMS } from "@/config/nav.config";
-import { rawNavFromWooCategories } from "@/domains/nav/fromWooCategories";
+import { topLevelFromWooCategories } from "@/domains/nav/fromWooCategories";
 import { normalizeNavTree } from "@/domains/nav/normalize";
 // Types
 import { HeaderProps } from "./types";
@@ -31,7 +31,7 @@ const Header = ({ locale }: HeaderProps) => {
   // ✅ Woo categories -> Raw -> NavNode (with keys)
   const categoryNavItems = useMemo(() => {
     if (!categories?.length) return [];
-    const raw = rawNavFromWooCategories(categories, locale);
+    const raw = topLevelFromWooCategories(categories, locale);
     return normalizeNavTree(raw, "wooCats");
   }, [categories, locale]);
 

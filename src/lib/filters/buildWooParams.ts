@@ -1,4 +1,4 @@
-type SearchParams = Record<string, string | string[] | undefined>;
+import type { SearchParams, Term } from "@/types/next";
 
 export type SimpleCategory = {
   id: number;
@@ -6,7 +6,10 @@ export type SimpleCategory = {
   parent?: number;
 };
 
-export type WooQueryParams = Record<string, string | number | boolean | undefined>;
+export type WooQueryParams = Record<
+  string,
+  string | number | boolean | undefined
+>;
 
 const getParamString = (sp: SearchParams, key: string): string => {
   const v = sp[key];
@@ -23,7 +26,8 @@ const getParamNumber = (sp: SearchParams, key: string): number | undefined => {
 };
 
 const clampMinMax = (min?: number, max?: number) => {
-  if (min === undefined && max === undefined) return { min: undefined, max: undefined };
+  if (min === undefined && max === undefined)
+    return { min: undefined, max: undefined };
   if (min !== undefined && max !== undefined && min > max) {
     return { min: max, max: min }; // swap
   }
@@ -48,8 +52,6 @@ const mapSortToWoo = (sort: string) => {
       return { orderby: "date", order: "desc" };
   }
 };
-
-export type Term = { id: number; slug: string };
 
 export const buildWooParamsFromSearchParams = (args: {
   sp: SearchParams;
@@ -76,8 +78,9 @@ export const buildWooParamsFromSearchParams = (args: {
   };
 
   // category: slug → id
-  const selectedCategory =
-    categorySlug ? categories.find((c) => c.slug === categorySlug) : undefined;
+  const selectedCategory = categorySlug
+    ? categories.find((c) => c.slug === categorySlug)
+    : undefined;
 
   const categoryId = selectedCategory?.id ?? baseCategoryId;
   if (typeof categoryId === "number") {

@@ -1,22 +1,30 @@
 "use client";
-
+import { useMemo } from "react";
+import type { Locale } from "@/i18n/config";
 import { useCategories } from "@/context/CategoriesContext";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
+import { topLevelFromWooCategories } from "@/domains/nav/fromWooCategories";
+import { normalizeNavTree } from "@/domains/nav/normalize";
+import type { CategorySliderItem } from "@/components/Category/types";
 
 interface HomePageClientProps {
-  lang: string;
+  locale: Locale;
 }
 
-const HomePageClient = ({ lang }: HomePageClientProps) => {
+const HomePageClient = ({ locale }: HomePageClientProps) => {
   const categories = useCategories();
-  const topLevelCategories = categories.filter((c) => c.parent === 0);
+  const categoryNavItems = useMemo(() => {
+    if (!categories?.length) return [];
+    const raw = topLevelFromWooCategories(categories, locale);
+    return normalizeNavTree(raw, "wooCats");
+  }, [categories, locale]);
 
   return (
     <CategorySliderSection
-      lang={lang}
+      locale={locale}
       bottomWave="green"
       title="All Categories"
-      items={topLevelCategories}
+      items={categoryNavItems}
     />
   );
 };

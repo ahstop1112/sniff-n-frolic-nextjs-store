@@ -1,4 +1,5 @@
 "use client";
+import { useMemo } from "react";
 import { notFound } from "next/navigation";
 import { Grid } from "@mui/material";
 import { useCategories } from "@/context/CategoriesContext";
@@ -8,40 +9,50 @@ import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import ProductGrid from "@/components/Product/ProductGrid";
 import ProductsFilterSidebarClient from "@/components/ProductFilter/ProductsFilterSidebarClient";
+import { topLevelFromWooCategories } from "@/domains/nav/fromWooCategories";
+import { normalizeNavTree } from "@/domains/nav/normalize";
 import { CategoryPageClientProps } from "./types";
 
 const CategoryPageClient = ({
-  lang,
   locale,
   slug,
   dict,
   finalProducts,
 }: CategoryPageClientProps) => {
   const allCats = useCategories();
-  const category = allCats.find((c) => c.slug === slug);
+  const categoryNavItems = useMemo(() => {
+    if (!allCats?.length) return [];
+    const raw = topLevelFromWooCategories(allCats, locale);
+    return normalizeNavTree(raw, "wooCats");
+  }, [allCats, locale]);
+
+  const category = categoryNavItems.find((c) => c.slug === slug);
+  console.log(categoryNavItems, slug);
 
   if (!category) notFound();
 
-  const parentCat = allCats.find((c) => c.id === category.parent);
-  const childCategories = allCats.filter((c) => c.parent === category.id);
+  // const parentCat = categoryNavItems.find((c) => c.id === category.parent);
+  // const childCategories = categoryNavItems.filter(
+  //   (c) => c.parent === category.id,
+  // );
 
   // Breadcrumbs
   const breadcrumbs: BreadcrumbItem[] = [];
 
-  if (parentCat) {
-    breadcrumbs.push({
-      label: parentCat.name,
-      href: `/${locale}/category/${parentCat.slug}`,
-    });
-  }
+  // if (parentCat) {
+  //   breadcrumbs.push({
+  //     label: parentCat.name,
+  //     href: `/${locale}/category/${parentCat.slug}`,
+  //   });
+  // }
 
-  breadcrumbs.push({ label: category.name });
+  breadcrumbs.push({ label: category.label });
 
   return (
     <>
       <Section tone="teal" className="pageHeader">
         <BreadcrumbsNav locale={locale} isProduct={true} items={breadcrumbs} />
-        <h1>{category.name}</h1>
+        <h1>{category.label}</h1>
       </Section>
       <Section tone="white" topWave="teal" bottomWave="cream">
         {/* All Product */}
@@ -77,7 +88,7 @@ const CategoryPageClient = ({
       {childCategories && childCategories.length > 0 ? (
         <CategorySliderSection
           lang={lang}
-          title={category.name}
+          title={category.label}
           items={childCategories}
         />
       ) : null}

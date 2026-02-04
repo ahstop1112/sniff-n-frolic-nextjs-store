@@ -16,7 +16,7 @@ const toNum = (v?: string) => {
 const ProductGrid = ({
   locale,
   slug,
-  image = null,
+  image,
   name,
   categoryName,
   onSale,

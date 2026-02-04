@@ -2,13 +2,14 @@ import { notFound } from "next/navigation";
 import { Box, Typography } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { stripe } from "@/lib/stripe";
+import { LangParamsObj, PageProps } from "@/types/next";
 
 const wooGet = async (path: string) => {
   const base = process.env.WOO_API_BASE_URL!;
   const url = new URL(`${base}/wp-json/wc/v3/${path}`);
 
   const auth = Buffer.from(
-    `${process.env.WOO_CONSUMER_KEY}:${process.env.WOO_CONSUMER_SECRET}`
+    `${process.env.WOO_CONSUMER_KEY}:${process.env.WOO_CONSUMER_SECRET}`,
   ).toString("base64");
 
   const res = await fetch(url.toString(), {
@@ -20,17 +21,12 @@ const wooGet = async (path: string) => {
   return res.json();
 };
 
-type SearchParams = Record<string, string | string[] | undefined>;
-
-interface Props {
-  params: Promise<{ lang: string }>;
-  searchParams: Promise<SearchParams>;
-}
+type ConfirmPageProps = PageProps<LangParamsObj>;
 
 const getStr = (v: any) =>
   typeof v === "string" ? v : Array.isArray(v) ? v[0] : "";
 
-const ConfirmPage = async ({ params, searchParams }: Props) => {
+const ConfirmPage = async ({ params, searchParams }: ConfirmPageProps) => {
   const { lang } = await params;
   const sp = await searchParams;
 

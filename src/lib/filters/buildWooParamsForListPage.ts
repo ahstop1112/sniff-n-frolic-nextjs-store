@@ -1,40 +1,36 @@
-import { buildWooParamsFromSearchParams, type SimpleCategory, type WooQueryParams } from "./buildWooParams";
+import {
+  buildWooParamsFromSearchParams,
+  type SimpleCategory,
+  type WooQueryParams,
+} from "./buildWooParams";
+import { Term, SearchParamsObj, MaybePromise } from "@/types/next";
 
-type SearchParams = Record<string, string | string[] | undefined>;
-type Term = { id: number; slug: string };
-
-const getParamString = (sp: SearchParams, key: string): string => {
-    const v = sp[key];
-    if (typeof v === "string") return v;
-    if (Array.isArray(v)) return v[0] ?? "";
-    return "";
+const getParamString = (sp: SearchParamsObj, key: string): string => {
+  const v = sp[key];
+  if (typeof v === "string") return v;
+  if (Array.isArray(v)) return v[0] ?? "";
+  return "";
 };
 
 const toBoolFlag = (v: string) => v === "1" || v === "true";
 
-const isTruthyParam = (sp: SearchParams, key: string) => {
-    const v = getParamString(sp, key).trim();
-    return Boolean(v);
+const isTruthyParam = (sp: SearchParamsObj, key: string) => {
+  const v = getParamString(sp, key).trim();
+  return Boolean(v);
 };
 
 export const buildWooParamsForListPage = async (args: {
-  searchParams: Promise<SearchParams> | SearchParams;
-  // default category context (e.g. category page base id)
+  searchParams: MaybePromise<SearchParamsObj> | SearchParamsObj;
   baseCategoryId?: number;
-  // allow ?category=<slug> to override baseCategoryId
   categories?: SimpleCategory[];
-  // paging
   perPage?: number;
-  // search alias (for /search page)
-  // if you pass this, it will set wooParams.search
   searchKey?: "q" | "search"; // default "q"
-  // optional color attribute support
   color?: { attribute: string; terms: Term[] }; // e.g. { attribute: "pa_color", terms: [...] }
 }) => {
-  const sp: SearchParams =
+  const sp: SearchParamsObj =
     typeof (args.searchParams as any)?.then === "function"
-      ? await (args.searchParams as Promise<SearchParams>)
-      : (args.searchParams as SearchParams);
+      ? await (args.searchParams as Promise<SearchParamsObj>)
+      : (args.searchParams as SearchParamsObj);
 
   const perPage = args.perPage ?? 50;
 

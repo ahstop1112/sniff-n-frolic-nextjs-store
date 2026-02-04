@@ -10,6 +10,8 @@ export type NavNode = {
   key?: string;
   label: string;
   href?: string;
+  slug?: string;
+  parent?: number;
   children?: NavNode[];
 };
 

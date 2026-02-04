@@ -4,9 +4,10 @@ import CartPageClient from "@/components/Cart/CartPageClient";
 import PageLayout from "@/components/PageLayout/PageLayout";
 import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
+import { PageParams } from "@/types/next";
 
 interface CartPageProps {
-  params: Promise<{ lang: string }>;
+  params: PageParams;
 }
 
 export const generateMetadata = async (

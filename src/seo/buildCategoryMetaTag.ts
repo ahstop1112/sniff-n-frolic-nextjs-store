@@ -5,10 +5,12 @@ import { seoConfig } from "./seoConfig";
 
 interface BuildCategoryMetadataArgs {
   lang: string;
-  slug: string;
+  slug?: string | ``;
 }
 
-export const buildCategoryMetadata = async (args: BuildCategoryMetadataArgs): Promise<Metadata> => {
+export const buildCategoryMetadata = async (
+  args: BuildCategoryMetadataArgs,
+): Promise<Metadata> => {
   const { lang, slug } = args;
 
   if (!isValidLocale(lang)) {

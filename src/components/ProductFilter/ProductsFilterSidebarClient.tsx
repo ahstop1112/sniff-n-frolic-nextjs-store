@@ -13,13 +13,13 @@ import {
 } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductsFilterSidebarClientProps } from "./types";
-import styles from './ProductFilter.module.scss';
+import styles from "./ProductFilter.module.scss";
 
 const ProductsFilterSidebarClient = ({
   locale,
   categories,
   colors = [],
-  common
+  common,
 }: ProductsFilterSidebarClientProps) => {
   // Local State
   const [minPriceInput, setMinPriceInput] = useState("");
@@ -62,7 +62,7 @@ const ProductsFilterSidebarClient = ({
       router.push(nextUrl);
       router.refresh();
     },
-    [pathname, router, searchParams]
+    [pathname, router, searchParams],
   );
 
   const handleCategoryChange = (slug: string) => {
@@ -77,8 +77,10 @@ const ProductsFilterSidebarClient = ({
     updateParams({ on_sale: checked ? "1" : null });
   };
 
-  const handleMinPriceChange = (value: string) => setMinPriceInput(value.replace(/[^\d]/g, ""));
-  const handleMaxPriceChange = (value: string) => setMaxPriceInput(value.replace(/[^\d]/g, ""));
+  const handleMinPriceChange = (value: string) =>
+    setMinPriceInput(value.replace(/[^\d]/g, ""));
+  const handleMaxPriceChange = (value: string) =>
+    setMaxPriceInput(value.replace(/[^\d]/g, ""));
 
   const applyPriceFilter = () => {
     updateParams({
@@ -96,18 +98,16 @@ const ProductsFilterSidebarClient = ({
   };
 
   const handleClear = () => {
-    updateParams({ 
+    updateParams({
       category: null,
       in_stock: null,
       on_sale: null,
       min_price: null,
       max_price: null,
       sort: null,
-      color: null 
+      color: null,
     });
   };
-
-  
 
   return (
     <Box className={styles.productFilter}>
@@ -133,9 +133,7 @@ const ProductsFilterSidebarClient = ({
           onChange={(e) => handleCategoryChange(e.target.value)}
           sx={{ width: "100%" }}
         >
-          <MenuItem value="">
-            {common.all}
-          </MenuItem>
+          <MenuItem value="">{common.all}</MenuItem>
           {categories.map((cat) => (
             <MenuItem key={cat.id} value={cat.slug}>
               {cat.name.replace("&amp;", "&")}
@@ -143,8 +141,8 @@ const ProductsFilterSidebarClient = ({
           ))}
         </TextField>
 
-         {/* Price */}
-         <Stack direction="row" spacing={1}>
+        {/* Price */}
+        <Stack direction="row" spacing={1}>
           <TextField
             size="small"
             label={common.min}
@@ -211,11 +209,7 @@ const ProductsFilterSidebarClient = ({
               onChange={(e) => handleInStockChange(e.target.checked)}
             />
           }
-          label={
-            <Typography variant="body2">
-              {common.inStockOnly}
-            </Typography>
-          }
+          label={<Typography variant="body2">{common.inStockOnly}</Typography>}
         />
         {/* On sale only */}
         <FormControlLabel

@@ -3,34 +3,34 @@ import { notFound } from "next/navigation";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
-import { shuffleArray, getStr, collectDescendantIds } from "@/utils/helpers";
+import { shuffleArray } from "@/utils/helpers";
 import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
 import { buildCategoryMetadata } from "@/seo/buildCategoryMetaTag";
 // components
 import CategoryPageClient from "@/components/Category/CategoryPageClient";
+import type { PageProps, LangSlugParamsObj } from "@/types/next";
+import { unwrap, unwrapSearchParams } from "@/types/next";
 
-type SearchParams = Record<string, string | string[] | undefined>;
-interface CategoryPageProps {
-  params: Promise<{ lang: string; slug: string }>;
-  searchParams: Promise<SearchParams>;
-}
+type CategoryPageProps = PageProps<LangSlugParamsObj>;
 
 export const generateMetadata = async ({
   params,
 }: CategoryPageProps): Promise<Metadata> => {
-  const { lang, slug } = await params;
+  const { lang, slug } = await unwrap(params);
   return buildCategoryMetadata({ lang, slug });
 };
 
 const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
-  const { lang, slug } = await params;
+  const { lang, slug } = await unwrap(params);
+  const sp = await unwrapSearchParams(searchParams);
 
   if (!isValidLocale(lang)) notFound();
+
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
 
-  const { sp, wooParams, hasAnyFilter } = await buildWooParamsForListPage({
-    searchParams,
+  const { wooParams, hasAnyFilter } = await buildWooParamsForListPage({
+    searchParams: sp,
     perPage: 50,
   });
 
@@ -39,7 +39,6 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
 
   return (
     <CategoryPageClient
-      lang={lang}
       locale={locale}
       slug={slug}
       dict={dict}

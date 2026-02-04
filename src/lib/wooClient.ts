@@ -25,6 +25,13 @@ export interface YoastHeadJson {
   twitter_card?: string;
 }
 
+export interface WooSystemStatus {
+  settings?: {
+    currency?: string;
+    currency_symbol?: string;
+  };
+}
+
 export interface WooImage {
   id: number;
   src: string;

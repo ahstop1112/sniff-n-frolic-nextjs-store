@@ -6,18 +6,16 @@ import { getProducts } from "@/lib/wooClient";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
 import MainBanner from "@/components/Home/MainBanner";
 import CategoryProductSliderSection from "@/components/CategoryProduct/CategoryProductSliderSection";
+import { toCategoryProductSliderItems } from "@/domains/products/adapter";
+import type { PageProps, LangParamsObj } from "@/types/next";
 import HomePageClient from "./HomePageClient";
 
-interface HomePageProps {
-  params: Promise<{ lang: string }>;
-}
+type HomePageProps = PageProps<LangParamsObj>;
 
-export const generateMetadata = async (
-  props: HomePageProps,
-): Promise<Metadata> => {
-  const { params } = props;
+export const generateMetadata = async ({
+  params,
+}: HomePageProps): Promise<Metadata> => {
   const { lang } = await params;
-
   return buildHomeMetadata({ lang });
 };
 
@@ -31,6 +29,10 @@ const HomePage = async ({ params }: HomePageProps) => {
     category: 139,
     per_page: 20,
   } as any);
+  const productTreatsItems = toCategoryProductSliderItems(
+    productTreats,
+    locale,
+  );
 
   const treatsTitle =
     productTreats.length > 0 && productTreats[0]?.categories
@@ -42,23 +44,27 @@ const HomePage = async ({ params }: HomePageProps) => {
     category: 82,
     per_page: 20,
   } as any);
+  const productFeederItems = toCategoryProductSliderItems(
+    productTreats,
+    locale,
+  );
+
   const feederTitle =
     productFeeder.length > 0 && productFeeder[0]?.categories
       ? productFeeder[0]?.categories[0].name
       : ``;
-
   // ✅ Categories are fetched once in layout, accessed via useCategories() hook
+
   return (
     <>
       <MainBanner />
-      <HomePageClient lang={lang} />
+      <HomePageClient locale={locale} />
       {/* Pet Treats */}
       <CategoryProductSliderSection
         title={treatsTitle}
         desc="Everyday treats handpicked for mindful feeding, slow rewards, and daily routines."
-        style="white"
         locale={locale}
-        items={productTreats}
+        items={productTreatsItems}
         tone="white"
         topWave="green"
         bottomWave="orange"
@@ -67,9 +73,8 @@ const HomePage = async ({ params }: HomePageProps) => {
       <CategoryProductSliderSection
         title={feederTitle}
         desc="Bowls, feeders and drinking accessories designed for everyday feeding and hydration."
-        style="orange"
         locale={locale}
-        items={productFeeder}
+        items={productFeederItems}
         tone="orange"
         bottomWave="cream"
       />

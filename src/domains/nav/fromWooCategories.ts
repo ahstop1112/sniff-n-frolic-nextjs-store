@@ -1,9 +1,10 @@
+import { Locale } from "@/i18n/config";
 import type { RawNavNode } from "./types";
 import type { WooCategory } from "@/lib/wooClient";
 
-export const rawNavFromWooCategories = (
+export const topLevelFromWooCategories = (
   categories: WooCategory[],
-  locale: string,
+  locale: Locale,
 ) => {
   // group by parent
   const byParent = new Map<number, WooCategory[]>();
