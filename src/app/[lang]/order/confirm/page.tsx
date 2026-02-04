@@ -33,7 +33,7 @@ const ConfirmPage = async ({ params, searchParams }: ConfirmPageProps) => {
   if (!isValidLocale(lang)) notFound();
   const locale: Locale = lang;
 
-  const piId = getStr(sp.pi);
+  const piId = sp ? getStr(sp.pi) : 0;
   if (!piId) notFound();
 
   const pi = await stripe.paymentIntents.retrieve(piId);

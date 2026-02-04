@@ -8,7 +8,8 @@ export type CateogryProductSliderItem = {
   id: number;
   slug: string;
   locale: Locale;
-  image: WooImage[];
+  image?: WooImage[];
+  imageSrc?: string;
   name: string;
   price: string;
   categories: WooProductCategoryLite[];

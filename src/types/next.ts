@@ -11,6 +11,11 @@ export type PageProps<P extends object> = {
   searchParams?: MaybePromise<SearchParamsObj>;
 };
 
+export type NextPageProps<P extends object> = {
+  params: P;
+  searchParams?: SearchParamsObj;
+};
+
 export type Term = { id: number; slug: string };
 
 export const unwrap = async <T>(v: MaybePromise<T>) => Promise.resolve(v);
