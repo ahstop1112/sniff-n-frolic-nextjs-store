@@ -2,9 +2,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
-import { shuffleArray } from "@/utils/helpers";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
 import MainBanner from "@/components/Home/MainBanner";
 import CategoryProductSliderSection from "@/components/CategoryProduct/CategoryProductSliderSection";
@@ -28,16 +26,12 @@ const HomePage = async ({ params }: HomePageProps) => {
   if (!isValidLocale(lang)) notFound();
 
   const locale: Locale = lang;
-  const dict = await getDictionary(locale);
-
-  const products = await getProducts({ per_page: 100, orderby: "date" });
-  const finalProducts = shuffleArray(products);
-
   // Treats
   const productTreats = await getProducts({
     category: 139,
     per_page: 20,
   } as any);
+
   const treatsTitle =
     productTreats.length > 0 && productTreats[0]?.categories
       ? productTreats[0]?.categories[0].name

@@ -1,11 +1,12 @@
 import type { Locale } from "@/i18n/config";
 
 export interface BreadcrumbItem {
-    label?: string;
-    href?: string;
-  }
-  
+  label?: string;
+  href?: string;
+}
+
 export interface BreadcrumbsNavProps {
-    locale?: Locale;
-    items?:  BreadcrumbItem[];
-  }
+  locale?: Locale;
+  isProduct: boolean;
+  items?: BreadcrumbItem[];
+}

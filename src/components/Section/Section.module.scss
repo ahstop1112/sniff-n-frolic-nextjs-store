@@ -2,59 +2,61 @@
 @use "@/styles/mixins" as m;
 
 .section {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+
+  @media screen and (min-width: $bp-xs) {
+    padding: $point * 5;
+  }
+
+  @media screen and (min-width: $bp-md) {
+    padding: $point * 7.5;
+  }
+
+  @media screen and (min-width: $bp-lg) {
     padding: $point * 10;
-    margin: 0 auto;
-
-    @media screen and (min-width: $bp-md){
-        padding: $point * 7.5;
-    }
-
-    @media screen and (min-width: $bp-xs){
-        padding: $point * 5;
-    }
+  }
 }
-  
-  .inner {
-    max-width: $max-width;
-    position: relative;
-    z-index: 1;
 
-    margin: 0 auto;
-    padding: $point * 15 0;
-  }
+.inner {
+  max-width: $max-width;
+  position: relative;
+  z-index: 1;
 
-  .innerNoMarginTop{
-    position: relative;
-    z-index: 1;
-    padding: 0 0 $point * 15 0;
-  }
-  
-  /* background tones */
-  .teal {
-    background: $sf-teal;
-    color: white;
-  }
-  
-  .white {
-    background: $sf-bg;
-  }
-  
-  .cream {
-    background: $cream;
-  }
-  
-  .yellow {
-    background: #ffe8a3;
-  }
-  
-  .orange {
-    background: $lightOrange;
-  }
-  
-  .green {
-    background: $sf-green;
-  }
-  
+  margin: 0 auto;
+  padding: $point * 15 0;
+}
+
+.innerNoMarginTop {
+  position: relative;
+  z-index: 1;
+  padding: 0 0 $point * 15 0;
+}
+
+/* background tones */
+.teal {
+  background: $sf-teal;
+  color: white;
+}
+
+.white {
+  background: $sf-bg;
+}
+
+.cream {
+  background: $cream;
+}
+
+.yellow {
+  background: #ffe8a3;
+}
+
+.orange {
+  background: $lightOrange;
+}
+
+.green {
+  background: $sf-green;
+}

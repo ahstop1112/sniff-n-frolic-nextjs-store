@@ -7,7 +7,7 @@ import type { Locale } from "@/i18n/config";
 import clsx from "clsx";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import type { NavNode } from "@/domains/nav";
+import type { NavNode } from "@/domains/nav/types";
 import styles from "./HeaderNav.module.scss";
 
 export type HeaderNavProps = {
@@ -118,20 +118,38 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
           }
 
           return (
-            <button
+            <div
               key={x.label}
-              type="button"
               className={clsx(styles.linkBtn, open && styles.active)}
-              onFocus={openMenu}
-              onClick={() => setOpen((v) => !v)} // optional click toggle
-              aria-expanded={open}
-              aria-haspopup="menu"
+              onMouseEnter={openMenu}
+              onMouseLeave={closeMenu}
             >
-              {t(x.label)}
-              <KeyboardArrowDownRoundedIcon
-                className={clsx(styles.chev, open && styles.chevOpen)}
-              />
-            </button>
+              {/* Text = real link */}
+              <Link
+                href={x.href ?? `/${locale}/products`}
+                className={styles.link}
+              >
+                {t(x.label)}
+              </Link>
+
+              {/* Icon = menu toggle only */}
+              <button
+                type="button"
+                className={styles.iconBtn}
+                aria-haspopup="menu"
+                aria-expanded={open}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setOpen((v) => !v);
+                }}
+                onFocus={openMenu}
+              >
+                <KeyboardArrowDownRoundedIcon
+                  className={clsx(styles.chev, open && styles.chevOpen)}
+                />
+              </button>
+            </div>
           );
         })}
       </div>

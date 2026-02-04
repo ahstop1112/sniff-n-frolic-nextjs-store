@@ -1,5 +1,4 @@
-import { NavNode } from "./types";
-
+import { RawNavNode } from "./types";
 export type LegacyNavNode = {
   key: string;
   label: string;
@@ -18,16 +17,15 @@ export const toNavKey = (label: string, href?: string) => {
   return href ?? label;
 };
 
-export const mapLegacyNode = (n: LegacyNavNode): NavNode => {
+export const mapLegacyNode = (n: LegacyNavNode): RawNavNode => {
   return {
-    key: n.key ?? toNavKey(n.label, n.href),
     label: n.label,
     href: n.href,
     children: (n.children ?? []).map(mapLegacyNode),
   };
 };
 
-export const adaptTopNavItems = (items: LegacyTopNavItem[]): NavNode[] => {
+export const adaptTopNavItems = (items: LegacyTopNavItem[]): RawNavNode[] => {
   return items.map((x) => {
     const children = (x.children ?? []).map(mapLegacyNode);
 

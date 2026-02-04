@@ -1,7 +1,12 @@
 import type { Locale } from "@/i18n/config";
 import type { WooCategory } from "@/lib/wooClient";
+import type { NavNode } from "@/domains/nav/types";
 
-export const NAV_ITEMS = (locale: Locale, categories?: WooCategory[]) => {
+export const NAV_ITEMS = (
+  locale: Locale,
+  nodes: NavNode[],
+  categories?: WooCategory[],
+) => {
   const defaultMega = [
     { label: "petTreats", href: `/${locale}/category/pet-treats` },
     {
@@ -58,16 +63,17 @@ export const NAV_ITEMS = (locale: Locale, categories?: WooCategory[]) => {
   };
 
   return [
-    { label: "home", href: `/${locale}` },
+    { key: "home", label: "home", href: `/${locale}` },
     {
+      key: "collection",
       label: "collection",
       children:
         categories && categories.length > 0
           ? buildMegaFromCategories(categories)
           : defaultMega,
     },
-    { label: "ourStory", href: `/${locale}/about` },
-    { label: "howToBuy", href: `/${locale}/how-to-buy` },
-    { label: "faq", href: `/${locale}/faq` },
+    { key: "ourStory", label: "ourStory", href: `/${locale}/about` },
+    { key: "howToBuy", label: "howToBuy", href: `/${locale}/how-to-buy` },
+    { key: "faq", label: "faq", href: `/${locale}/faq` },
   ];
 };

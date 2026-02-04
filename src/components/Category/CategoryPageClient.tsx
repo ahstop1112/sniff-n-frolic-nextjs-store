@@ -40,7 +40,7 @@ const CategoryPageClient = ({
   return (
     <>
       <Section tone="teal" className="pageHeader">
-        <BreadcrumbsNav locale={locale} items={breadcrumbs} />
+        <BreadcrumbsNav locale={locale} isProduct={true} items={breadcrumbs} />
         <h1>{category.name}</h1>
       </Section>
       <Section tone="white" topWave="teal" bottomWave="cream">
@@ -54,21 +54,20 @@ const CategoryPageClient = ({
             />
           </Grid>
           <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
-            {(finalProducts || []).map((item) => (
+            {(finalProducts || []).map((p) => (
               <Grid
                 container
                 size={{ lg: 3, xl: 2, md: 4, sm: 6, xs: 6 }}
-                key={item.id}
+                key={p.slug}
               >
                 <ProductGrid
                   locale={locale}
-                  categoryName={item?.categories[0]?.name || ""}
-                  slug={item.slug}
-                  image={item?.images[0]}
-                  name={item.name}
-                  onSale={item?.on_sale}
-                  price={item.price}
-                  regularPrice={item?.regular_price}
+                  slug={p.slug}
+                  image={p?.images[0]}
+                  name={p.name}
+                  onSale={p?.on_sale}
+                  price={p.price}
+                  regularPrice={p?.regular_price}
                 />
               </Grid>
             ))}

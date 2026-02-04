@@ -1,6 +1,7 @@
 // src/components/ProductGrid.tsx
 "use client";
 import Link from "next/link";
+import Box from "@mui/material/Box";
 import { ProductGridProps } from "./types";
 import styles from "./Product.module.scss";
 
@@ -15,7 +16,7 @@ const toNum = (v?: string) => {
 const ProductGrid = ({
   locale,
   slug,
-  image,
+  image = null,
   name,
   categoryName,
   onSale,
@@ -27,45 +28,47 @@ const ProductGrid = ({
   const regular = toNum(regularPrice);
 
   return (
-    <Link href={`/${locale}/products/${slug}`} className={styles.productGrid}>
-      <div className={styles.media}>
-        {image?.thumbnail ? (
-          <img
-            src={image?.thumbnail}
-            alt={image?.alt || name}
-            sizes="(max-width: 600px) 80vw, (max-width: 1200px) 33vw, 20vw"
-            className={styles.img}
-          />
-        ) : (
-          <div className={styles.imgFallback} />
-        )}
-      </div>
-
-      <div className={styles.productInfo}>
-        {categoryName ? (
-          <div className={styles.category}>{categoryName}</div>
-        ) : null}
-
-        <div className={styles.title}>{name}</div>
-
-        <div className={styles.priceBlock}>
-          {onSale ? (
-            <>
-              <span className={styles.saleOnRegular}>
-                {formatMoney(regular!, currency)}
-              </span>
-              <span className={styles.sale}>
-                {formatMoney(sale!, currency)}
-              </span>
-            </>
+    <Box className={styles.productGrid}>
+      <Link href={`/${locale}/products/${slug}`}>
+        <div className={styles.media}>
+          {image?.thumbnail ? (
+            <img
+              src={image?.thumbnail}
+              alt={image?.alt || name}
+              sizes="(max-width: 600px) 80vw, (max-width: 1200px) 33vw, 20vw"
+              className={styles.img}
+            />
           ) : (
-            <div className={styles.sale}>
-              {sale !== null ? formatMoney(sale, currency) : ""}
-            </div>
+            <div className={styles.imgFallback} />
           )}
         </div>
-      </div>
-    </Link>
+
+        <div className={styles.productInfo}>
+          {categoryName ? (
+            <div className={styles.category}>{categoryName}</div>
+          ) : null}
+
+          <div className={styles.title}>{name}</div>
+
+          <div className={styles.priceBlock}>
+            {onSale ? (
+              <>
+                <span className={styles.saleOnRegular}>
+                  {formatMoney(regular!, currency)}
+                </span>
+                <span className={styles.sale}>
+                  {formatMoney(sale!, currency)}
+                </span>
+              </>
+            ) : (
+              <div className={styles.sale}>
+                {sale !== null ? formatMoney(sale, currency) : ""}
+              </div>
+            )}
+          </div>
+        </div>
+      </Link>
+    </Box>
   );
 };
 

@@ -34,7 +34,6 @@ export const generateMetadata = async (
 const CheckoutPage = async ({ params }: CheckoutPageProps) => {
   const { lang } = await params;
   const locale = isValidLocale(lang) ? (lang as Locale) : ("en" as Locale);
-  const breadcrumbs: BreadcrumbItem[] = [];
 
   return (
     <PageLayout>

@@ -14,7 +14,7 @@ import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import ProductImageGallery from "@/components/Product/ProductImageGallery";
 import { buildProductMetadata } from "@/seo/buildProductMetaTag";
-import ProductDetails from "@/components/ProductDetails/ProductsDetails";
+import ProductsDetailsTop from "@/components/ProductDetails/ProductsDetailsTop";
 // Add To Cart
 import ProductPurchasePanel from "@/components/ProductPurchasePanel/ProductPurchasePanel";
 import type { AddToCartInput } from "@/lib/cartTypes";
@@ -121,13 +121,13 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
   return (
     <Section tone="white" bottomWave="cream">
-      <BreadcrumbsNav items={breadcrumbs} locale={locale} />
+      <BreadcrumbsNav items={breadcrumbs} isProduct={true} locale={locale} />
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, sm: 6, md: 6, lg: 5 }}>
           <ProductImageGallery images={images} productName={product.name} />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 6, lg: 7 }}>
-          <ProductDetails
+          <ProductsDetailsTop
             title={product.name}
             price={price}
             onSale={product.on_sale}

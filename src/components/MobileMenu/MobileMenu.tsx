@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState, Fragment } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import Drawer from "@mui/material/Drawer";
@@ -19,8 +19,9 @@ import IconButton from "@mui/material/IconButton";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import type { Locale } from "@/i18n/config";
-import type { NavNode } from "@/domains/nav";
-import { findNavStateByPath, debugNavMatch } from "@/domains/nav";
+import type { NavNode } from "@/domains/nav/types";
+import { useRunSearch } from "@/domains/search/useRunSearch";
+import { findNavStateByPath } from "@/domains/nav/match";
 import styles from "./MobileMenu.module.scss";
 
 export type MobileMenuProps = {
@@ -34,14 +35,16 @@ export type MobileMenuProps = {
 
 const MobileMenu = ({
   open,
-  onClose,
   locale,
   items,
+  onClose,
   localeCodes,
 }: MobileMenuProps) => {
   const { t } = useTranslation("nav");
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { runSearch } = useRunSearch({ locale, onClose });
 
   const [q, setQ] = useState("");
   const [openL1, setOpenL1] = useState<string | null>(null);
@@ -53,6 +56,11 @@ const MobileMenu = ({
   const { open: nextOpen, active } = findNavStateByPath(items, pathname, {
     locales: localeCodes ?? [],
   });
+
+  useEffect(() => {
+    if (!open) return;
+    onClose();
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     if (!open) return;
@@ -74,13 +82,6 @@ const MobileMenu = ({
 
   const toggleL3 = (key: string) =>
     setOpenL3((prev) => (prev === key ? null : key));
-
-  const goSearch = () => {
-    const query = q.trim();
-    if (!query) return;
-    onClose();
-    router.push(`/search?q=${encodeURIComponent(query)}`);
-  };
 
   return (
     <Drawer
@@ -119,14 +120,14 @@ const MobileMenu = ({
             value={q}
             onChange={(e) => setQ(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") goSearch();
+              if (e.key === "Enter") runSearch(q);
             }}
             placeholder={t("searchPlaceholder")}
             className={styles.searchInput}
           />
           <SearchRoundedIcon
             className={styles.searchIcon}
-            onClick={goSearch()}
+            onClick={() => runSearch(q)}
           />
         </div>
 

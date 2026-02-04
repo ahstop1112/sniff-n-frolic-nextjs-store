@@ -12,6 +12,7 @@ import Section from "@/components/Section/Section";
 import ProductGrid from "@/components/Product/ProductGrid";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import { shuffleArray } from "@/utils/helpers";
+import { wooCategoriesToSliderItems } from "@/domains/categories/adapter";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 interface ProductsPageProps {
@@ -27,7 +28,11 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const dict = await getDictionary(locale);
 
   const allCats = await getCategories();
-  const topLevelCategories = allCats
+  const sliderItems = wooCategoriesToSliderItems(allCats, locale);
+
+  console.log(sliderItems);
+
+  const topLevelCategories = sliderItems
     .filter((c) => c.parent === 0)
     .sort((a, b) => a.id - b.id);
 
@@ -63,8 +68,8 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   return (
     <>
       <Section tone="teal" className="pageHeader">
-        <BreadcrumbsNav locale={locale} items={breadcrumbs} />
-        <h1>Collections</h1>
+        <BreadcrumbsNav locale={locale} isProduct={true} items={breadcrumbs} />
+        <h1>{dict.nav.collection}</h1>
       </Section>
       <Section tone="white" topWave="teal" bottomWave="green">
         {/* All Product */}
@@ -81,21 +86,20 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
             />
           </Grid>
           <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
-            {(finalProducts || []).map((item) => (
+            {(finalProducts || []).map((p) => (
               <Grid
                 container
                 size={{ lg: 3, xl: 2, md: 4, sm: 6, xs: 6 }}
-                key={item.id}
+                key={p.slug}
               >
                 <ProductGrid
                   locale={locale}
-                  categoryName={item?.categories[0].name || ``}
-                  slug={item.slug}
-                  image={item?.images[0]}
-                  name={item.name}
-                  onSale={item?.on_sale}
-                  price={item.price}
-                  regularPrice={item?.regular_price}
+                  slug={p.slug}
+                  image={p?.images[0]}
+                  name={p.name}
+                  onSale={p?.on_sale}
+                  price={p.price}
+                  regularPrice={p?.regular_price}
                 />
               </Grid>
             ))}
@@ -104,7 +108,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
       </Section>
       <CategorySliderSection
         lang={lang}
-        title="All Categories"
+        title={dict.search.allCategories}
         items={topLevelCategories}
         bottomWave="cream"
       />

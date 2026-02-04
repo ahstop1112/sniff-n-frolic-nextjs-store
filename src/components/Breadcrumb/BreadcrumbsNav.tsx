@@ -3,18 +3,24 @@ import Link from "next/link";
 import { BreadcrumbsNavProps, BreadcrumbItem } from "./types";
 import styles from "./Breadcrumb.module.scss";
 
-const BreadcrumbsNav = ({ items = [], locale = "en" }: BreadcrumbsNavProps) => {
+const BreadcrumbsNav = ({
+  items = [],
+  isProduct = true,
+  locale = "en",
+}: BreadcrumbsNavProps) => {
   const navItems: BreadcrumbItem[] = [
     {
       label: locale === "zh" ? "首頁" : "Home",
       href: locale === "zh" ? "/zh" : "/en",
     },
-    {
+  ];
+  if (isProduct) {
+    navItems.push({
       label: locale === "zh" ? "全部商品" : "Collection",
       href: `/${locale}/products`,
-    },
-    ...items,
-  ];
+    });
+  }
+  navItems.push(...items);
 
   return (
     <Box component="nav" aria-label="Breadcrumb" className={styles.breadcrumb}>

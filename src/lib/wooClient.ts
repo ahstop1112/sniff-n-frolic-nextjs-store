@@ -38,6 +38,10 @@ export interface WooProductCategory {
   slug: string;
 }
 
+export interface WooProductCategoryLite {
+  name: string;
+}
+
 export interface WooProduct {
   categories?: WooProductCategory[];
   id: number;
@@ -99,6 +103,7 @@ export interface WooCategory {
   name: string;
   slug: string;
   parent: number;
+  count: number;
   image?: WooCategoryImage | null;
 }
 

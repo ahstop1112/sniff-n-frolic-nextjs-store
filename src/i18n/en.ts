@@ -49,9 +49,15 @@ export const enDictionary: Dictionary = {
     searchPlaceholder: "Search products",
   },
   search: {
+    title: "Search",
+    whatAreYouLookingFor: "What Are You Looking For?",
+    allCategories: "All Categories",
+    popularCategories: "Popular Categories",
+    viewAllProduct: "View All Products",
     searchProducts: "Search products",
     typeProductKeyword:
       "Please type a product keyword in the search bar above.",
+    searchResults: "Search results ",
     searchResultFor: "Search results for: ",
     noProductFound: "No products found. Try a different keyword?",
   },

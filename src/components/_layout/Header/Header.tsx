@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Box, Stack, IconButton, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -15,6 +15,9 @@ import MiniCart from "@/components/Cart/MiniCart";
 // Context & Config
 import { useCategories } from "@/context/CategoriesContext";
 import { NAV_ITEMS } from "@/config/nav.config";
+import { rawNavFromWooCategories } from "@/domains/nav/fromWooCategories";
+import { normalizeNavTree } from "@/domains/nav/normalize";
+// Types
 import { HeaderProps } from "./types";
 import styles from "./Header.module.scss";
 
@@ -25,7 +28,17 @@ const Header = ({ locale }: HeaderProps) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const categories = useCategories();
-  const navItems = NAV_ITEMS(locale, categories);
+  // ✅ Woo categories -> Raw -> NavNode (with keys)
+  const categoryNavItems = useMemo(() => {
+    if (!categories?.length) return [];
+    const raw = rawNavFromWooCategories(categories, locale);
+    return normalizeNavTree(raw, "wooCats");
+  }, [categories, locale]);
+
+  // ✅ Avoid rebuilding NAV_ITEMS every render
+  const navItems = useMemo(() => {
+    return NAV_ITEMS(locale, categoryNavItems);
+  }, [locale, categoryNavItems]);
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
