@@ -22,7 +22,7 @@ import { HeaderProps } from "./types";
 import styles from "./Header.module.scss";
 
 const Header = ({ locale }: HeaderProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
@@ -52,6 +52,7 @@ const Header = ({ locale }: HeaderProps) => {
       <Box component="header" className={styles.header}>
         <div className={styles.promo}>
           <StorefrontIcon />
+          {t("freeShipping")}
         </div>
 
         {/* ✅ Desktop Row */}
@@ -66,7 +67,7 @@ const Header = ({ locale }: HeaderProps) => {
               <img
                 src="/images/logo_snf_light2.png"
                 className={styles.headerLogo}
-                alt={t("common.siteTitle")}
+                alt={t("siteTitle")}
               />
             </Link>
             {/* Left: Nav */}
@@ -103,7 +104,7 @@ const Header = ({ locale }: HeaderProps) => {
               <img
                 src="/images/logo_snf_light2.png"
                 className={styles.headerLogo}
-                alt={t("common.siteTitle")}
+                alt={t("siteTitle")}
               />
             </Link>
 

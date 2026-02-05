@@ -5,7 +5,7 @@ import { formatPrice } from "@/lib/currency";
 import { ProductDetailsProps } from "./types";
 import styles from "./ProductDetails.module.scss";
 
-const ProductDetails = ({
+const ProductsDetailsTop = ({
   title,
   shortDesc,
   price,
@@ -64,4 +64,4 @@ const ProductDetails = ({
   );
 };
 
-export default ProductDetails;
+export default ProductsDetailsTop;

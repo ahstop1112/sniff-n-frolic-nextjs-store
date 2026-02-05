@@ -183,27 +183,35 @@ const MobileMenu = ({
                         return (
                           <Fragment key={l2.key}>
                             <ListItem disablePadding>
-                              <ListItemButton
-                                onClick={() => {
-                                  const key = l2.key ?? null;
-                                  if (!key) return;
-                                  toggleL2(key);
-                                }}
-                                className={clsx(
-                                  styles.subLiBtn,
-                                  active.activeL2 === l2.key && styles.active,
-                                )}
-                                aria-expanded={expanded}
-                              >
-                                <ListItemText primary={t(l2.label)} />
-                                {hasChildren ? (
-                                  expanded ? (
-                                    <ExpandLess />
-                                  ) : (
-                                    <ExpandMore />
-                                  )
-                                ) : null}
-                              </ListItemButton>
+                              {hasChildren ? (
+                                <ListItemButton
+                                  onClick={() => {
+                                    const key = l2.key ?? null;
+                                    if (!key) return;
+                                    toggleL2(key);
+                                  }}
+                                  className={clsx(
+                                    styles.subLiBtn,
+                                    active.activeL2 === l2.key && styles.active,
+                                  )}
+                                  aria-expanded={expanded}
+                                >
+                                  <ListItemText primary={t(l2.label)} />
+                                  {expanded ? <ExpandLess /> : <ExpandMore />}
+                                </ListItemButton>
+                              ) : (
+                                <ListItemButton
+                                  component={Link}
+                                  href={l2.href ?? "#"}
+                                  onClick={onClose}
+                                  className={clsx(
+                                    styles.subLiBtn,
+                                    active.activeL2 === l2.key && styles.active,
+                                  )}
+                                >
+                                  <ListItemText primary={t(l2.label)} />
+                                </ListItemButton>
+                              )}
                             </ListItem>
                             {hasChildren ? (
                               <Collapse
@@ -264,21 +272,6 @@ const MobileMenu = ({
                                             </ListItemButton>
                                           )}
                                         </ListItem>
-
-                                        {/* 如果你真係會有 L4，先開呢段；否則可以唔要 */}
-                                        {/* {l3HasChildren ? (
-        <Collapse in={l3Expanded} timeout="auto" unmountOnExit>
-          <List disablePadding className={styles.subSubSubList}>
-            {(l3.children ?? []).map((l4) => (
-              <ListItem key={l4.key} disablePadding>
-                <ListItemButton component={Link} href={l4.href ?? "#"} onClick={onClose}>
-                  <ListItemText primary={t(l4.label)} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Collapse>
-      ) : null} */}
                                       </Fragment>
                                     );
                                   })}
