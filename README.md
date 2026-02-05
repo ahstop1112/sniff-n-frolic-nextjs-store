@@ -61,8 +61,8 @@ Rather than performing a full rewrite, the system follows an **incremental migra
 - **Next.js** (App Router)
 - **TypeScript**
 - **React**
-- WooCommerce REST API (Phase 1)
-- Node.js backend (Phase 2, in progress)
+- WooCommerce REST API (Phase 1, in progress)
+- Node.js backend (Phase 2)
 - Database integration (planned)
 
 ---
