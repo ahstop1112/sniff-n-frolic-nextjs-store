@@ -67,14 +67,14 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
 
   // click outside -> close
   useEffect(() => {
-    const onDown = (e: MouseEvent) => {
-      const t = e.target as Node;
-      const inside = !!zoneRef.current?.contains(t);
+    const onDown = (e: Event) => {
+      const target = e.target as Node | null;
+      const inside = !!(target && zoneRef.current?.contains(target));
       if (!inside) closeMenuNow();
     };
 
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
+    document.addEventListener("pointerdown", onDown, true);
+    return () => document.removeEventListener("pointerdown", onDown, true);
   }, []);
 
   // ESC -> close
@@ -95,12 +95,7 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
   }, [open]);
 
   return (
-    <div
-      ref={zoneRef}
-      className={styles.nav}
-      onMouseEnter={openMenu}
-      onMouseLeave={closeMenu}
-    >
+    <div ref={zoneRef} className={styles.nav}>
       <div className={styles.row}>
         {items.map((x) => {
           const isMega = (x.children?.length ?? 0) > 0;
@@ -111,6 +106,7 @@ const HeaderNav = ({ locale, items }: HeaderNavProps) => {
                 key={x.label}
                 href={x.href ?? `/${locale}`}
                 className={styles.link}
+                onMouseEnter={closeMenuNow}
               >
                 {t(x.label)}
               </Link>
