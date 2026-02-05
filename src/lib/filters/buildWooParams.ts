@@ -82,8 +82,6 @@ export const buildWooParamsFromSearchParams = async (args: {
     status: "publish",
   };
 
-  console.log(categorySlug);
-
   // category: slug → id
   let resolvedCategoryId: number | undefined;
 

@@ -31,7 +31,6 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
   const dict = await getDictionary(locale);
 
   const baseCategoryId = await getCategoryIdBySlug(slug);
-  console.log(baseCategoryId);
 
   const { wooParams, hasAnyFilter } = await buildWooParamsForListPage({
     searchParams: sp,

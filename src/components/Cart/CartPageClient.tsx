@@ -43,8 +43,6 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
     // TODO: Call backend / Woo API 驗證 coupon
     setTimeout(() => {
       setApplying(false);
-      // 你可以喺呢度加 snackbar / 提示
-      console.log("Coupon apply demo:", coupon);
     }, 500);
   };
 

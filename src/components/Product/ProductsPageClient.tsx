@@ -29,10 +29,6 @@ const ProductPageClient = ({
   products,
   initialVariantOptions,
 }: ProductsProps) => {
-  // Use local state initialized with the server-provided product.
-  // If you want live client-side revalidation later, we can add a fetch or SWR here.
-  const { fetchProducts } = useProducts();
-  console.log("Initial Product:", products);
   const [product, setProduct] = useState<WooProduct>(products);
 
   const price = Number(product.price || product.regular_price || 0);
