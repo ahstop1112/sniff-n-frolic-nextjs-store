@@ -17,7 +17,7 @@ This project is intentionally developed in **phases**, prioritizing architectura
 
 ## Architecture Strategy
 
-### Phase 1 — Headless Frontend with WooCommerce API
+### Phase 1 — Headless Frontend with WooCommerce API (In Progress)
 The initial version integrates with **WooCommerce REST APIs** as a backend service.
 
 **Goals**
@@ -32,7 +32,7 @@ The initial version integrates with **WooCommerce REST APIs** as a backend servi
 
 ---
 
-### Phase 2 — Custom Node.js Backend + Database (In Progress)
+### Phase 2 — Custom Node.js Backend + Database (Not Started yet)
 The next phase introduces a **custom Node.js backend and database**, progressively replacing WooCommerce as the primary data source.
 
 **Goals**
