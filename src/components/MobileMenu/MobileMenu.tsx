@@ -89,17 +89,6 @@ const MobileMenu = ({
       <div className={styles.wrap}>
         {/* Header row */}
         <div className={styles.header}>
-          <Link href={`/${locale}`} className={styles.logo} onClick={onClose}>
-            {/* 換成你真正 logo path */}
-            <Image
-              src="/logo.png"
-              alt="Sniff & Frolic"
-              width={132}
-              height={28}
-              priority
-            />
-          </Link>
-
           <IconButton
             onClick={onClose}
             className={styles.closeBtn}
