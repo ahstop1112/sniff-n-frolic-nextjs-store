@@ -21,6 +21,7 @@ export const initClientI18n = (
             nav: dict.nav,
             search: dict.search,
             checkout: dict.checkout,
+            cart: dict.cart,
           },
         },
         interpolation: {

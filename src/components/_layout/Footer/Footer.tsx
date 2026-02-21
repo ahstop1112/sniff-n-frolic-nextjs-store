@@ -12,11 +12,12 @@ import {
   Link as MuiLink,
 } from "@mui/material";
 import type { WooCategory } from "@/lib/wooClient";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { getTopLevelCategories } from "@/utils/category";
-import { FooterProps } from "./types";
 import styles from "./Footer.module.scss";
 
-const Footer = ({ locale }: FooterProps) => {
+const Footer = () => {
+  const locale = useLocale();
   const [topLevelCategories, setTopLevelCategories] = useState<WooCategory[]>(
     [],
   );

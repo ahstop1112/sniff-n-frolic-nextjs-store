@@ -4,30 +4,23 @@ import { useMemo, useState } from "react";
 import { Box, Typography, Divider, TextField, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/currency";
+import type { Pricing } from "./types";
+import styles from "./Checkout.module.scss";
 
-type Pricing = {
-  currency?: "CAD";
-  subtotal?: number;
-  shipping?: number;
-  tax?: number;
-  gst?: number;
-  pst?: number;
-  total?: number;
-};
-
-type Props = {
+type CheckoutOrderSummaryProps = {
   shippingFlatRate?: number; // default 16
   showCoupon?: boolean; // default true
   pricing?: Pricing;
 };
 
-const money = (n: number) => `CAD $${n.toFixed(2)}`;
-
 const CheckoutOrderSummary = ({
   shippingFlatRate = 16,
   showCoupon = true,
   pricing,
-}: Props) => {
+}: CheckoutOrderSummaryProps) => {
+  const { t } = useTranslation("checkout");
+
   const { items, subtotal } = useCart();
   const [coupon, setCoupon] = useState("");
 
@@ -59,10 +52,8 @@ const CheckoutOrderSummary = ({
     };
   }, [pricing, subtotal, shippingFlatRate]);
 
-  const { t } = useTranslation("checkout");
-
   return (
-    <Box sx={{ mb: 2 }}>
+    <Box>
       <Typography variant="h6" sx={{ mb: 2 }}>
         {t("yourOrder")}
       </Typography>
@@ -128,12 +119,12 @@ const CheckoutOrderSummary = ({
                 </Typography>
 
                 <Typography variant="body2" sx={{ opacity: 0.7, mt: 0.5 }}>
-                  {qty} × {unit ? money(unit) : "—"}
+                  {qty} × {unit ? formatPrice(unit) : "—"}
                 </Typography>
               </Box>
 
               <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                {unit ? money(lineTotal) : ""}
+                {unit ? formatPrice(lineTotal) : ""}
               </Typography>
             </Box>
           );
@@ -147,38 +138,32 @@ const CheckoutOrderSummary = ({
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="body1">{t("subtotal")}</Typography>
           <Typography variant="body1" sx={{ fontWeight: 600 }}>
-            {money(subtotal)}
+            {formatPrice(subtotal)}
           </Typography>
         </Box>
 
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="body1">{t("shipping")}</Typography>
           <Typography variant="body1" sx={{ fontWeight: 600 }}>
-            {money(calc.shipping)}
+            {formatPrice(calc.shipping)}
           </Typography>
         </Box>
-
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="body1">{t("gst")}</Typography>
           <Typography variant="body1" sx={{ fontWeight: 600 }}>
-            {money(calc.gst)}
+            {formatPrice(calc.gst)}
           </Typography>
         </Box>
-
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="body1">{t("pst")}</Typography>
           <Typography variant="body1" sx={{ fontWeight: 600 }}>
-            {money(calc.pst)}
+            {formatPrice(calc.pst)}
           </Typography>
         </Box>
-
         <Divider sx={{ my: 1 }} />
-
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography variant="h6">{t("totalLabel")}</Typography>
-          <Typography variant="h6" sx={{ fontWeight: 800 }}>
-            {money(calc.total)}
-          </Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }} >
+          <Typography variant="h6" className={styles.total}>{t("totalLabel")}</Typography>
+          <Typography variant="h6" className={styles.total}>{formatPrice(calc.total)}</Typography>
         </Box>
       </Box>
     </Box>

@@ -19,23 +19,23 @@ import {
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useCategories } from "@/context/CategoriesContext";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { useRunSearch } from "@/domains/search/useRunSearch";
 import { SearchOverlayProps, CatOption } from "./types";
 import styles from "./SearchBar.module.scss";
 
 const SearchOverlay = ({
   open,
-  locale,
   trending,
   searchPath,
   onClose,
 }: SearchOverlayProps) => {
   const { t } = useTranslation("search");
+  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { runSearch } = useRunSearch({
-    locale,
     searchPath,
     onClose,
   });

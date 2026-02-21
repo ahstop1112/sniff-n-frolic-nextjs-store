@@ -45,8 +45,8 @@ export const formatPrice = (
       return `HK$${formattedNumber}`;
     }
 
-    return `${c.code} ${formattedNumber}`;
+    return `${c.code}${formattedNumber}`;
   } catch {
-    return `${c.code} ${amount.toFixed(2)}`;
+    return `${c.code}${amount.toFixed(2)}`;
   }
 };

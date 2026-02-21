@@ -18,7 +18,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import type { Locale } from "@/i18n/config";
+import { useLocale } from "@/i18n/LocaleProvider";
 import type { NavNode } from "@/domains/nav/types";
 import { useRunSearch } from "@/domains/search/useRunSearch";
 import { findNavStateByPath } from "@/domains/nav/match";
@@ -27,7 +27,6 @@ import styles from "./MobileMenu.module.scss";
 export type MobileMenuProps = {
   open: boolean;
   onClose: () => void;
-  locale: Locale;
   items: NavNode[];
   // if you want route matching to ignore locale prefix, pass your locale codes here
   localeCodes?: string[];
@@ -35,7 +34,6 @@ export type MobileMenuProps = {
 
 const MobileMenu = ({
   open,
-  locale,
   items,
   onClose,
   localeCodes,
@@ -44,7 +42,8 @@ const MobileMenu = ({
   const router = useRouter();
   const pathname = usePathname() ?? "/";
   const searchParams = useSearchParams();
-  const { runSearch } = useRunSearch({ locale, onClose });
+  const locale = useLocale();
+  const { runSearch } = useRunSearch({ onClose });
 
   const [q, setQ] = useState("");
   const [openL1, setOpenL1] = useState<string | null>(null);

@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { useCart } from "@/context/CartContext";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { ProductPurchasePanelProps } from "./types";
 import styles from "./ProductPurchasePanel.module.scss";
 
 const ProductPurchasePanel = ({
-  locale,
   product,
 }: ProductPurchasePanelProps) => {
+  const locale = useLocale();
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
 

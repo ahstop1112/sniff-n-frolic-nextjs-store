@@ -21,16 +21,13 @@ export type CategorySliderSectionProps = {
   tone?: SectionTone;
   topWave?: SectionTone;
   bottomWave?: SectionTone;
-  locale: Locale;
 };
 
 export type CategorySliderProps = {
   items: CategorySliderItem[];
-  locale: Locale;
 };
 
 export interface CategoryPageClientProps {
-  locale: Locale;
   slug?: string | ``;
   dict: any;
   finalProducts: any[];

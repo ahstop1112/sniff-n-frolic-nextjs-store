@@ -1,5 +1,3 @@
-import { Locale } from "@/i18n/config";
-
 export type RawNavNode = {
   label: string;
   href?: string;
@@ -33,6 +31,5 @@ export type TopNavItem = {
 };
 
 export type HeaderNavProps = {
-  locale: Locale;
   items: TopNavItem[];
 };

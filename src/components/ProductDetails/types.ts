@@ -1,12 +1,9 @@
-import { type Locale } from "@/i18n/config";
-
 export interface ProductDetailsProps {
   title: string;
   shortDesc: string;
   price: number;
   onSale: boolean;
   variantOptions: VariantOptionGroup[];
-  locale: Locale;
 }
 
 export interface VariantOptionGroup {

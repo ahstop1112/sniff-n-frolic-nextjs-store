@@ -62,11 +62,9 @@ const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
   const products = await getProducts({ per_page: 24, search });
 
   // Breadcrumbs
-  const breadcrumbs: BreadcrumbItem[] = [
-    {
-      label: dict.search.searchResults,
-    },
-  ];
+  const breadcrumbs: BreadcrumbItem[] = [{
+    label: dict.search.searchResults,
+  }];
 
   return (
     <Section>
@@ -92,7 +90,6 @@ const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
                 key={p.slug}
               >
                 <ProductGrid
-                  locale={locale}
                   slug={p.slug}
                   image={p?.images[0]}
                   name={p.name}

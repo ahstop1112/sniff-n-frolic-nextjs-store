@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import CartPageClient from "@/components/Cart/CartPageClient";
-import PageLayout from "@/components/PageLayout/PageLayout";
 import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import Section from "@/components/Section/Section";
 import { LangParamsObj, PageProps } from "@/types/next";
+import { getDictionary } from "@/i18n/dictionaries";
 
 type CartPageProps = PageProps<LangParamsObj>;
 
@@ -25,7 +25,7 @@ export const generateMetadata = async (
   const locale: Locale = lang;
 
   return {
-    title:
+    title: 
       locale === "zh"
         ? "購物車 – Sniff & Frolic"
         : "Shopping Cart – Sniff & Frolic",
@@ -38,14 +38,17 @@ export const generateMetadata = async (
 
 const CartPage = async ({ params }: CartPageProps) => {
   const { lang } = await params;
-
   const locale = isValidLocale(lang) ? (lang as Locale) : ("en" as Locale);
-  const breadcrumbs: BreadcrumbItem[] = [];
+  const dict = await getDictionary(locale);
+  
+  const breadcrumbs: BreadcrumbItem[] = [{
+    label: dict.cart.title,
+  }];
 
   return (
-    <Section>
-      {/* <BreadcrumbsNav locale={locale} items={breadcrumbs} /> */}
-      <CartPageClient locale={locale} />
+    <Section bottomWave="cream">
+      <BreadcrumbsNav isProduct={false} items={breadcrumbs} />
+      <CartPageClient />
     </Section>
   );
 };

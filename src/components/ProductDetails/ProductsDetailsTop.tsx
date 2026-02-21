@@ -2,6 +2,7 @@
 
 import { Typography, Box } from "@mui/material";
 import { formatPrice } from "@/lib/currency";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { ProductDetailsProps } from "./types";
 import styles from "./ProductDetails.module.scss";
 
@@ -11,9 +12,8 @@ const ProductsDetailsTop = ({
   price,
   onSale,
   variantOptions,
-  locale,
 }: ProductDetailsProps) => {
-  // Currency
+  const locale = useLocale();
   const displayPrice = formatPrice(price);
 
   return (

@@ -1,5 +1,4 @@
 import type { getDictionary } from "@/i18n/dictionaries";
-import type { Locale } from "@/i18n/config";
 import { CategorySliderItem } from "../Category/types";
 
 type Dict = Awaited<ReturnType<typeof getDictionary>>;
@@ -18,7 +17,6 @@ export interface SimpleTerm {
 }
 
 export interface ProductsFilterSidebarClientProps {
-  locale: Locale;
   categories: CategorySliderItem[];
   colors?: SimpleTerm[];
   common: CommonDict;

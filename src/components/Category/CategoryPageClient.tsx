@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { notFound } from "next/navigation";
 import { Grid } from "@mui/material";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { useCategories } from "@/context/CategoriesContext";
 import Section from "@/components/Section/Section";
 import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
@@ -11,14 +12,15 @@ import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import ProductGrid from "@/components/Product/ProductGrid";
 import ProductsFilterSidebarClient from "@/components/ProductFilter/ProductsFilterSidebarClient";
 import { wooCategoriesToSliderItems } from "@/domains/categories/adapter";
+
 import { CategoryPageClientProps } from "./types";
 
 const CategoryPageClient = ({
-  locale,
   slug,
   dict,
   finalProducts,
 }: CategoryPageClientProps) => {
+  const locale = useLocale();
   const allCats = useCategories();
 
   if (!allCats?.length) return null;
@@ -53,7 +55,7 @@ const CategoryPageClient = ({
   return (
     <>
       <Section tone="teal" className="pageHeader">
-        <BreadcrumbsNav locale={locale} isProduct={true} items={breadcrumbs} />
+        <BreadcrumbsNav isProduct={true} items={breadcrumbs} />
         <h1>{category.name}</h1>
       </Section>
 
@@ -61,7 +63,6 @@ const CategoryPageClient = ({
         <Grid container spacing={2}>
           <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
             <ProductsFilterSidebarClient
-              locale={locale}
               categories={childSliderItems}
               common={dict.common}
             />
@@ -75,7 +76,6 @@ const CategoryPageClient = ({
                 key={p.slug}
               >
                 <ProductGrid
-                  locale={locale}
                   slug={p.slug}
                   image={p?.images[0]}
                   name={p.name}
@@ -91,7 +91,6 @@ const CategoryPageClient = ({
 
       {childSliderItems.length > 0 ? (
         <CategorySliderSection
-          locale={locale}
           title={category.name}
           items={childSliderItems}
         />

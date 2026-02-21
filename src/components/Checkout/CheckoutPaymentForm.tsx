@@ -7,12 +7,11 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import type { Locale } from "@/i18n/config";
+import { useLocale } from "@/i18n/LocaleProvider";
 import PageLoading from "../common/PageLoading";
 import Section from "../Section/Section";
 
 interface Props {
-  locale: Locale;
   orderId: number;
   pricing?: any;
   paymentIntentId: string;
@@ -20,12 +19,12 @@ interface Props {
 }
 
 const CheckoutPaymentForm = ({
-  locale,
   orderId,
   pricing,
   paymentIntentId,
   onError,
 }: Props) => {
+  const locale = useLocale();
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);

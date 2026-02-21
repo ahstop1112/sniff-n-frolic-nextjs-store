@@ -11,6 +11,7 @@ export const enDictionary: Dictionary = {
     shopByCategory: "Shop by category",
     categories: "Categories",
     filters: "Filters",
+    clear: "clear",
     clearFilter: "Clear filters",
     category: "Category",
     all: "All",
@@ -27,7 +28,7 @@ export const enDictionary: Dictionary = {
     onSale: "On Sale",
     onSaleOnly: "On sale only",
     noResult: "No Results!",
-    freeShipping: "Free Shipping on orders over $75",
+    freeShipping: "Free Shipping on orders over $75"
   },
   nav: {
     home: "Home",
@@ -47,6 +48,9 @@ export const enDictionary: Dictionary = {
     seatBelts: "Seat Belts",
     everydayCare: "Everyday Care",
     searchPlaceholder: "Search products",
+    shoppingCart: "Shopping Cart",
+    checkout: "Checkout",
+    orderStatus: "Order Status"
   },
   search: {
     title: "Search",
@@ -61,15 +65,32 @@ export const enDictionary: Dictionary = {
     searchResultFor: "Search results for: ",
     noProductFound: "No products found. Try a different keyword?",
   },
+  cart: {
+    title: "Shopping Cart",
+    orderStatus: "Order Status",
+    product: "Product",
+    quantity: "Quantity",
+    subtotal: "Subtotal",
+    cartTotals: "Cart Totals",
+    shipping: "Shipping",
+    total: "TOTAL",
+    price: "Price",
+    coupon: "Coupon code",
+    clear: "Clear Shopping Cart",
+    proceed: "Proceed To Checkout",
+    emptyText: "Your cart is currently empty.",
+    checkoutNote: "Final amount may adjust slightly at checkout based on taxes and coupons.",
+    apply: "Apply",
+    remove: "Remove"
+  },
   checkout: {
-    title: "Checkout – Sniff & Frolic",
+    title: "Checkout",
     desc: "Enter your details to complete your Sniff & Frolic order.",
     completeYourPurchase: "Complete Your Purchase.",
     heading: "Checkout",
     preparingPayment: "Preparing payment…",
     cartEmpty: "Your cart is empty.",
-    createOrderError:
-      "There was a problem creating your order. Please try again.",
+    createOrderError: "There was a problem creating your order. Please try again.",
     shippingInformation: "Shipping Information",
     firstName: "First name",
     lastName: "Last name",

@@ -9,6 +9,7 @@ export interface Dictionary {
     shopByCategory: string;
     categories: string;
     filters: string;
+    clear: string;
     clearFilter: string;
     category: string;
     all: string;
@@ -45,6 +46,9 @@ export interface Dictionary {
     seatBelts: string;
     everydayCare: string;
     searchPlaceholder: string;
+    shoppingCart: string;
+    checkout: string;
+    orderStatus: string;
   };
   search: {
     title: string;
@@ -57,6 +61,24 @@ export interface Dictionary {
     searchResults: string;
     searchResultFor: string;
     noProductFound: string;
+  };
+  cart: {
+    title: string;
+    orderStatus: string;
+    product: string;
+    price: string;
+    quantity: string;
+    subtotal: string;
+    cartTotals: string;
+    shipping: string;
+    total: string;
+    coupon: string;
+    clear: string;
+    proceed: string;
+    emptyText: string;
+    checkoutNote: string;
+    apply: string;
+    remove: string;
   };
   checkout: {
     title: string;

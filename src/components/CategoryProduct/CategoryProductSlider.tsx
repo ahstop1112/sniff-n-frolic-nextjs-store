@@ -7,10 +7,7 @@ import ProductGrid from "../Product/ProductGrid";
 import { CateogryProductSliderProps } from "./types";
 import styles from "./CategoryProduct.module.scss";
 
-const CateogryProductSlider = ({
-  items,
-  locale,
-}: CateogryProductSliderProps) => {
+const CateogryProductSlider = ({ items }: CateogryProductSliderProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: true,
@@ -54,7 +51,6 @@ const CateogryProductSlider = ({
             return (
               <div className={styles.slide} key={p.id}>
                 <ProductGrid
-                  locale={locale}
                   categoryName={p?.categories[0]?.name || ``}
                   slug={p.slug}
                   image={p.image?.[0] ?? null}
