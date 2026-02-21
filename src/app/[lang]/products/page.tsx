@@ -73,7 +73,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   return (
     <>
       <Section tone="teal" className="pageHeader">
-        <BreadcrumbsNav locale={locale} isProduct={true} items={breadcrumbs} />
+        <BreadcrumbsNav isProduct={true} items={breadcrumbs} />
         <h1>{dict.nav.collection}</h1>
       </Section>
       <Section tone="white" topWave="teal" bottomWave="green">
@@ -81,7 +81,6 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
         <Grid container spacing={3}>
           <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
             <ProductsFilterSidebarClient
-              locale={locale}
               categories={topLevelSliderItems}
               common={dict.common}
             />
@@ -94,7 +93,6 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
                 key={p.slug}
               >
                 <ProductGrid
-                  locale={locale}
                   slug={p.slug}
                   image={p?.images[0]}
                   name={p.name}
@@ -108,7 +106,6 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
         </Grid>
       </Section>
       <CategorySliderSection
-        locale={locale}
         title={dict.search.allCategories}
         items={topLevelSliderItems}
         bottomWave="cream"

@@ -24,7 +24,7 @@ const AboutPage = async ({ params }: AboutPageProps) => {
   return (
     <>
       <Section tone="teal" className="pageHeader">
-        <BreadcrumbsNav locale={locale} isProduct={false} items={breadcrumbs} />
+        <BreadcrumbsNav isProduct={false} items={breadcrumbs} />
         <h1>{dict.nav.ourStory}</h1>
       </Section>
       <Section tone="white" topWave="teal" bottomWave="cream">

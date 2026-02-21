@@ -1,14 +1,13 @@
-import { type Locale } from "@/i18n/config";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import styles from "./AppShell.module.scss";
 
-const AppShell = ({ locale, children }: { locale: Locale, children: React.ReactNode }) => {
+const AppShell = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className={styles.shell}>
-      <Header locale={locale} />
+      <Header />
       {children}
-      <Footer locale={locale} />
+      <Footer />
     </div>
   );
 };

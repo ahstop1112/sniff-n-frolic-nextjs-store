@@ -9,15 +9,19 @@ import {
   Divider,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { useCart } from "@/context/CartContext";
 import { cartItemsToServerItems } from "@/lib/cartToServer";
+import { formatPrice } from "@/lib/currency";
 import PageLoading from "../common/PageLoading";
 import StripeProvider from "../StripeProvider";
+import StepIndicator from "../Cart/StepIndicator";
 import CheckoutPaymentForm from "./CheckoutPaymentForm";
 import CheckoutOrderSummary from "./CheckoutOrderSummary";
-import { CheckoutPageClientProps, ShippingPayload } from "./types";
+import { ShippingPayload } from "./types";
 
-const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
+const CheckoutPageClient = () => {
+  const locale = useLocale();
   const { items, hydrated } = useCart();
 
   const [loading, setLoading] = useState(false);
@@ -102,28 +106,15 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
   };
 
   return (
-    <>
+    <Box maxWidth="lg" mx="auto" my={4}>
       <PageLoading open={loading} label={t("preparingPayment")} />
-      <Typography component="h2" gutterBottom>
-        {t("heading")}
-      </Typography>
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
         </Alert>
       )}
       {/* Step indicator */}
-      <Box mb={3}>
-        <Typography
-          variant="subtitle2"
-          sx={{ letterSpacing: 1, mb: 1, textAlign: "center" }}
-        >
-          <span style={{ opacity: 0.4 }}>1 SHOPPING CART</span>
-          &nbsp;—&nbsp; 2 CHECKOUT &nbsp;—&nbsp;{" "}
-          <span style={{ opacity: 0.4 }}>3 ORDER STATUS</span>
-        </Typography>
-        <Divider />
-      </Box>
+      <StepIndicator curStep="checkout" />
       <Box
         sx={{
           display: "grid",
@@ -134,10 +125,11 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
       >
         {/* LEFT: form */}
         <Box>
-          <Typography variant="h4">{t("shippingInformation")}</Typography>
+          <Typography variant="h6">{t("shippingInformation")}</Typography>
           <Box component="form" onSubmit={handleCreateIntent}>
             <Box
               sx={{
+                marginTop: 2,
                 display: "grid",
                 gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
                 gap: 2,
@@ -195,12 +187,12 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
         <Box
           sx={{
             p: 3,
+            pt: 0,
             position: { md: "sticky" },
-            top: { md: 24 },
           }}
         >
           <CheckoutOrderSummary pricing={pricing} shippingFlatRate={16} />
-          <Typography variant="h4" sx={{ mb: 2 }}>
+          <Typography variant="h6"sx={{ mt: 2, mb: 2 }}>
             {t("payment")}
           </Typography>
           {!clientSecret ? (
@@ -217,7 +209,6 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
             // Step 2: mount Stripe Elements and confirm payment
             <StripeProvider clientSecret={clientSecret} locale={locale}>
               <CheckoutPaymentForm
-                locale={locale}
                 orderId={orderId!}
                 pricing={pricing!}
                 paymentIntentId={paymentIntentId!}
@@ -227,7 +218,7 @@ const CheckoutPageClient = ({ locale }: CheckoutPageClientProps) => {
           )}
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 

@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import Box from "@mui/material/Box";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { formatMoney, toNum } from "@/utils/helpers";
 import { ProductGridProps } from "./types";
 import styles from "./Product.module.scss";
 
 const ProductGrid = ({
-  locale,
   slug,
   image,
   name,
@@ -16,6 +16,7 @@ const ProductGrid = ({
   regularPrice,
   currency = "CAD",
 }: ProductGridProps) => {
+  const locale = useLocale();
   const sale = toNum(price);
   const regular = toNum(regularPrice);
   const img = image as any;

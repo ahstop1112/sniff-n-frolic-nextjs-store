@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import {
   Box,
@@ -16,35 +17,20 @@ import {
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import type { Locale } from "@/i18n/config";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/currency";
+import StepIndicator from "./StepIndicator";
+import styles from "./Cart.module.scss";
 
-interface CartPageClientProps {
-  locale: Locale;
-}
+const CartPageClient = () => {
+  const locale = useLocale();
+  const { t } = useTranslation("cart");
 
-const CartPageClient = ({ locale }: CartPageClientProps) => {
   const { items, subtotal, updateQuantity, removeItem, clearCart } = useCart();
 
   const [coupon, setCoupon] = useState("");
   const [applying, setApplying] = useState(false);
-
-  const isZh = locale === "zh";
-
-  // Demo 用：簡單 BC 稅 + flat shipping，可之後改成從 Woo 拉
-  const shipping = items.length > 0 ? 15 : 0; // CAD 15 flat
-  const gst = +(subtotal * 0.05).toFixed(2);
-  const pst = +(subtotal * 0.07).toFixed(2);
-  const total = +(subtotal + shipping + gst + pst).toFixed(2);
-
-  const handleApplyCoupon = (e: FormEvent) => {
-    e.preventDefault();
-    setApplying(true);
-    // TODO: Call backend / Woo API 驗證 coupon
-    setTimeout(() => {
-      setApplying(false);
-    }, 500);
-  };
 
   const handleDecrease = (id: number, qty: number, variantKey?: string) => {
     if (qty <= 1) return;
@@ -55,73 +41,36 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
     updateQuantity(id, qty + 1, variantKey);
   };
 
-  const labelShoppingCart = isZh ? "購物車" : "Shopping Cart";
-  const labelCheckout = isZh ? "結帳" : "Checkout";
-  const labelOrderStatus = isZh ? "訂單狀態" : "Order Status";
-  const labelProduct = isZh ? "產品" : "Product";
-  const labelPrice = isZh ? "價格" : "Price";
-  const labelQuantity = isZh ? "數量" : "Quantity";
-  const labelSubtotal = isZh ? "小計" : "Subtotal";
-  const labelCartTotals = isZh ? "購物車總計" : "Cart Totals";
-  const labelShipping = isZh ? "運費" : "Shipping";
-  const labelGST = "GST";
-  const labelPST = "PST";
-  const labelTotal = isZh ? "總計" : "TOTAL";
-  const labelCoupon = isZh ? "優惠碼" : "Coupon code";
-  const labelApply = isZh ? "OK" : "OK";
-  const labelClear = isZh ? "清空購物車" : "Clear Shopping Cart";
-  const labelProceed = isZh ? "前往結帳" : "Proceed To Checkout";
-  const emptyText = isZh
-    ? "購物車暫時係空嘅。"
-    : "Your cart is currently empty.";
+  const total = +(subtotal).toFixed(2);
 
   return (
     <Box maxWidth="lg" mx="auto" my={4}>
       {/* Step indicator */}
-      <Box mb={3}>
-        <Typography
-          variant="subtitle2"
-          sx={{ letterSpacing: 1, mb: 1, textAlign: "center" }}
-        >
-          1 {labelShoppingCart.toUpperCase()}
-          <span style={{ opacity: 0.4 }}>
-            {" "}
-            &nbsp;—&nbsp; 2 {labelCheckout.toUpperCase()} &nbsp;—&nbsp; 3{" "}
-            {labelOrderStatus.toUpperCase()}
-          </span>
-        </Typography>
-        <Divider />
-      </Box>
-
-      <Typography component="h2" gutterBottom>
-        Shopping Cart
-      </Typography>
-
+      <StepIndicator curStep="cart" />
       {items.length === 0 ? (
-        <Typography variant="body1">{emptyText}</Typography>
+        <Typography variant="body1">{t(`emptyText`)}</Typography>
       ) : (
         <Grid container spacing={4}>
           {/* Left Product List */}
           <Grid size={{ xs: 12, lg: 8 }}>
             <Card variant="outlined">
               <CardContent>
-                {/* 表頭 */}
                 <Grid
                   container
                   sx={{ mb: 2, display: { xs: "none", sm: "flex" } }}
                 >
                   <Grid size={{ xs: 6 }}>
-                    <Typography variant="subtitle2">{labelProduct}</Typography>
+                    <Typography variant="subtitle2">{t(`product`)}</Typography>
                   </Grid>
                   <Grid size={{ xs: 2 }}>
-                    <Typography variant="subtitle2">{labelPrice}</Typography>
+                    <Typography variant="subtitle2">{t(`price`)}</Typography>
                   </Grid>
                   <Grid size={{ xs: 2 }}>
-                    <Typography variant="subtitle2">{labelQuantity}</Typography>
+                    <Typography variant="subtitle2">{t(`quantity`)}</Typography>
                   </Grid>
                   <Grid size={{ xs: 2 }}>
                     <Typography variant="subtitle2" align="right">
-                      {labelSubtotal}
+                      {t(`subtotal`)}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -150,13 +99,7 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                                 component="img"
                                 src={item.imageUrl}
                                 alt={item.name}
-                                sx={{
-                                  width: 64,
-                                  height: 64,
-                                  borderRadius: 1,
-                                  objectFit: "cover",
-                                  flexShrink: 0,
-                                }}
+                                className={styles.productImage}
                               />
                             )}
                             <Box>
@@ -190,16 +133,14 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                                 startIcon={<DeleteOutlineIcon />}
                                 sx={{ mt: 0.5 }}
                               >
-                                {isZh ? "移除" : "Remove"}
+                                {t(`remove`)}
                               </Button>
                             </Box>
                           </Box>
                         </Grid>
 
                         <Grid size={{ xs: 4, sm: 2 }}>
-                          <Typography variant="body2">
-                            CAD ${item.price.toFixed(2)}
-                          </Typography>
+                         {formatPrice(item.price)}
                         </Grid>
 
                         <Grid size={{ xs: 4, sm: 2 }}>
@@ -248,10 +189,9 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                           </Box>
                         </Grid>
 
-                        {/* 行小計 */}
                         <Grid size={{ xs: 4, sm: 2 }}>
                           <Typography variant="body2" align="right">
-                            CAD ${lineSubtotal.toFixed(2)}
+                            {formatPrice(lineSubtotal)}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -270,45 +210,12 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                     alignItems: { xs: "stretch", sm: "center" },
                   }}
                 >
-                  {/* Coupon */}
-                  <Box
-                    component="form"
-                    onSubmit={handleApplyCoupon}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 1,
-                    }}
-                  >
-                    <TextField
-                      size="small"
-                      label={labelCoupon}
-                      value={coupon}
-                      onChange={(e) => setCoupon(e.target.value)}
-                    />
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      size="small"
-                      disabled={applying || !coupon}
-                    >
-                      {labelApply}
-                    </Button>
-                  </Box>
-
                   {/* Clear cart */}
                   <Button
                     variant="contained"
-                    color="inherit"
                     onClick={clearCart}
-                    sx={{
-                      bgcolor: "#063F53",
-                      color: "#fff",
-                      "&:hover": { bgcolor: "#042a35" },
-                    }}
                   >
-                    {labelClear}
+                    {t(`clear`)}
                   </Button>
                 </Box>
               </CardContent>
@@ -322,7 +229,7 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                   variant="subtitle1"
                   sx={{ fontWeight: 600, mb: 2, textAlign: "right" }}
                 >
-                  {labelCartTotals}
+                  {t(`total`)}
                 </Typography>
 
                 <Box
@@ -332,53 +239,10 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                     mb: 1,
                   }}
                 >
-                  <Typography variant="body2">{labelSubtotal}</Typography>
-                  <Typography variant="body2">
-                    CAD ${subtotal.toFixed(2)}
-                  </Typography>
+                  <Typography variant="body2">{t(`subtotal`)}</Typography>
+                  <Typography variant="body2">{formatPrice(subtotal)}</Typography>
                 </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    mb: 1,
-                  }}
-                >
-                  <Typography variant="body2">{labelShipping}</Typography>
-                  <Typography variant="body2">
-                    {items.length === 0 ? "-" : `CAD $${shipping.toFixed(2)}`}
-                  </Typography>
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    mb: 1,
-                  }}
-                >
-                  <Typography variant="body2">{labelGST}</Typography>
-                  <Typography variant="body2">
-                    {items.length === 0 ? "-" : `CAD $${gst.toFixed(2)}`}
-                  </Typography>
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    mb: 2,
-                  }}
-                >
-                  <Typography variant="body2">{labelPST}</Typography>
-                  <Typography variant="body2">
-                    {items.length === 0 ? "-" : `CAD $${pst.toFixed(2)}`}
-                  </Typography>
-                </Box>
-
                 <Divider sx={{ mb: 2 }} />
-
                 <Box
                   sx={{
                     display: "flex",
@@ -387,15 +251,15 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                   }}
                 >
                   <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                    {labelTotal}
+                    {t(`total`)}
                   </Typography>
                   <Typography
                     variant="subtitle1"
                     sx={{ fontWeight: 700, color: "#e16849" }}
                   >
                     {items.length === 0
-                      ? "CAD $0.00"
-                      : `CAD $${total.toFixed(2)}`}
+                      ? `${formatPrice(0)}`
+                      : `${formatPrice(total)}`}
                   </Typography>
                 </Box>
 
@@ -413,7 +277,7 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                       fontWeight: 600,
                     }}
                   >
-                    {labelProceed}
+                    {t(`proceed`)}
                   </Button>
                 </Link>
 
@@ -421,9 +285,7 @@ const CartPageClient = ({ locale }: CartPageClientProps) => {
                   variant="caption"
                   sx={{ display: "block", mt: 1.5, color: "text.secondary" }}
                 >
-                  {isZh
-                    ? "實際金額可能會因稅項及優惠碼略有調整，以結帳頁為準。"
-                    : "Final amount may adjust slightly at checkout based on taxes and coupons."}
+                  {t(`checkoutNote`)}
                 </Typography>
               </CardContent>
             </Card>

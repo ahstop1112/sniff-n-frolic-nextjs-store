@@ -43,7 +43,6 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
 
   return (
     <CategoryPageClient
-      locale={locale}
       slug={slug}
       dict={dict}
       finalProducts={finalProducts}

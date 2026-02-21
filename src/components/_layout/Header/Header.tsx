@@ -13,16 +13,16 @@ import SearchOverlay from "@/components/SearchBar/SearchOverlay";
 import MobileMenu from "@/components/MobileMenu/MobileMenu";
 import MiniCart from "@/components/Cart/MiniCart";
 // Context & Config
+import { useLocale } from "@/i18n/LocaleProvider";
 import { useCategories } from "@/context/CategoriesContext";
 import { NAV_ITEMS } from "@/config/nav.config";
 import { topLevelFromWooCategories } from "@/domains/nav/fromWooCategories";
 import { normalizeNavTree } from "@/domains/nav/normalize";
-// Types
-import { HeaderProps } from "./types";
 import styles from "./Header.module.scss";
 
-const Header = ({ locale }: HeaderProps) => {
+const Header = () => {
   const { t } = useTranslation("common");
+  const locale = useLocale();
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
@@ -71,7 +71,7 @@ const Header = ({ locale }: HeaderProps) => {
               />
             </Link>
             {/* Left: Nav */}
-            <HeaderNav locale={locale} items={navItems} />
+            <HeaderNav items={navItems} />
 
             {/* Right: Search + Cart */}
             <Stack direction="row" spacing={1} alignItems="center">
@@ -81,7 +81,7 @@ const Header = ({ locale }: HeaderProps) => {
               >
                 <SearchRoundedIcon />
               </IconButton>
-              <MiniCart locale={locale} />
+              <MiniCart />
             </Stack>
           </Stack>
         </Box>
@@ -109,19 +109,17 @@ const Header = ({ locale }: HeaderProps) => {
             </Link>
 
             {/* Right: Cart */}
-            <MiniCart locale={locale} />
+            <MiniCart />
           </Stack>
         </Box>
       </Box>
       <SearchOverlay
         open={searchOpen}
         onClose={() => setSearchOpen(false)}
-        locale={locale}
       />
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        locale={locale}
         items={navItems}
       />
     </>

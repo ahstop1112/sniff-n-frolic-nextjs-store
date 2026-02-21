@@ -20,14 +20,11 @@ import {
 } from "@mui/material";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { useCart } from "@/context/CartContext";
-import type { Locale } from "@/i18n/config";
 
-interface MiniCartProps {
-  locale: Locale;
-}
-
-const MiniCart = ({ locale }: MiniCartProps) => {
+const MiniCart = () => {
+  const locale = useLocale();
   const { items, subtotal, totalItems, updateQuantity, removeItem } = useCart();
   const [open, setOpen] = useState(false);
 

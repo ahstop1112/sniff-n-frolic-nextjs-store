@@ -58,12 +58,11 @@ const HomePage = async ({ params }: HomePageProps) => {
   return (
     <>
       <MainBanner />
-      <HomePageClient locale={locale} />
+      <HomePageClient />
       {/* Pet Treats */}
       <CategoryProductSliderSection
         title={treatsTitle}
         desc="Everyday treats handpicked for mindful feeding, slow rewards, and daily routines."
-        locale={locale}
         items={productTreatsItems}
         tone="white"
         topWave="green"
@@ -73,7 +72,6 @@ const HomePage = async ({ params }: HomePageProps) => {
       <CategoryProductSliderSection
         title={feederTitle}
         desc="Bowls, feeders and drinking accessories designed for everyday feeding and hydration."
-        locale={locale}
         items={productFeederItems}
         tone="yellow"
         bottomWave="cream"

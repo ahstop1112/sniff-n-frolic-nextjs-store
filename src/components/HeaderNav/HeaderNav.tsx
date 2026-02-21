@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { Locale } from "@/i18n/config";
+import { useLocale } from "@/i18n/LocaleProvider";
 import clsx from "clsx";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
@@ -11,12 +11,12 @@ import type { NavNode } from "@/domains/nav/types";
 import styles from "./HeaderNav.module.scss";
 
 export type HeaderNavProps = {
-  locale: Locale;
   items: NavNode[];
 };
 
-const HeaderNav = ({ locale, items }: HeaderNavProps) => {
+const HeaderNav = ({ items }: HeaderNavProps) => {
   const { t } = useTranslation("nav");
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
 
   // Level 2 /3 active (desktop hover)

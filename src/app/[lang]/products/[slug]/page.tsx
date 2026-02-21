@@ -123,7 +123,7 @@ const ProductPage = async ({ params, searchParams }: ProductPageProps) => {
 
   return (
     <Section tone="white" bottomWave="cream">
-      <BreadcrumbsNav items={breadcrumbs} isProduct={true} locale={locale} />
+      <BreadcrumbsNav items={breadcrumbs} isProduct={true} />
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, sm: 6, md: 6, lg: 5 }}>
           <ProductImageGallery images={images} productName={product.name} />
@@ -135,11 +135,10 @@ const ProductPage = async ({ params, searchParams }: ProductPageProps) => {
             onSale={product.on_sale}
             shortDesc={product.short_description}
             variantOptions={variantOptions}
-            locale={locale}
           />
           <Box mt={4} display="flex" gap={2}>
             {/* Add To Cart */}
-            <ProductPurchasePanel product={addToCartInput} locale={locale} />
+            <ProductPurchasePanel product={addToCartInput} />
           </Box>
         </Grid>
         {product.description && (

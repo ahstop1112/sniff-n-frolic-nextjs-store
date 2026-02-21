@@ -1,9 +1,3 @@
-import type { Locale } from "@/i18n/config";
-
-export interface CheckoutPageClientProps {
-  locale: Locale;
-}
-
 export type ShippingPayload = {
   first_name: string;
   last_name: string;
@@ -15,4 +9,14 @@ export type ShippingPayload = {
   state: string;
   postcode: string;
   country: string;
+};
+
+export type Pricing = {
+  currency?: "CAD";
+  subtotal?: number;
+  shipping?: number;
+  tax?: number;
+  gst?: number;
+  pst?: number;
+  total?: number;
 };

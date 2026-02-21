@@ -4,11 +4,14 @@ import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import { useLocale } from "@/i18n/LocaleProvider";
 import styles from "./Category.module.scss";
 import type { CategorySliderProps } from "./types";
 import { Box } from "@mui/material";
 
-const CategorySlider = ({ items, locale }: CategorySliderProps) => {
+const CategorySlider = ({ items }: CategorySliderProps) => {
+  const locale = useLocale();
+  
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: true,

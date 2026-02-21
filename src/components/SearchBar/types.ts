@@ -1,5 +1,3 @@
-import type { Locale } from "@/i18n/config";
-
 export type CatOption = { id: number | "all"; label: string; slug?: string };
 export type PopularCategory = {
   label: string;
@@ -11,7 +9,6 @@ export type PopularCategory = {
 export type SearchOverlayProps = {
   open: boolean;
   onClose: () => void;
-  locale: Locale;
   trending?: string[];
   popularCategories?: PopularCategory[];
 
@@ -20,7 +17,6 @@ export type SearchOverlayProps = {
 };
 
 export type SearchBarProps = {
-  locale: Locale;
   placeholder?: string;
   className?: string;
   /** route for search result page */

@@ -2,22 +2,21 @@
 
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
-import type { Locale } from "@/i18n/config";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { buildSearchHref } from "./buildSearchHref";
 
 export type UseRunSearchArgs = {
-  locale: Locale;
   searchPath?: string;
   onClose?: () => void; // optional (mobile menu / overlay)
   onAfterRun?: () => void; // optional (clear input etc.)
 };
 
 export const useRunSearch = ({
-  locale,
   searchPath,
   onClose,
   onAfterRun,
 }: UseRunSearchArgs) => {
+  const locale = useLocale();
   const router = useRouter();
 
   const runSearch = useCallback(

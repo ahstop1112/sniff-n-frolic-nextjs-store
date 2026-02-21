@@ -16,7 +16,6 @@ import { ProductsFilterSidebarClientProps } from "./types";
 import styles from "./ProductFilter.module.scss";
 
 const ProductsFilterSidebarClient = ({
-  locale,
   categories,
   colors = [],
   common,

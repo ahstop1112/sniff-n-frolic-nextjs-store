@@ -1,5 +1,4 @@
 import type { WooImage, WooProductCategoryLite } from "@/lib/wooClient";
-import type { Locale } from "@/i18n/config";
 import type { SectionTone } from "../Section/types";
 
 export type CateogryProductSliderItem = {
@@ -7,7 +6,6 @@ export type CateogryProductSliderItem = {
   on_sale: boolean | undefined;
   id: number;
   slug: string;
-  locale: Locale;
   image?: WooImage[];
   imageSrc?: string;
   name: string;
@@ -20,7 +18,6 @@ export type CateogryProductSliderProps = {
   desc?: string;
   items: CateogryProductSliderItem[];
   tone?: SectionTone;
-  locale: Locale;
   topWave?: SectionTone;
   bottomWave?: SectionTone;
 };

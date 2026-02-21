@@ -1,13 +1,15 @@
+"use client";
 import { Box } from "@mui/material";
 import Link from "next/link";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { BreadcrumbsNavProps, BreadcrumbItem } from "./types";
 import styles from "./Breadcrumb.module.scss";
 
 const BreadcrumbsNav = ({
   items = [],
   isProduct = true,
-  locale = "en",
 }: BreadcrumbsNavProps) => {
+  const locale = useLocale();
   const navItems: BreadcrumbItem[] = [
     {
       label: locale === "zh" ? "首頁" : "Home",

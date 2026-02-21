@@ -1,15 +1,12 @@
 "use client";
 import { useMemo } from "react";
-import type { Locale } from "@/i18n/config";
 import { useCategories } from "@/context/CategoriesContext";
+import { useLocale } from "@/i18n/LocaleProvider";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import { wooCategoriesToSliderItems } from "@/domains/categories/adapter";
 
-interface HomePageClientProps {
-  locale: Locale;
-}
-
-const HomePageClient = ({ locale }: HomePageClientProps) => {
+const HomePageClient = () => {
+  const locale = useLocale();
   const categories = useCategories();
   const topLevelCategories = categories.filter((c) => c.parent === 0);
 
@@ -20,7 +17,6 @@ const HomePageClient = ({ locale }: HomePageClientProps) => {
 
   return (
     <CategorySliderSection
-      locale={locale}
       bottomWave="green"
       title="All Categories"
       items={homeSliderItems}

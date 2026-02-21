@@ -24,8 +24,6 @@ interface ProductsProps {
 }
 
 const ProductPageClient = ({
-  slug,
-  locale,
   products,
   initialVariantOptions,
 }: ProductsProps) => {
@@ -49,10 +47,9 @@ const ProductPageClient = ({
         onSale={product.on_sale}
         shortDesc={product.short_description}
         variantOptions={initialVariantOptions}
-        locale={locale}
       />
       <Box mt={4} display="flex" gap={2}>
-        <ProductPurchasePanel product={addToCartInput} locale={locale} />
+        <ProductPurchasePanel product={addToCartInput} />
       </Box>
 
       {product.description && (

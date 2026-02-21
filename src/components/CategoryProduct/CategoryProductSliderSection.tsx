@@ -11,7 +11,6 @@ const CategoryProductSliderSection = ({
   desc,
   items,
   tone,
-  locale,
   topWave,
   bottomWave,
 }: CateogryProductSliderProps) => {
@@ -28,7 +27,6 @@ const CategoryProductSliderSection = ({
         items={items}
         title={title}
         desc={desc}
-        locale={locale}
       />
     </Section>
   );
