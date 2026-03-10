@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import {
   IconButton,
@@ -22,27 +23,22 @@ import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { useCart } from "@/context/CartContext";
+import { useCurrency } from "@/context/CurrencyContext";
 
 const MiniCart = () => {
+  const { t } = useTranslation("cart");
   const locale = useLocale();
+  const { currency } = useCurrency();
   const { items, subtotal, totalItems, updateQuantity, removeItem } = useCart();
   const [open, setOpen] = useState(false);
 
-  const currencyLabel = "CAD $";
-
-  const cartTitle = locale === "zh" ? "購物車" : "Cart";
-  const emptyText =
-    locale === "zh" ? "購物車暫時係空嘅。" : "Your cart is currently empty.";
-  const viewCartLabel = locale === "zh" ? "查看購物車" : "View cart";
-  const checkoutLabel = locale === "zh" ? "前往結帳" : "Checkout";
-  const subtotalLabel = locale === "zh" ? "小計：" : "Subtotal:";
-
+  const currencyLabel = `${currency} $`;
   const toggle = (value: boolean) => () => setOpen(value);
 
   return (
     <>
       {/* Header 上面個 icon */}
-      <IconButton aria-label={cartTitle} onClick={toggle(true)} size="large">
+      <IconButton aria-label={t("cartTitle")} onClick={toggle(true)} size="large">
         <Badge badgeContent={totalItems} color="primary">
           <ShoppingBagOutlinedIcon />
         </Badge>
@@ -71,7 +67,7 @@ const MiniCart = () => {
             }}
           >
             <Typography variant="h6" sx={{ letterSpacing: 1, fontWeight: 600 }}>
-              {cartTitle.toUpperCase()}
+              {t('cartTitle').toUpperCase()}
             </Typography>
             <IconButton onClick={toggle(false)}>
               <CloseIcon />
@@ -84,7 +80,7 @@ const MiniCart = () => {
           <Box sx={{ flexGrow: 1, overflowY: "auto", px: 2, py: 1 }}>
             {items.length === 0 ? (
               <Typography variant="body2" sx={{ mt: 2 }}>
-                {emptyText}
+                {t("emptyText")}
               </Typography>
             ) : (
               <List disablePadding>
@@ -180,7 +176,7 @@ const MiniCart = () => {
               }}
             >
               <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                {subtotalLabel}
+                {t("subtotal")}
               </Typography>
               <Typography
                 variant="subtitle1"
@@ -205,7 +201,7 @@ const MiniCart = () => {
                     fontWeight: 600,
                   }}
                 >
-                  {viewCartLabel.toUpperCase()}
+                  {t("viewCart").toUpperCase()}
                 </Button>
               </Link>
 
@@ -223,7 +219,7 @@ const MiniCart = () => {
                     fontWeight: 600,
                   }}
                 >
-                  {checkoutLabel}
+                  {t("checkout").toUpperCase()}
                 </Button>
               </Link>
             </Box>

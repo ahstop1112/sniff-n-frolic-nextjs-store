@@ -18,6 +18,7 @@ export const initClientI18n = (
         resources: {
           [locale]: {
             common: dict.common,
+            footer: dict.footer,
             nav: dict.nav,
             search: dict.search,
             checkout: dict.checkout,

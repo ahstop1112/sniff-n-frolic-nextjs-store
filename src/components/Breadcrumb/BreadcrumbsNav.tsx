@@ -4,21 +4,20 @@ import Link from "next/link";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { BreadcrumbsNavProps, BreadcrumbItem } from "./types";
 import styles from "./Breadcrumb.module.scss";
+import { useTranslation } from "react-i18next";
 
-const BreadcrumbsNav = ({
-  items = [],
-  isProduct = true,
-}: BreadcrumbsNavProps) => {
+const BreadcrumbsNav = ({ items = [], isProduct = true }: BreadcrumbsNavProps) => {
+  const { t } = useTranslation("nav")
   const locale = useLocale();
   const navItems: BreadcrumbItem[] = [
     {
-      label: locale === "zh" ? "首頁" : "Home",
+      label: t("home"),
       href: locale === "zh" ? "/zh" : "/en",
     },
   ];
   if (isProduct) {
     navItems.push({
-      label: locale === "zh" ? "全部商品" : "Collection",
+      label: t("collection"),
       href: `/${locale}/products`,
     });
   }

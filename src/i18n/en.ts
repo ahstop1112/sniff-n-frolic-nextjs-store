@@ -48,7 +48,7 @@ export const enDictionary: Dictionary = {
     "shippingPolicy": "Shipping Policy",
     "termsConditions": "Terms & Conditions",
     "privacyPolicy": "Privacy Policy",
-    "copyright": "Copyright © {year} Sniff & Frolic, For furry friends & the hoomans they love =)"
+    "copyright": "Sniff & Frolic, For furry friends & the hoomans they love =)"
   },
   nav: {
     home: "Home",

@@ -66,7 +66,7 @@ const Footer = () => {
               {t("subscribe")}
             </Button>
             <p>
-              <b>{t("needHelp")}</b><br/>
+              <b>{t("needHelp")}</b><br />
               <a href="mailto:woff@sniffnfrolic.com">woff@sniffnfrolic.com</a>
             </p>
           </Grid>
@@ -85,7 +85,7 @@ const Footer = () => {
                   <MuiLink
                     key={cat.id}
                     component={NextLink}
-                    href={`/${locale}/category/${cat.slug}`} // 依你路由改
+                    href={`/${locale}/category/${cat.slug}`}
                     underline="hover"
                     color="text.primary"
                     sx={{ fontSize: 14 }}
@@ -97,7 +97,7 @@ const Footer = () => {
               {!loadingCats && topLevelCategories.length === 0 && (
                 <MuiLink
                   component={NextLink}
-                  href="/products"
+                  href={`/${locale}/products`}
                   underline="hover"
                   color="text.primary"
                   sx={{ fontSize: 14 }}
@@ -156,7 +156,7 @@ const Footer = () => {
       </Container>
       <Box className={styles.copyright}>
         <p>
-          {t("copyright")}
+          Copyright © {year} {t("copyright")}
         </p>
       </Box>
     </Box>
