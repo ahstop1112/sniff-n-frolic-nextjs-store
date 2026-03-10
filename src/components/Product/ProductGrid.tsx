@@ -46,9 +46,7 @@ const ProductGrid = ({
           {categoryName ? (
             <div className={styles.category}>{categoryName}</div>
           ) : null}
-
           <div className={styles.title}>{name}</div>
-
           <div className={styles.priceBlock}>
             {onSale ? (
               <>

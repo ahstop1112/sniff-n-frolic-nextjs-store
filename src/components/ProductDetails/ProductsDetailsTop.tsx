@@ -26,7 +26,7 @@ const ProductsDetailsTop = ({
           {variantOptions.map((group) => (
             <Box key={group.slug} mb={2}>
               <Typography variant="subtitle2" gutterBottom>
-                {locale === "zh" ? group.name : group.name}
+                {group.name}
               </Typography>
               <Box
                 sx={{

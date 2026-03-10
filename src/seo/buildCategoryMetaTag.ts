@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getCategories } from "@/lib/wooClient";
+import { getDictionary } from "@/i18n/dictionaries";
 import { seoConfig } from "./seoConfig";
 
 interface BuildCategoryMetadataArgs {
@@ -21,6 +22,7 @@ export const buildCategoryMetadata = async (
   }
 
   const locale: Locale = lang;
+  const dict = await getDictionary(locale);
 
   const allCats = await getCategories();
   const category = allCats.find((c) => c.slug === slug);
@@ -33,11 +35,7 @@ export const buildCategoryMetadata = async (
   }
 
   const baseTitle = `${category.name} – ${seoConfig.siteName}`;
-
-  const baseDescription =
-    locale === "zh"
-      ? `發現更多「${category.name}」相關狗狗用品、零食同冒險小物，為毛孩準備下一次出遊。`
-      : `Discover more "${category.name}" goodies from ${seoConfig.siteName} – treats, toys and adventure-ready gear for happy pets.`;
+  const baseDescription = dict.common.metaDescription.replace("{{category}}", category.name).replace("{{siteName}}", seoConfig.siteName);
 
   // 假設 Woo 用預設 product category URL 結構：
   const canonical = `${seoConfig.siteUrl}/${lang}/category/${category.slug}`;

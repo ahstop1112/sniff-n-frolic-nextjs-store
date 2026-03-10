@@ -115,7 +115,7 @@ const Footer = () => {
                 component={NextLink}
                 href={`/${locale}/sniff-frolic-story`}
               >
-                {t("outStory")}
+                {t("ourStory")}
               </MuiLink>
               <MuiLink component={NextLink} href={`/${locale}/how-to-buy`}>
                 {t("howToBuy")}
@@ -145,7 +145,7 @@ const Footer = () => {
                 component={NextLink}
                 href={`/${locale}/terms-and-conditions`}
               >
-                {t("termsConditions")}
+                {t("termsAndConditions")}
               </MuiLink>
               <MuiLink component={NextLink} href={`/${locale}/privacy-policy`}>
                 {t("privacyPolicy")}

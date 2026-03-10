@@ -1,20 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Box, Button, TextField } from "@mui/material";
 import { useCart } from "@/context/CartContext";
-import { useLocale } from "@/i18n/LocaleProvider";
 import { ProductPurchasePanelProps } from "./types";
 import styles from "./ProductPurchasePanel.module.scss";
 
 const ProductPurchasePanel = ({
   product,
 }: ProductPurchasePanelProps) => {
-  const locale = useLocale();
+  const { t } = useTranslation("cart");
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
 
-  const labelAdd = locale === "zh" ? "加入購物車" : "Add to cart";
+  const labelAdd = t('addToCart');
 
   const handleQtyChange = (value: number) => {
     if (Number.isNaN(value)) return;
@@ -31,12 +31,11 @@ const ProductPurchasePanel = ({
       <TextField
         type="number"
         size="small"
-        label={locale === "zh" ? "數量" : "Qty"}
+        label={t('qty')}
         value={qty}
         inputProps={{ min: 1, style: { textAlign: "center", width: 60 } }}
         onChange={(e) => handleQtyChange(Number(e.target.value))}
       />
-
       {/* Add to cart button */}
       <Button variant="contained" color="primary" onClick={handleAdd}>
         {labelAdd}

@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { stripe } from "@/lib/stripe";
 import { LangParamsObj, PageProps } from "@/types/next";
+import { getDictionary } from "@/i18n/dictionaries";
 
 const wooGet = async (path: string) => {
   const base = process.env.WOO_API_BASE_URL!;
@@ -32,6 +33,7 @@ const ConfirmPage = async ({ params, searchParams }: ConfirmPageProps) => {
 
   if (!isValidLocale(lang)) notFound();
   const locale: Locale = lang;
+  const dict = await getDictionary(locale);
 
   const piId = sp ? getStr(sp.pi) : 0;
   if (!piId) notFound();
@@ -44,12 +46,10 @@ const ConfirmPage = async ({ params, searchParams }: ConfirmPageProps) => {
     return (
       <Box>
         <Typography variant="h4" gutterBottom>
-          {locale === "zh" ? "正在確認訂單…" : "Confirming your order…"}
+          {dict.checkout.confirmingTitle}
         </Typography>
         <Typography variant="body1">
-          {locale === "zh"
-            ? "已付款成功，我哋正在建立訂單。請稍後刷新頁面。"
-            : "Payment succeeded. We’re creating your order—refresh in a moment."}
+          {dict.checkout.confirmingDesc}
         </Typography>
       </Box>
     );
@@ -61,15 +61,15 @@ const ConfirmPage = async ({ params, searchParams }: ConfirmPageProps) => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
-        {locale === "zh" ? "訂單確認" : "Order confirmed"}
+        {dict.checkout.confirmedTitle}
       </Typography>
 
       <Typography variant="body1" sx={{ mb: 2 }}>
-        {locale === "zh" ? "訂單編號：" : "Order #"} {order.number}
+        {dict.checkout.orderNumber} {order.number}
       </Typography>
 
       <Typography variant="h6" sx={{ mt: 2 }}>
-        {locale === "zh" ? "送貨資料" : "Shipping"}
+        {dict.checkout.shipping}
       </Typography>
       <Typography variant="body2">
         {order.shipping?.first_name} {order.shipping?.last_name}
@@ -84,21 +84,20 @@ const ConfirmPage = async ({ params, searchParams }: ConfirmPageProps) => {
       </Typography>
 
       <Typography variant="h6" sx={{ mt: 3 }}>
-        {locale === "zh" ? "訂單狀態" : "Status"}
+        {dict.checkout.status}
       </Typography>
       <Typography variant="body2">{order.status}</Typography>
 
       <Typography variant="h6" sx={{ mt: 3 }}>
-        {locale === "zh" ? "商品" : "Items"}
+        {dict.checkout.items}
       </Typography>
       {(order.line_items || []).map((li: any) => (
         <Typography key={li.id} variant="body2">
           {li.name} × {li.quantity}
         </Typography>
       ))}
-
       <Typography variant="h6" sx={{ mt: 3 }}>
-        {locale === "zh" ? "總額" : "Total"}
+        {dict.checkout.total}
       </Typography>
       <Typography variant="body2">
         {order.total} {order.currency}

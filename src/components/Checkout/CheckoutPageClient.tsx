@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { useCart } from "@/context/CartContext";
 import { cartItemsToServerItems } from "@/lib/cartToServer";
-import { formatPrice } from "@/lib/currency";
 import PageLoading from "../common/PageLoading";
 import StripeProvider from "../StripeProvider";
 import StepIndicator from "../Cart/StepIndicator";

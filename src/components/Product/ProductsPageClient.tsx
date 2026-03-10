@@ -7,7 +7,6 @@ import type { Locale } from "@/i18n/config";
 import ProductDetails from "@/components/ProductDetails/ProductsDetailsTop";
 import ProductPurchasePanel from "@/components/ProductPurchasePanel/ProductPurchasePanel";
 import type { AddToCartInput } from "@/lib/cartTypes";
-import { useProducts } from "@/context/ProductsContext";
 
 interface VariantOptionGroup {
   name: string;

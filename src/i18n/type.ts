@@ -27,25 +27,27 @@ export interface Dictionary {
     onSaleOnly: string;
     noResult: string;
     freeShipping: string;
+    metaTitle: string;
+    metaDescription: string;
   };
   footer: {
-    "subscribeText": string;        
-    "subscribe": string;
-    "needHelp": string;
-    "categories": string;
-    "loading": string;
-    "allProducts": string;
-    "information": string;
-    "outStory": string;
-    "howToBuy": string;
-    "faq": string;
-    "contactUs": string,
-    "policy": string,
-    "refundReturnPolicy": string,
-    "shippingPolicy": string,
-    "termsConditions": string,
-    "privacyPolicy": string,
-    "copyright": string
+    subscribeText: string;        
+    subscribe: string;
+    needHelp: string;
+    categories: string;
+    loading: string;
+    allProducts: string;
+    information: string;
+    ourStory: string;
+    howToBuy: string;
+    faq: string;
+    contactUs: string,
+    policy: string,
+    refundReturnPolicy: string,
+    shippingPolicy: string,
+    termsAndConditions: string,
+    privacyPolicy: string,
+    copyright: string
   },
   nav: {
     home: string;
@@ -80,9 +82,12 @@ export interface Dictionary {
     searchResults: string;
     searchResultFor: string;
     noProductFound: string;
+    descriptionKeyword: string;
+    descriptionDefault: string;
   };
   cart: {
     title: string;
+    desc: string;
     orderStatus: string;
     product: string;
     price: string;
@@ -92,12 +97,14 @@ export interface Dictionary {
     shipping: string;
     total: string;
     coupon: string;
+    addToCart: string;
     clear: string;
     proceed: string;
     emptyText: string;
     checkoutNote: string;
     apply: string;
     remove: string;
+    qty: string;
   };
   checkout: {
     title: string;
@@ -125,7 +132,12 @@ export interface Dictionary {
     fillFormInstruction: string;
     paymentOptionsAfterPreparing: string;
     paymentError: string;
+    paymentSuccess: string;
     processingPayment: string;
+    thankyou: string;
+    orderId: string;
+    continueShopping: string;
+    viewOrders: string;
     payNow: string;
     yourOrder: string;
     couponPlaceholder: string;
@@ -135,5 +147,12 @@ export interface Dictionary {
     gst: string;
     pst: string;
     totalLabel: string;
+    confirmingTitle: string;
+    confirmingDesc: string;
+    confirmedTitle: string;
+    orderNumber: string;
+    status: string;
+    items: string;
+    total: string;
   };
 }
