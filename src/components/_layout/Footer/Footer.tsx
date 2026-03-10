@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import NextLink from "next/link";
 import {
   Box,
@@ -17,6 +18,7 @@ import { getTopLevelCategories } from "@/utils/category";
 import styles from "./Footer.module.scss";
 
 const Footer = () => {
+  const { t } = useTranslation("footer");
   const locale = useLocale();
   const [topLevelCategories, setTopLevelCategories] = useState<WooCategory[]>(
     [],
@@ -50,10 +52,7 @@ const Footer = () => {
           <Grid size={{ xs: 6, sm: 6, md: 4 }} className={styles.footerMenu}>
             <p>
               {" "}
-              <b>
-                📬 Subscribe to Fei Fei’s Newsletter for exclusive deals & new
-                arrivals!
-              </b>
+              <b> {t("subscribeText")} </b>
             </p>
             <TextField
               type="email"
@@ -64,20 +63,20 @@ const Footer = () => {
               className={styles.emailInput}
             />
             <Button variant="contained" size="small">
-              Subscribe
+              {t("subscribe")}
             </Button>
             <p>
-              <b>Need Help?</b><br/>
+              <b>{t("needHelp")}</b><br/>
               <a href="mailto:woff@sniffnfrolic.com">woff@sniffnfrolic.com</a>
             </p>
           </Grid>
 
           <Grid size={{ xs: 6, sm: 6, md: 2 }} className={styles.footerMenu}>
-            <h5>Categories</h5>
+            <h5>{t("categories")}</h5>
             <Box className={styles.link}>
               {loadingCats && (
                 <Typography variant="caption" color="text.secondary">
-                  Loading...
+                  {t("loading")}...
                 </Typography>
               )}
 
@@ -103,53 +102,53 @@ const Footer = () => {
                   color="text.primary"
                   sx={{ fontSize: 14 }}
                 >
-                  All Products
+                  {t("allProducts")}
                 </MuiLink>
               )}
             </Box>
           </Grid>
 
           <Grid size={{ xs: 6, sm: 6, md: 2 }} className={styles.footerMenu}>
-            <h5>Information</h5>
+            <h5>{t("information")}</h5>
             <Box className={styles.link}>
               <MuiLink
                 component={NextLink}
                 href={`/${locale}/sniff-frolic-story`}
               >
-                Our Story
+                {t("outStory")}
               </MuiLink>
               <MuiLink component={NextLink} href={`/${locale}/how-to-buy`}>
-                How To Buy
+                {t("howToBuy")}
               </MuiLink>
               <MuiLink component={NextLink} href={`/${locale}/faq`}>
-                FAQ
+                {t('faq')}
               </MuiLink>
               <MuiLink component={NextLink} href={`/${locale}/contact-us`}>
-                Contact Us
+                {t("contactUs")}
               </MuiLink>
             </Box>
           </Grid>
 
           <Grid size={{ xs: 6, sm: 4, md: 2 }} className={styles.footerMenu}>
-            <h5>Policy</h5>
+            <h5>{t("policy")}</h5>
             <Box className={styles.link}>
               <MuiLink
                 component={NextLink}
                 href={`/${locale}/refund-return-policy`}
               >
-                Refund & Return Policy
+                {t("refundReturnPolicy")}
               </MuiLink>
               <MuiLink component={NextLink} href={`/${locale}/shipping-policy`}>
-                Shipping Policy
+                {t("shippingPolicy")}
               </MuiLink>
               <MuiLink
                 component={NextLink}
                 href={`/${locale}/terms-and-conditions`}
               >
-                Terms & Condition
+                {t("termsConditions")}
               </MuiLink>
               <MuiLink component={NextLink} href={`/${locale}/privacy-policy`}>
-                Privacy Policy
+                {t("privacyPolicy")}
               </MuiLink>
             </Box>
           </Grid>
@@ -157,8 +156,7 @@ const Footer = () => {
       </Container>
       <Box className={styles.copyright}>
         <p>
-          Copyright © {year} Sniff & Frolic, For furry friends & the hoomans
-          they love =)
+          {t("copyright")}
         </p>
       </Box>
     </Box>

@@ -28,6 +28,25 @@ export interface Dictionary {
     noResult: string;
     freeShipping: string;
   };
+  footer: {
+    "subscribeText": string;        
+    "subscribe": string;
+    "needHelp": string;
+    "categories": string;
+    "loading": string;
+    "allProducts": string;
+    "information": string;
+    "outStory": string;
+    "howToBuy": string;
+    "faq": string;
+    "contactUs": string,
+    "policy": string,
+    "refundReturnPolicy": string,
+    "shippingPolicy": string,
+    "termsConditions": string,
+    "privacyPolicy": string,
+    "copyright": string
+  },
   nav: {
     home: string;
     collection: string;

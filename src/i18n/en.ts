@@ -28,7 +28,27 @@ export const enDictionary: Dictionary = {
     onSale: "On Sale",
     onSaleOnly: "On sale only",
     noResult: "No Results!",
-    freeShipping: "Free Shipping on orders over $75"
+    freeShipping: "Free Shipping on orders over $75",
+
+  },
+  footer: {
+    "subscribeText": "📬 Subscribe to Fei Fei’s Newsletter for exclusive deals & new arrivals!",           
+    "subscribe": "Subscribe",
+    "needHelp": "Need Help?",
+    "categories": "Categories",
+    "loading": "Loading...",
+    "allProducts": "All Products",
+    "information": "Information",
+    "outStory": "Our Story",
+    "howToBuy": "How To Buy",
+    "faq": "FAQ",
+    "contactUs": "Contact Us",
+    "policy": "Policy",
+    "refundReturnPolicy": "Refund & Return Policy",
+    "shippingPolicy": "Shipping Policy",
+    "termsConditions": "Terms & Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "copyright": "Copyright © {year} Sniff & Frolic, For furry friends & the hoomans they love =)"
   },
   nav: {
     home: "Home",
