@@ -37,8 +37,12 @@
 
 /* background tones */
 .teal {
-  background: $sf-teal;
-  color: white;
+  background: $sf-teal !important;
+  color: white !important;
+
+  div:nth-child(2) {
+    color: white !important;
+  }
 }
 
 .white {

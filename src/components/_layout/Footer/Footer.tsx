@@ -16,6 +16,7 @@ import type { WooCategory } from "@/lib/wooClient";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { getTopLevelCategories } from "@/utils/category";
 import styles from "./Footer.module.scss";
+import CookieConsent from "@/components/CookieConsent/CookieConsent";
 
 const Footer = () => {
   const { t } = useTranslation("footer");
@@ -46,6 +47,7 @@ const Footer = () => {
   }, []);
 
   return (
+    <>
     <Box component="footer" className={styles.footerSection}>
       <Container className={styles.footer}>
         <Grid container spacing={4}>
@@ -160,6 +162,8 @@ const Footer = () => {
         </p>
       </Box>
     </Box>
+    <CookieConsent />
+    </>
   );
 };
 

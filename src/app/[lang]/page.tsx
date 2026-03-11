@@ -27,7 +27,7 @@ const HomePage = async ({ params }: HomePageProps) => {
   // Treats
   const productTreats = await getProducts({
     category: 139,
-    per_page: 20,
+    per_page: 12,
   } as any);
   const productTreatsItems = toCategoryProductSliderItems(
     productTreats,
@@ -42,10 +42,10 @@ const HomePage = async ({ params }: HomePageProps) => {
   // Bowl & Feeders
   const productFeeder = await getProducts({
     category: 82,
-    per_page: 20,
+    per_page: 12,
   } as any);
   const productFeederItems = toCategoryProductSliderItems(
-    productTreats,
+    productFeeder,
     locale,
   );
 

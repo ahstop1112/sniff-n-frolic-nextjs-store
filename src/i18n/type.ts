@@ -29,6 +29,7 @@ export interface Dictionary {
     freeShipping: string;
     metaTitle: string;
     metaDescription: string;
+    youMayAlsoLike: string;
   };
   footer: {
     subscribeText: string;        
@@ -155,4 +156,22 @@ export interface Dictionary {
     items: string;
     total: string;
   };
+  cookie: {
+    title: string;
+    messageLong: string;
+    functionalTitle: string;
+    functionalDesc: string;
+    statisticsTitle: string;
+    statisticsDesc: string;
+    marketingTitle: string;
+    marketingDesc: string;
+    alwaysActive: string;
+    inactive: string;
+    cookiePolicy: string;
+    privacyPolicy: string;
+    acceptAll: string;
+    denyAll: string;
+    viewPreferences: string;
+    savePreferences: string;
+  }
 }

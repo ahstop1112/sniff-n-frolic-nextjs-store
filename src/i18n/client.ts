@@ -23,6 +23,7 @@ export const initClientI18n = (
             search: dict.search,
             checkout: dict.checkout,
             cart: dict.cart,
+            cookie: dict.cookie,
           },
         },
         interpolation: {

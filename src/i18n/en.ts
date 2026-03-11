@@ -29,8 +29,9 @@ export const enDictionary: Dictionary = {
     onSaleOnly: "On sale only",
     noResult: "No Results!",
     freeShipping: "Free Shipping on orders over $75",
-    metaTitle: "Dog Gear, Toys & Pet Essentials in Canada",
-    metaDescription: 'Discover more "{{category}}" goodies from {{siteName}} – quality dog gear, toys, and pet essentials. From outdoor adventures to cozy home moments, Fei Fei curates the best for happy pets.'
+    metaTitle: "Dog Gear, Toys & Pet Essentials in Canada - Sniff & Frolic",
+    metaDescription: 'Dog Gear, Toys & Pet Essentials in Canada - Sniff & Frolic',
+    youMayAlsoLike: "You may also like"
   },
   footer: {
     subscribeText: "📬 Subscribe to Fei Fei’s Newsletter for exclusive deals & new arrivals!",
@@ -160,4 +161,22 @@ export const enDictionary: Dictionary = {
     items: "Items",
     total: "Total"
   },
+  cookie: {
+    title: "Consent to cookies",
+    messageLong: "To provide the best experiences, we use technologies like cookies to store and/or access device information. Consenting to these technologies will allow us to process data such as browsing behavior or unique IDs on this site. Not consenting or withdrawing consent, may adversely affect certain features and functions.",
+    functionalTitle: "Functional",
+    functionalDesc: "The technical storage or access is strictly necessary for the legitimate purpose of enabling the use of a specific service explicitly requested by the subscriber or user, or for the sole purpose of carrying out the transmission of a communication over an electronic communications network.",
+    statisticsTitle: "Statistics",
+    statisticsDesc: "The technical storage or access that is used exclusively for anonymous statistical purposes. These cookies help us understand how visitors use our website so we can improve the experience.",
+    marketingTitle: "Marketing",
+    marketingDesc: "Marketing cookies may be used to track visitors across websites. The intention is to display ads and content that are relevant and engaging for individual users.",
+    alwaysActive: "Always active",
+    inactive: "Inactive",
+    cookiePolicy: "Cookie Policy",
+    privacyPolicy: "Privacy Policy",
+    acceptAll: "Accept All",
+    denyAll: "Deny All",
+    viewPreferences: "View Preferences",
+    savePreferences: "Save Preferences"
+  }
 };
