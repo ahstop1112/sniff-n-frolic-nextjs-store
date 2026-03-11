@@ -178,5 +178,143 @@ export const enDictionary: Dictionary = {
     denyAll: "Deny All",
     viewPreferences: "View Preferences",
     savePreferences: "Save Preferences"
+  },
+  cookiePolicy: {
+      title: "Cookie Policy",
+      updated: "Last updated: August 14, 2025 | Applicable to citizens and legal permanent residents of Canada.",
+      introTitle: "1. Introduction",
+      intro1:
+        'Sniff & Frolic ("we", "our", "us") uses cookies and similar technologies on our website ',
+      intro2:
+        "Some cookies may also be placed by third-party services we use.",
+      intro3:
+        "This Cookie Policy explains what cookies are, how we use them, and what choices you have.",
+      cookieTitle: "2. What are cookies?",
+      cookieDesc:
+        "Cookies are small text files stored on your device when you visit a website. They help websites function properly, remember your preferences, and collect information about how visitors use the site.",
+      scriptsTitle: "3. What are scripts?",
+      scriptsDesc:
+        "A script is a piece of code that helps the website function properly and interactively. Scripts may run on our server or on your device.",
+      beaconTitle: "4. What is a web beacon?",
+      beaconDesc:
+        "A web beacon (also called a pixel tag) is a small invisible image or snippet of code used to monitor website traffic, visitor activity, or email interactions.",
+      thirdPartyTitle: "5. Third parties",
+      thirdPartyDesc:
+        "We have made agreements about the use of cookies with other companies that place cookies. However, we cannot guarantee that these third parties handle your personal data in a reliable or secure manner. Parties such as Google are to be considered as independent data controllers. We recommend that you read the privacy statements of these companies.",
+      typesTitle: "6. Cookies",
+      functionalTitle: "6.1 Technical or functional cookies",
+      functionalDes:
+        "These cookies are necessary for the website to work properly. They help remember actions such as items in your cart, session preferences, and basic website functionality.",
+      statisticsTitle: "6.2 Statistics cookies",
+      statisticsDesc:
+        "These cookies help us understand how visitors use the website so we can improve performance, content, and user experience.",
+      marketingTitle: "6.3 Marketing / tracking cookies",
+      marketingDesc:
+        "These cookies may be used to build visitor profiles, measure advertising effectiveness, or track visitors across websites for marketing purposes.",
+      socialTitle: "6.4 Social media cookies",
+      socialDesc:
+        "On our website, we have included content from TikTok, Instagram and Facebook to promote web pages (e.g. “like”, “pin”) or share (e.g. “tweet”) on social networks like TikTok, Instagram and Facebook. This content is embedded with code derived from TikTok, Instagram and Facebook and places cookies. This content might store and process certain information for personalized advertising.",
+      socialDesc2: "Please read the privacy statement of these social networks (which can change regularly) to read what they do with your (personal) data which they process using these cookies. The data that is retrieved is anonymized as much as possible. TikTok, Instagram and Facebook are located in the United States.",
+      cookiesTitle: "7. Cookies placed on our Website",
+      tools: [
+        "WooCommerce",
+        "WordPress",
+        "Stripe",
+        "Facebook",
+        "TikTok",
+        "Google Analytics / Site Kit related services"
+      ],
+      usageTitle: "These cookies may be used for:",
+      usages: [
+        "keeping items in the shopping cart",
+        "storing user preferences",
+        "maintaining sessions",
+        "anonymous analytics",
+        "payment fraud prevention",
+        "measuring traffic and interactions",
+        "supporting embedded content and social features"
+      ],
+      consentTitle: "8. Consent",
+      consentDesc: "When you visit our website for the first time, we will show you a pop-up with an explanation about cookies. As soon as you click on \"Accept all\", you consent to us using all cookies and plug-ins as described in the pop-up and this Cookie Policy. You can disable the use of cookies via your browser, but please note that our website may no longer work properly.",
+      manageTitle: "9. Managing or deleting cookies",
+      manageDesc:
+      "You can use your internet browser to automatically or manually delete cookies. You can also specify that certain cookies may not be placed. Another option is to change the settings of your internet browser so that you receive a message each time a cookie is placed. For more information about these options, please refer to the instructions in the Help section of your browser. Or you can indicate your preferences on the following page:",
+      manageDesc2: "Please note that our website may not work properly if all cookies are disabled. If you do delete the cookies in your browser, they will be placed again after your consent when you visit our website again.",
+      rightsTitle: "10. Your rights",
+      rights: [
+        "request access to personal data we hold about you",
+        "request correction of inaccurate information",
+        "withdraw consent where processing is based on consent",
+        "raise a concern about our privacy practices"
+      ],
+      contactTitle: "11. Contact us",
+      contactDesc: "For questions and/or comments about our Cookie Policy and this statement, please contact us by using the following contact details:",
+      contact: {
+        company: "Sniff & Frolic",
+        location: "Burnaby, BC, Canada",
+        website: "https://sniffnfrolic.com",
+        email: "woff@sniffnfrolic.com"
+      }
+  },
+  privacyPolicy: {
+    title: "Privacy",
+    desc: "Sniff & Frolic (“we”, “us”, or “our”) is committed to protecting your privacy. This Privacy Policy outlines how we collect, use, disclose, and safeguard your personal data when you visit our website www.sniffnfrolic.com (the “Site”), in accordance with applicable Canadian privacy laws.",
+    infoTitle: "Information We Collect",
+    infoDesc: "We may collect the following types of personal information:",
+    info: [
+      "Identification details (e.g. full name, shipping address, phone number)",
+      "Payment information (processed securely via third-party providers)",
+      "Technical information such as IP address, device/browser type, and browsing behaviour through cookies"
+    ],
+    personalInfoTitle: "Use of Personal Information",
+    personalInfoDesc: "Your personal data may be used for the following purposes:",
+    personalInfo: [
+      "To process, fulfill and manage orders",
+      "To communicate with you regarding your purchases",
+      "To send promotional materials (with your consent)",
+      "To improve website functionality and user experience"
+    ],
+    disclosureTitle: "Disclosure of Information",
+    disclosureDesc: "We will not sell or rent your information. Disclosure may only occur under the following circumstances:",
+    disclosure: [
+      "Service providers (e.g. payment gateways, logistics partners)",
+      "Legal requirements (e.g. law enforcement requests or court orders)",
+      "We will retain your personal information only for as long as necessary to fulfill the purposes outlined in this policy, unless a longer retention period is required or permitted by law."
+    ],
+    cookiesTitle: "Cookies & Tracking Technologies",
+    cookiesDesc: "We use cookies and similar technologies to enhance the user experience, analyze website traffic, and support marketing efforts. You may control cookie preferences through your browser settings.",
+    rightsTitle: "Your Rights",
+    rightsDesc: "You have the right to:",
+    rights: [
+      "Access and request correction or deletion of your personal data",
+      "Withdraw consent to marketing communications"
+    ]
+  },
+  howToBuy: {
+    title: "How To Buy",
+    step1Title: "Step 1｜Browse and choose your favourites 💛",
+    step1Desc: "Explore Fei Fei’s adventure-inspired categories to find exactly what your pup needs — from daily essentials to fun-time gear. Each product page includes full descriptions, size details, and availability.",
+    step1Desc2: "Featured note: Some items ship from our own stock, while others are sent directly from our partner warehouses. Don’t worry — we’ve got it all covered!",
+    step2Title: "Step 2｜Add to cart 🛍",
+    step2Desc: "Click to add your favourite items to the cart. Once you’re ready, hit “Checkout” to proceed.",
+    step3Title: "Step 3｜Enter your info + payment details 💳",
+    step3Desc: "We accept:",
+    payments: [
+      "Credit cards / Visa / Mastercard",
+      "Apple Pay / Google Pay (device-dependent)"
+    ],
+    step3Desc2: "Fill in your shipping info and contact number, and you’re good to go!",
+    step4Title: "Step 4｜Choose your delivery option 🚚",
+    shippingOption: "Shipping Option",
+    details: "Details",
+    standard: "📦 Canada-wide Standard Shipping",
+    standardDesc: "Free shipping for orders over CAD $75. Extra charges may apply for heavier items or remote areas.",
+    international: "✈️ International Delivery",
+    internationalDesc: "DM us on Instagram or email us to discuss custom shipping options.",
+    feaurtedNote: "Featured note:",
+    feaurtedNoteDesc: "Some orders may be shipped in separate parcels — no extra shipping fees will be charged.",
+    step5Title: "Step 5｜Get ready for your delivery! 📦",
+    step5Desc: "You’ll receive a confirmation email with your order details, tracking number, and shipping status.",
+    step5Desc2: "If you chose Skytrain pick-up, we’ll be in touch to confirm meet-up arrangements.",
   }
 };

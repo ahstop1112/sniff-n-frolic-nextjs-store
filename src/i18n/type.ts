@@ -173,5 +173,92 @@ export interface Dictionary {
     denyAll: string;
     viewPreferences: string;
     savePreferences: string;
+  };
+  cookiePolicy: {
+    title: string;
+    updated: string;
+    introTitle: string;
+    intro1: string;
+    intro2: string;
+    intro3: string;
+    cookieTitle: string;
+    cookieDesc: string;
+    scriptsTitle: string;
+    scriptsDesc: string;
+    beaconTitle: string;
+    beaconDesc: string;
+    thirdPartyTitle: string;
+    thirdPartyDesc: string;
+    typesTitle: string;
+    functionalTitle: string;
+    functionalDes: string;
+    statisticsTitle: string;
+    statisticsDesc: string;
+    marketingTitle: string;
+    marketingDesc: string;
+    socialTitle: string;
+    socialDesc: string;
+    socialDesc2: string;
+    cookiesTitle: string;
+    tools: string[];
+    usageTitle: string;
+    usages: string[];
+    consentTitle: string;
+    consentDesc: string;
+    manageTitle: string;
+    manageDesc: string;
+    manageDesc2: string;
+    rightsTitle: string;
+    rights: string[];
+    contactTitle: string;
+    contactDesc: string;
+    contact: {
+      company: string;
+      location: string;
+      website: string;
+      email: string;
+    }
+  },
+  privacyPolicy: {
+    title: string;
+    desc: string;
+    infoTitle: string;
+    infoDesc: string;
+    info: string[];
+    personalInfoTitle: string;
+    personalInfoDesc: string;
+    personalInfo: string[];
+    disclosureTitle: string;
+    disclosureDesc: string;
+    disclosure: string[];
+    cookiesTitle: string;
+    cookiesDesc: string;
+    rightsTitle: string;
+    rightsDesc: string;
+    rights: string[];
+  },
+  howToBuy: {
+    title: string;
+    step1Title: string;
+    step1Desc: string;
+    step1Desc2: string;
+    step2Title: string;
+    step2Desc: string;
+    step3Title: string;
+    step3Desc: string;
+    payments: string[];
+    step3Desc2: string;
+    step4Title: string;
+    shippingOption: string;
+    details: string;
+    standard: string;
+    standardDesc: string;
+    international: string;
+    internationalDesc: string;
+    feaurtedNote: string;
+    feaurtedNoteDesc: string;
+    step5Title: string;
+    step5Desc: string;
+    step5Desc2: string;
   }
 }
