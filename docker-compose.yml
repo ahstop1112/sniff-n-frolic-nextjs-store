@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: sniff-n-frolic-ecommerce
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: snf
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sniff_catalog
+    ports:
+      - "5432:5432"
+    volumes:
+      - snf_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  snf_postgres_data:
