@@ -4,6 +4,7 @@
   "main": "dist/main.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
+    "import:woo": "ts-node-dev --transpile-only src/scripts/import-woocommerce-products.ts",
     "build": "tsc",
     "start": "node dist/main.js"
   },
