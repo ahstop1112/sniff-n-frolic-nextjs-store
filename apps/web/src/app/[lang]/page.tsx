@@ -24,11 +24,15 @@ const HomePage = async ({ params }: HomePageProps) => {
   if (!isValidLocale(lang)) notFound();
 
   const locale: Locale = lang;
+
+
+  const fetchProducts = async () => {
+    const res = await fetch("http://localhost:3001/products");
+    const data = await res.json();
+    return data;
+  };
   // Treats
-  const productTreats = await getProducts({
-    category: 139,
-    per_page: 12,
-  } as any);
+  const productTreats = await fetchProducts();
   const productTreatsItems = toCategoryProductSliderItems(
     productTreats,
     locale,
