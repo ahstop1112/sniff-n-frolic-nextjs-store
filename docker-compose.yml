@@ -8,9 +8,13 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: sniff_catalog
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - snf_postgres_data:/var/lib/postgresql/data
 
 volumes:
   snf_postgres_data:
+
+
+# Access Database
+# docker exec -it sniff-n-frolic-ecommerce psql -U snf -d sniff_catalog

@@ -27,7 +27,7 @@ const HomePage = async ({ params }: HomePageProps) => {
 
 
   const fetchProducts = async () => {
-    const res = await fetch("http://localhost:3001/products");
+    const res = await fetch("http://localhost:3002/products");
     const data = await res.json();
     return data;
   };
