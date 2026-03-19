@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import { Injectable } from "@nestjs/common";
+
 const baseUrl = process.env.WOO_API_BASE_URL!;
 const consumerKey = process.env.WOO_CONSUMER_KEY!;
 const consumerSecret = process.env.WOO_CONSUMER_SECRET!;
@@ -19,10 +21,8 @@ if (!consumerSecret) {
 
 export const fetchWooProducts = async (page: number) => {
   const url = new URL(`${baseUrl}/products`);
-  url.searchParams.set("per_page", "100"); 
+  url.searchParams.set("per_page", "100");
   url.searchParams.set("page", String(page));
-  url.searchParams.set("consumer_key", consumerKey);
-  url.searchParams.set("consumer_secret", consumerSecret);
   url.searchParams.set("consumer_key", consumerKey);
   url.searchParams.set("consumer_secret", consumerSecret);
 
@@ -34,3 +34,10 @@ export const fetchWooProducts = async (page: number) => {
 
   return res.json();
 };
+
+@Injectable()
+export class WooCommerceService {
+  async fetchWooProducts(page: number) {
+    return fetchWooProducts(page);
+  }
+}
