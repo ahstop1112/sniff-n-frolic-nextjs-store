@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///turbopack:///[project]/apps/web/src/components/ProductPurchasePanel/ProductPurchasePanel.module.scss"],"sourcesContent":["@use \"@/styles/tokens\" as *;\n@use \"@/styles/mixins\" as m;\n\n.productPurchasePanel{\n    display: flex;\n    gap: 2;\n    align-items: center;\n    flex-wrap: wrap\n}\n\n.productPurchasePanel button{\n    box-shadow: none;\n    padding: $point * 2 $point * 5;\n    margin-left: $point * 2;\n}\n\n.productPurchasePanel h1{\n    font-size: 2rem;\n}"],"names":[],"mappings":"AAGA;;;;;;;AAOA;;;;;;AAMA"}}]
-}

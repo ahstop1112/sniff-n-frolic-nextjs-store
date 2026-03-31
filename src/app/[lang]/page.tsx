@@ -27,12 +27,15 @@ const HomePage = async ({ params }: HomePageProps) => {
 
 
   const fetchProducts = async () => {
-    const res = await fetch("http://localhost:3002/products");
+    const res = await fetch("http://localhost:4000/products");
     const data = await res.json();
     return data;
   };
   // Treats
-  const productTreats = await fetchProducts();
+  const productTreats = await getProducts({
+    category: 139,
+    per_page: 12,
+  } as any);
   const productTreatsItems = toCategoryProductSliderItems(
     productTreats,
     locale,
