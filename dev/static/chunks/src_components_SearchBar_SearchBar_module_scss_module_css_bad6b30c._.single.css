@@ -1,0 +1,150 @@
+/* [project]/src/components/SearchBar/SearchBar.module.scss.module.css [app-client] (css) */
+.SearchBar-module-scss-module__3U6I6G__drawerPaper {
+  min-height: 60vh;
+  overflow: hidden;
+  background: #fff5ec !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__root {
+  padding: 24px;
+}
+
+.SearchBar-module-scss-module__3U6I6G__topBar {
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: row !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__title {
+  text-align: center;
+  flex: 0 0 calc(100% - 48px);
+  font-weight: 500;
+  color: #063f53 !important;
+  font-family: Lilita One, Arial, sans-serif !important;
+  font-size: 1.75rem !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__searchRow {
+  background: #fff;
+  border-radius: 12px;
+  justify-content: space-between;
+  width: min(920px, 100%);
+  margin: 0 auto 24px;
+  display: flex;
+  overflow: hidden;
+  flex-direction: row !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__select {
+  width: 240px;
+}
+
+.SearchBar-module-scss-module__3U6I6G__select .MuiOutlinedInput-notchedOutline {
+  border: none;
+}
+
+.SearchBar-module-scss-module__3U6I6G__input {
+  flex: 1;
+}
+
+.SearchBar-module-scss-module__3U6I6G__input .MuiOutlinedInput-notchedOutline {
+  border: none;
+}
+
+.SearchBar-module-scss-module__3U6I6G__searchBtn {
+  color: #fff !important;
+  background: #e16849 !important;
+  border-radius: 0 !important;
+  padding: 0 24px !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__searchBtn:hover {
+  background: #e16849 !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__trending {
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: row !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__trendingLabel {
+  color: #063f53;
+  margin-right: 8px;
+  font-weight: 800;
+}
+
+.SearchBar-module-scss-module__3U6I6G__chip {
+  background: #fff !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__sectionTitle {
+  text-align: center;
+  color: #063f53;
+  margin-bottom: 24px;
+  font-family: Lilita One, system-ui;
+  font-weight: 500;
+  font-size: 1.5rem !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+}
+
+@media (min-width: 768px) {
+  .SearchBar-module-scss-module__3U6I6G__grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.SearchBar-module-scss-module__3U6I6G__card {
+  text-align: center;
+}
+
+.SearchBar-module-scss-module__3U6I6G__thumb {
+  background: #0000000f;
+  width: 16.6667%;
+  height: 16.6667%;
+  margin: 0 auto;
+  display: block;
+  overflow: hidden;
+}
+
+.SearchBar-module-scss-module__3U6I6G__thumb img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.SearchBar-module-scss-module__3U6I6G__cardTitle {
+  color: #e16849;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.SearchBar-module-scss-module__3U6I6G__footer {
+  justify-content: center;
+  margin: 24px 0;
+  display: flex;
+  flex-direction: row !important;
+}
+
+.SearchBar-module-scss-module__3U6I6G__viewAll {
+  max-width: 200px;
+  color: #e16849 !important;
+  border: 1px solid #e16849 !important;
+  padding: 8px 20px !important;
+}
+
+/*# sourceMappingURL=src_components_SearchBar_SearchBar_module_scss_module_css_bad6b30c._.single.css.map*/

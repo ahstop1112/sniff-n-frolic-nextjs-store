@@ -1,0 +1,104 @@
+/* [project]/src/components/_layout/Header/Header.module.scss.module.css [app-client] (css) */
+.Header-module-scss-module__1OqmfW__header {
+  z-index: 10;
+  color: #fff5ec;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background: #e16849;
+  border-bottom: 1px solid #0208170f;
+  font-family: Alberta Semi Bold, Arial, Helvetica, sans-serif;
+  font-size: 1.125rem;
+  position: sticky;
+  top: 0;
+}
+
+.Header-module-scss-module__1OqmfW__header .Header-module-scss-module__1OqmfW__headerContainer {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 8px 16px;
+  display: flex;
+}
+
+.Header-module-scss-module__1OqmfW__header .Header-module-scss-module__1OqmfW__headerContainer svg {
+  color: #fff5ec;
+  margin-right: 4px;
+  font-size: 1em;
+}
+
+.Header-module-scss-module__1OqmfW__header .Header-module-scss-module__1OqmfW__headerLogo {
+  height: 70px;
+}
+
+.Header-module-scss-module__1OqmfW__header a {
+  color: #fff5ec;
+}
+
+.Header-module-scss-module__1OqmfW__promo {
+  color: #fff5ec;
+  text-align: center;
+  background: #6b3e1e;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  font-family: Alberta Semi Bold, Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  display: flex;
+}
+
+.Header-module-scss-module__1OqmfW__promo svg {
+  color: #fff5ec;
+  margin-right: 4px;
+  font-size: 1.1rem;
+}
+
+.Header-module-scss-module__1OqmfW__inner {
+  align-items: center;
+  gap: 24px;
+  width: min(100% - 48px, 1160px);
+  height: 100%;
+  margin-inline: auto;
+  display: flex;
+}
+
+.Header-module-scss-module__1OqmfW__brand {
+  letter-spacing: .2px;
+  color: #063f53;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+  display: flex;
+}
+
+.Header-module-scss-module__1OqmfW__nav {
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+  display: flex;
+}
+
+.Header-module-scss-module__1OqmfW__link {
+  color: #0f172ad9;
+  border-radius: 999px;
+  padding: 10px 12px;
+}
+
+.Header-module-scss-module__1OqmfW__link:hover {
+  color: #063f53;
+  background: #063f530f;
+}
+
+.Header-module-scss-module__1OqmfW__cta {
+  color: #fff;
+  background: #e16849;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+.Header-module-scss-module__1OqmfW__cta:hover {
+  filter: brightness(.97);
+}
+
+/*# sourceMappingURL=src_components__layout_Header_Header_module_scss_module_css_bad6b30c._.single.css.map*/

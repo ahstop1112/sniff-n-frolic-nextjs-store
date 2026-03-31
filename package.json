@@ -1,12 +1,40 @@
 {
-  "name": "snf-store",
+  "name": "sniff-n-frolic-nextjs-store",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:web": "cd app/web && npm run dev",
-    "dev:backend": "cd app/backend && npm run dev",
-    "dev": "concurrently \"npm run dev:web\" \"npm run dev:backend\""
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/inter": "^5.2.8",
+    "@mui/icons-material": "^7.3.7",
+    "@mui/material": "^7.3.7",
+    "@mui/material-nextjs": "^7.3.7",
+    "@mui/system": "^7.3.7",
+    "@stripe/react-stripe-js": "^5.4.1",
+    "@stripe/stripe-js": "^8.6.1",
+    "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.6.0",
+    "next": "^16.1.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-i18next": "^16.5.3",
+    "sass": "^1.97.2",
+    "stripe": "^20.1.1"
   },
   "devDependencies": {
-    "concurrently": "^8.0.0"
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "baseline-browser-mapping": "^2.10.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.4",
+    "typescript": "^5"
   }
 }

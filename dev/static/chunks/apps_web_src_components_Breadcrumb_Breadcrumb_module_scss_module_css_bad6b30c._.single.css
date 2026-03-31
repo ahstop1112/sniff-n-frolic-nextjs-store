@@ -1,0 +1,27 @@
+/* [project]/apps/web/src/components/Breadcrumb/Breadcrumb.module.scss.module.css [app-client] (css) */
+.Breadcrumb-module-scss-module__M1wqYa__breadcrumb {
+  color: #e16849;
+  margin-bottom: 8px;
+  padding: 8px 0;
+}
+
+.Breadcrumb-module-scss-module__M1wqYa__breadcrumb ol {
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.Breadcrumb-module-scss-module__M1wqYa__breadcrumb a {
+  color: #6b3e1e;
+  font-size: 1rem;
+}
+
+.Breadcrumb-module-scss-module__M1wqYa__seperator {
+  color: #999;
+  margin: 8px;
+}
+
+/*# sourceMappingURL=apps_web_src_components_Breadcrumb_Breadcrumb_module_scss_module_css_bad6b30c._.single.css.map*/

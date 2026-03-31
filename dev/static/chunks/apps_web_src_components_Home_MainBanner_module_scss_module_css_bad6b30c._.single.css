@@ -1,0 +1,82 @@
+/* [project]/apps/web/src/components/Home/MainBanner.module.scss.module.css [app-client] (css) */
+.MainBanner-module-scss-module__n01lqa__banner {
+  background: #fff5ec;
+  position: relative;
+  overflow: hidden;
+}
+
+.MainBanner-module-scss-module__n01lqa__container {
+  padding-top: clamp(3.5rem, 6vw, 4.5rem);
+  padding-bottom: clamp(3rem, 6vw, 4rem);
+  background-image: url("/images/banner_main.jpg");
+  background-position: center;
+  background-size: cover;
+  height: 36vw;
+  padding-inline: clamp(1rem, 5vw, 5rem);
+  max-width: none !important;
+}
+
+@media (max-width: 600px) {
+  .MainBanner-module-scss-module__n01lqa__container {
+    background-position: 0;
+    height: 100vw;
+  }
+}
+
+.MainBanner-module-scss-module__n01lqa__grid {
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 2rem;
+  display: grid;
+}
+
+@media (min-width: 900px) {
+  .MainBanner-module-scss-module__n01lqa__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+.MainBanner-module-scss-module__n01lqa__left {
+  max-width: 520px;
+}
+
+.MainBanner-module-scss-module__n01lqa__kicker.MainBanner-module-scss-module__n01lqa__kicker {
+  color: #e16849;
+  letter-spacing: .2px;
+  margin-bottom: .75rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.MainBanner-module-scss-module__n01lqa__title.MainBanner-module-scss-module__n01lqa__title {
+  white-space: pre-line;
+  color: #063f53;
+  margin-bottom: 1rem;
+  font-family: Lilita One, Alberta, Arial, sans-serif;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  line-height: 1.05;
+}
+
+.MainBanner-module-scss-module__n01lqa__subtitle.MainBanner-module-scss-module__n01lqa__subtitle {
+  color: #e16849;
+  opacity: .95;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.MainBanner-module-scss-module__n01lqa__cta.MainBanner-module-scss-module__n01lqa__cta {
+  text-transform: none;
+  box-shadow: none;
+  background-color: #e16849;
+  font-weight: 800;
+}
+
+.MainBanner-module-scss-module__n01lqa__cta.MainBanner-module-scss-module__n01lqa__cta:hover {
+  opacity: .92;
+  box-shadow: none;
+  background-color: #e16849;
+}
+
+/*# sourceMappingURL=apps_web_src_components_Home_MainBanner_module_scss_module_css_bad6b30c._.single.css.map*/

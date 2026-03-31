@@ -1,0 +1,74 @@
+/* [project]/src/components/Section/Section.module.scss.module.css [app-client] (css) */
+.Section-module-scss-module__PVCzVq__section {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 0) {
+  .Section-module-scss-module__PVCzVq__section {
+    padding: 20px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .Section-module-scss-module__PVCzVq__section {
+    padding: 30px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .Section-module-scss-module__PVCzVq__section {
+    padding: 40px;
+  }
+}
+
+.Section-module-scss-module__PVCzVq__section h4 {
+  color: #e16849;
+}
+
+.Section-module-scss-module__PVCzVq__inner {
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 60px 0;
+  position: relative;
+}
+
+.Section-module-scss-module__PVCzVq__innerNoMarginTop {
+  z-index: 1;
+  padding: 0 0 60px;
+  position: relative;
+}
+
+.Section-module-scss-module__PVCzVq__teal {
+  color: #fff !important;
+  background: #063f53 !important;
+}
+
+.Section-module-scss-module__PVCzVq__teal div:nth-child(2) {
+  color: #fff !important;
+}
+
+.Section-module-scss-module__PVCzVq__white {
+  background: #fffaf7;
+}
+
+.Section-module-scss-module__PVCzVq__cream {
+  background: #fff5ec;
+}
+
+.Section-module-scss-module__PVCzVq__yellow {
+  background: #ffe8a3;
+}
+
+.Section-module-scss-module__PVCzVq__orange {
+  background: #ffa35f;
+}
+
+.Section-module-scss-module__PVCzVq__green {
+  background: #026b6e;
+}
+
+/*# sourceMappingURL=src_components_Section_Section_module_scss_module_css_bad6b30c._.single.css.map*/

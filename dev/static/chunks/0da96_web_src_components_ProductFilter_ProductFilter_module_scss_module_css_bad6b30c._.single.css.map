@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///turbopack:///[project]/apps/web/src/components/ProductFilter/ProductFilter.module.scss"],"sourcesContent":["@use \"@/styles/tokens\" as *;\n@use \"@/styles/mixins\" as m;\n\n.productFilter{\n    padding: $point * 2;\n    padding-left: 0;\n}"],"names":[],"mappings":"AAGA"}}]
+}

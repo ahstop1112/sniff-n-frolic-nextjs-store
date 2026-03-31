@@ -1,0 +1,59 @@
+/* [project]/src/components/_layout/Footer/Footer.module.scss.module.css [app-client] (css) */
+.Footer-module-scss-module__aCqoBq__footerSection {
+  color: #6b3e1e;
+  background-color: #fff5ec;
+}
+
+.Footer-module-scss-module__aCqoBq__footer {
+  padding: 40px 32px;
+}
+
+.Footer-module-scss-module__aCqoBq__footerMenu a {
+  font-weight: 600;
+  line-height: 2;
+  text-decoration: none;
+  color: #6b3e1e !important;
+  font-size: .925rem !important;
+}
+
+.Footer-module-scss-module__aCqoBq__footerMenu a:hover {
+  text-decoration: underline;
+}
+
+.Footer-module-scss-module__aCqoBq__footerMenu h5 {
+  color: #e16849;
+  margin-bottom: 8px;
+  font-size: 1.12rem;
+}
+
+.Footer-module-scss-module__aCqoBq__footerMenu h6 {
+  color: #6b3e1e;
+  margin: 16px 0 4px;
+  font-size: 1rem;
+}
+
+.Footer-module-scss-module__aCqoBq__link {
+  flex-direction: column;
+  gap: .5px;
+  margin-top: 6px;
+  display: flex;
+}
+
+.Footer-module-scss-module__aCqoBq__emailInput {
+  border: 1px solid #e16849;
+  margin: 16px 0 !important;
+}
+
+.Footer-module-scss-module__aCqoBq__emailInput input {
+  background-color: #fff5ec !important;
+  padding: 8px !important;
+}
+
+.Footer-module-scss-module__aCqoBq__copyright {
+  color: #fff5ec;
+  text-align: center;
+  background-color: #e16849;
+  padding: 20px;
+}
+
+/*# sourceMappingURL=src_components__layout_Footer_Footer_module_scss_module_css_bad6b30c._.single.css.map*/
