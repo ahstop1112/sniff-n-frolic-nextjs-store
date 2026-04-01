@@ -25,9 +25,11 @@
     "react-dom": "19.2.0",
     "react-i18next": "^16.5.3",
     "sass": "^1.97.2",
-    "stripe": "^20.1.1"
+    "stripe": "^20.1.1",
+    "wait-on": "^9.0.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

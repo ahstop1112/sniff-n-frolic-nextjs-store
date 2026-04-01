@@ -114,7 +114,7 @@ const HeaderNav = ({ items }: HeaderNavProps) => {
           }
 
           return (
-            <div
+            <nav
               key={x.label}
               className={clsx(styles.linkBtn, open && styles.active)}
               onMouseEnter={openMenu}
@@ -145,7 +145,7 @@ const HeaderNav = ({ items }: HeaderNavProps) => {
                   className={clsx(styles.chev, open && styles.chevOpen)}
                 />
               </button>
-            </div>
+            </nav>
           );
         })}
       </div>
