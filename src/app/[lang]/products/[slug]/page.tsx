@@ -94,12 +94,13 @@ const ProductPage = async ({ params, searchParams }: ProductPageProps) => {
 
   // Related Products (You may also like)
    const productRelated = await getProducts({
-    category: mainCategory?.id,
+    category: mainCategory?.slug,
     per_page: 12,
     orderby: "random",
    } as any);
+  
   let relatedProducts = productRelated
-    .filter((p: any) => p.id !== product.id)
+    .filter((p: any) => p.slug !== product.slug)
     .slice(0, 12);
   const formattedRelated = toCategoryProductSliderItems(
     relatedProducts,

@@ -4,11 +4,8 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
 import { shuffleArray } from "@/utils/helpers";
-import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
 import { buildCategoryMetadata } from "@/seo/buildCategoryMetaTag";
-// components
 import CategoryPageClient from "@/components/Category/CategoryPageClient";
-import { getCategoryIdBySlug } from "@/lib/categories/getCategoryIdBySlug";
 import type { PageProps, LangSlugParamsObj } from "@/types/next";
 import { unwrap, unwrapSearchParams } from "@/types/next";
 
@@ -30,15 +27,15 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
   const locale = lang as Locale;
   const dict = await getDictionary(locale);
 
-  const baseCategoryId = await getCategoryIdBySlug(slug);
+  const search = typeof sp.q === "string" ? sp.q.trim() : undefined;
 
-  const { wooParams, hasAnyFilter } = await buildWooParamsForListPage({
-    searchParams: sp,
-    perPage: 50,
-    baseCategoryId,
+  const products = await getProducts({
+    category: slug,
+    search: search || undefined,
+    per_page: 50,
   });
 
-  const products = await getProducts(wooParams as any);
+  const hasAnyFilter = Boolean(search);
   const finalProducts = hasAnyFilter ? products : shuffleArray(products);
 
   return (

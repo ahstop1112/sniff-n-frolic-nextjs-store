@@ -1,8 +1,9 @@
 import "server-only";
+import { apiFetch } from "@/lib/apiClient";
 import { wooFetchServer } from "@/lib/woo/server";
 import { CACHE_CONFIG } from "@/lib/cache";
 
-const baseUrl = process.env.WOO_API_BASE_URL!.replace(/\/$/, "");
+// ─── Types (unchanged so components need no changes) ─────────────────────────
 
 export interface YoastOgImage {
   url: string;
@@ -25,13 +26,6 @@ export interface YoastHeadJson {
   twitter_card?: string;
 }
 
-export interface WooSystemStatus {
-  settings?: {
-    currency?: string;
-    currency_symbol?: string;
-  };
-}
-
 export interface WooImage {
   id: number;
   src: string;
@@ -46,10 +40,6 @@ export interface WooProductCategory {
   slug: string;
 }
 
-export interface WooProductCategoryLite {
-  name: string;
-}
-
 export interface WooProduct {
   categories?: WooProductCategory[];
   id: number;
@@ -61,8 +51,8 @@ export interface WooProduct {
   sale_price: string;
   on_sale: boolean;
   images: WooImage[];
-  short_description: string; // HTML
-  description: string; // HTML
+  short_description: string;
+  description: string;
   sku: string;
   type: string;
   attributes?: WooProductAttribute[];
@@ -73,30 +63,12 @@ export interface WooProduct {
 
 export interface WooProductAttribute {
   id: number;
-  name: string; // e.g. "Color"
-  slug: string; // e.g. "pa_color"
+  name: string;
+  slug: string;
   position: number;
   visible: boolean;
-  variation: boolean; // true = (color / size）
-  options: string[]; // e.g. ["Red", "Blue"]
-}
-
-export interface WooVariationAttribute {
-  id: number;
-  name: string; // e.g. "Color"
-  option: string; // e.g. "Red"
-}
-
-export interface WooProductVariation {
-  id: number;
-  sku: string;
-  price: string;
-  regular_price: string;
-  sale_price: string;
-  on_sale: boolean;
-  stock_status: "instock" | "outofstock" | "onbackorder";
-  attributes: WooVariationAttribute[];
-  image?: WooImage;
+  variation: boolean;
+  options: string[];
 }
 
 export interface WooCategoryImage {
@@ -110,111 +82,147 @@ export interface WooCategory {
   id: number;
   name: string;
   slug: string;
-  parent: number;
+  parent: string;
   count: number;
   image?: WooCategoryImage | null;
 }
 
-interface WooFetchOptions {
-  searchParams?: Record<string, any>;
-  method?: "GET" | "POST" | "PUT" | "DELETE";
-  bodyJson?: any;
+// ─── Internal API types (from NestJS) ────────────────────────────────────────
+
+interface ApiProduct {
+  id: string;
+  name: string;
+  slug: string;
+  short_description: string | null;
+  description: string | null;
+  sku: string | null;
+  product_type: string;
+  regular_price: number;   // cents
+  sale_price: number | null;
+  effective_price: number;
+  currency: string;
+  featured_image_url: string | null;
+  status: string;
+  stock_status: string | null;
+  featured: boolean;
+  category_id: string | null;
+  category_name: string | null;
+  category_slug: string | null;
+  images: { url: string; alt_text: string | null; sort_order: number; is_featured: boolean }[];
 }
 
-export const wooFetch = wooFetchServer;
+interface ApiCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  parent_id: string | null;
+  parent_slug: string | null;
+  image_url: string | null;
+  count: number;
+}
+
+// ─── Adapters: API → WooProduct/WooCategory shape ────────────────────────────
+
+const centsToString = (cents: number): string => (cents / 100).toFixed(2);
+
+const apiProductToWoo = (p: ApiProduct): WooProduct => ({
+  id: 0,                         // uuid — set to 0, components should use slug
+  name: p.name,
+  slug: p.slug,
+  permalink: "",
+  price: centsToString(p.effective_price),
+  regular_price: centsToString(p.regular_price),
+  sale_price: p.sale_price ? centsToString(p.sale_price) : "",
+  on_sale: p.sale_price !== null,
+  short_description: p.short_description ?? "",
+  description: p.description ?? "",
+  sku: p.sku ?? "",
+  type: p.product_type,
+  images: (p.images ?? []).map((img, i) => ({
+    id: i,
+    src: img.url,
+    alt: img.alt_text ?? "",
+  })),
+  categories: p.category_slug
+    ? [{ id: 0, name: p.category_name ?? "", slug: p.category_slug }]
+    : [],
+});
+
+const apiCategoryToWoo = (c: ApiCategory, index: number): WooCategory & { parentSlug: string | null } => ({
+  id: index + 1,
+  name: c.name,
+  slug: c.slug,
+  parent: c.parent_id ?? "0",
+  count: c.count,
+  image: c.image_url && c.image_url !== 'false'
+    ? { id: 0, src: c.image_url, alt: c.name }
+    : null,
+  parentSlug: c.parent_slug ?? null,
+});
+
+// ─── Public fetch functions (same signature as before) ───────────────────────
 
 export const getProducts = async (options?: {
   page?: number;
   per_page?: number;
-  category?: number;
+  category?: string;   // now slug instead of numeric id
   search?: string;
-  orderby?: "date" | "title" | "price";
-  order?: "asc" | "desc";
-  min_price?: string;
-  max_price?: string;
-  on_sale?: boolean;
-  status?: "publish" | "draft" | "pending" | "private";
-  stock_status?: "instock" | "outofstock" | "onbackorder";
-  attribute?: string; // e.g. "pa_color"
-  attribute_term?: number;
+  status?: string;
+  stock_status?: string;
 }): Promise<WooProduct[]> => {
-  // Don't cache search results (search=true means it's a search query)
-  const isSearch = !!options?.search;
-
-  return wooFetch<WooProduct[]>("/products", {
+  const products = await apiFetch<ApiProduct[]>("/products", {
     searchParams: {
-      per_page: options?.per_page ?? 20,
       page: options?.page ?? 1,
+      limit: options?.per_page ?? 20,
       category: options?.category,
       search: options?.search,
-      orderby: options?.orderby,
-      order: options?.order,
-      min_price: options?.min_price,
-      max_price: options?.max_price,
-      on_sale: options?.on_sale,
-      status: options?.status ?? "publish",
-      stock_status: options?.stock_status,
-      attribute: options?.attribute,
-      attribute_term: options?.attribute_term,
     },
-    next: {
-      revalidate: isSearch ? 0 : CACHE_CONFIG.PRODUCTS, // No cache for search, cache others
-    },
+    next: { revalidate: CACHE_CONFIG.PRODUCTS },
   });
+
+  return products.map(apiProductToWoo);
 };
 
 export const getProductBySlug = async (
   slug: string,
 ): Promise<WooProduct | null> => {
-  const products = await wooFetch<WooProduct[]>("/products", {
-    searchParams: {
-      slug,
-      per_page: 1,
-      status: "publish",
-    },
-    next: {
-      revalidate: CACHE_CONFIG.PRODUCT_DETAIL,
-    },
-  });
-
-  if (!Array.isArray(products) || products.length === 0) return null;
-  return products[0] ?? null;
+  try {
+    const product = await apiFetch<ApiProduct>(`/products/${slug}`, {
+      next: { revalidate: CACHE_CONFIG.PRODUCT_DETAIL },
+    });
+    return apiProductToWoo(product);
+  } catch {
+    return null;
+  }
 };
-
-export const getProductVariations = async (
-  productId: number,
-): Promise<WooProductVariation[]> =>
-  wooFetch<WooProductVariation[]>(`products/${productId}/variations`, {
-    searchParams: {
-      per_page: 100,
-    },
-    next: {
-      revalidate: CACHE_CONFIG.PRODUCT_DETAIL,
-    },
-  });
 
 export const getCategories = async (options?: {
   parent?: number;
   hide_empty?: boolean;
 }): Promise<WooCategory[]> => {
-  return wooFetch<WooCategory[]>("/products/categories", {
-    searchParams: {
-      per_page: 100,
-      parent: options?.parent,
-      hide_empty: options?.hide_empty ?? true,
-    },
-    next: {
-      revalidate: CACHE_CONFIG.CATEGORIES,
-    },
+  const categories = await apiFetch<ApiCategory[]>("/categories", {
+    next: { revalidate: CACHE_CONFIG.CATEGORIES },
   });
+
+  return categories
+    .filter((c) => !options?.hide_empty || c.count > 0)
+    .map(apiCategoryToWoo);
 };
 
-export const getCategoryById = async (id: string) => {
-  const category = await wooFetch(`products/categories/${id}`, {
-    next: {
-      revalidate: CACHE_CONFIG.CATEGORIES,
-    },
+// ─── WooCommerce-only calls (kept for features not yet migrated) ──────────────
+
+export const wooFetch = wooFetchServer;
+
+export const getProductVariations = async (productId: number) =>
+  wooFetchServer(`products/${productId}/variations`, {
+    searchParams: { per_page: 100 },
+    next: { revalidate: CACHE_CONFIG.PRODUCT_DETAIL },
   });
 
+export const getCategoryById = async (id: string) => {
+  const category = await wooFetchServer(`categories/${id}`, {
+    next: { revalidate: CACHE_CONFIG.CATEGORIES },
+  });
   return Array.isArray(category) ? category : null;
 };

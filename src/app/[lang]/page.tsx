@@ -24,16 +24,10 @@ const HomePage = async ({ params }: HomePageProps) => {
   if (!isValidLocale(lang)) notFound();
 
   const locale: Locale = lang;
-
-
-  const fetchProducts = async () => {
-    const res = await fetch("http://localhost:4000/products");
-    const data = await res.json();
-    return data;
-  };
+  
   // Treats
   const productTreats = await getProducts({
-    category: 139,
+    category: `pet-treats`,
     per_page: 12,
   } as any);
   const productTreatsItems = toCategoryProductSliderItems(
@@ -48,7 +42,7 @@ const HomePage = async ({ params }: HomePageProps) => {
 
   // Bowl & Feeders
   const productFeeder = await getProducts({
-    category: 82,
+    category: `bowls-feeder`,
     per_page: 12,
   } as any);
   const productFeederItems = toCategoryProductSliderItems(

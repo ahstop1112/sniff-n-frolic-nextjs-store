@@ -9,7 +9,7 @@ export type CategorySliderItem = {
   image?: WooCategoryImage | null;
   imageSrc?: string;
   name: string;
-  parent?: number;
+  parent?: string;
   count: number;
   href: string;
 };

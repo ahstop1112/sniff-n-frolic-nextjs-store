@@ -8,7 +8,8 @@ import { wooCategoriesToSliderItems } from "@/domains/categories/adapter";
 const HomePageClient = () => {
   const locale = useLocale();
   const categories = useCategories();
-  const topLevelCategories = categories.filter((c) => c.parent === 0);
+  const topLevelCategories = categories.filter((c) => c.parent === `0`);
+  console.log(topLevelCategories)
 
   const homeSliderItems = useMemo(
     () => wooCategoriesToSliderItems(topLevelCategories, locale),

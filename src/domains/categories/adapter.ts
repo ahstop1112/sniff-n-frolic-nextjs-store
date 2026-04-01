@@ -10,6 +10,7 @@ type CategoryLikeNode = {
   label: string;
   href?: string;
   count?: number;
+  parent: string;
   imageSrc?: string;
 };
 
@@ -21,6 +22,7 @@ const normalizeCategoryNode = (n: NavNode): CategoryLikeNode => {
     label: n.label,
     href: n.href,
     count: (n as any).count,
+    parent: (n as any).parent,
     imageSrc: (n as any).imageSrc,
   };
 };
@@ -29,11 +31,12 @@ export const wooCategoriesToSliderItems = (
   categories: WooCategory[],
   locale: Locale,
 ): CategorySliderItem[] => {
+  console.log(categories);
   return categories.map((c) => ({
     id: c.id,
     slug: c.slug,
     name: c.name,
-    parent: c.parent ?? 0,
+    parent: c.parent,
     locale,
     href: `/${locale}/category/${c.slug}`,
     imageSrc: c.image?.src ?? "",
@@ -76,7 +79,7 @@ export const toCategorySliderItems = ({
       id,
       locale,
       name: n.name ?? n.label,
-      parent: 0,
+      parent: n.parent,
       slug,
       href,
       count: n.count ?? 0,
