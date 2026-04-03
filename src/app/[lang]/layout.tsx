@@ -11,6 +11,7 @@ import { CurrencyProvider } from "@/context/CurrencyContext";
 import { CategoriesProvider } from "@/context/CategoriesContext";
 import { ProductsProvider } from "@/context/ProductsContext";
 import AppShell from "@/components/_layout/AppShell/AppShell";
+import AIChatbot from "@/components/AIChatbot";
 import { LangParamsObj } from "@/types/next";
 import "./globals.scss";
 
@@ -34,6 +35,7 @@ const LangLayout = async ({ children, params }: LangLayoutProps) => {
               <ProductsProvider>
                 <AppShell>
                   <main>{children}</main>
+                  <AIChatbot />
                 </AppShell>
               </ProductsProvider>
             </CategoriesProvider>

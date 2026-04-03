@@ -17,6 +17,10 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: RootLayoutProps) => (
   <html lang="en">
     <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="icon" href="/favicon.ico" />
+    </head>
+    <body>
       {gtmId && (
         <Script id="gtm-base" strategy="afterInteractive">
           {`
@@ -28,8 +32,6 @@ const RootLayout = ({ children }: RootLayoutProps) => (
             `}
         </Script>
       )}
-    </head>
-    <body>
       <AppProviders>
         {/* 🟧 GTM noscript */}
         {gtmId && (

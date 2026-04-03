@@ -4,81 +4,100 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-All commands should be run from the repo root unless noted.
-
-### Development
 ```bash
-npm run dev              # Run both frontend and backend concurrently
-npm run dev:web          # Frontend only (Next.js on port 3000)
-npm run dev:backend      # Backend only (NestJS on port 3002)
+npm run dev       # Next.js dev server (port 3001)
+npm run build     # Production build
+npm run start     # Start production server
+npm run lint      # ESLint
 ```
 
-### Frontend (from `apps/web/`)
+### Testing (Playwright e2e)
 ```bash
-npm run build            # Production build
-npm run start            # Start production server
-npm run lint             # ESLint
+npx playwright test                   # Run all tests
+npx playwright test tests/snf.spec.ts # Run a specific test file
+npx playwright test --ui              # Interactive UI mode
 ```
 
-### Backend (from `apps/backend/`)
-```bash
-npm run start:dev        # NestJS watch mode
-npm run build            # Compile TypeScript to dist/
-npm run start:prod       # Run compiled dist/main
-npm run import:woo       # Import products from WooCommerce into PostgreSQL
-```
-
-### Database
-```bash
-docker-compose up -d     # Start PostgreSQL 16 (port 5433 → 5432, db: sniff_catalog)
-docker-compose down      # Stop
-```
+Tests run against `http://localhost:3001` by default (set `BASE_URL` env var to override). The app must be running before running tests.
 
 ## Architecture
 
-This is a two-app monorepo (not npm workspaces) with independent `package.json` files:
-- `apps/web/` — Next.js 16 frontend (App Router, React 19, MUI v7, TypeScript)
-- `apps/backend/` — NestJS 11 backend (TypeScript, PostgreSQL via pg driver)
-
-Root `package.json` uses `concurrently` to run both apps.
+This is a single **Next.js 16** app (App Router, React 19, MUI v7, TypeScript) — not a monorepo. All source code lives in `src/`.
 
 ### Phase-Based Migration Strategy
 
-**Phase 1 (current):** Headless frontend consuming live WooCommerce REST APIs directly.
+**Phase 1:** Headless frontend calling WooCommerce REST APIs directly.
 
-**Phase 2 (planned):** Custom NestJS backend replaces WooCommerce APIs; frontend switches to point at `apps/backend/`.
+**Phase 2 (current):** Frontend now calls a custom NestJS backend via `API_BASE_URL`. The `wooClient.ts` service layer still exports `WooProduct`/`WooCategory` shapes so no components needed changes — adapters inside `wooClient.ts` convert NestJS API responses to those shapes. `getProductVariations` and `getCategoryById` still fall back to WooCommerce directly.
 
-The service layer in `apps/web/src/lib/wooClient.ts` abstracts the WooCommerce dependency, making it the single point of change when migrating to Phase 2.
+### Key Abstraction: `wooClient.ts` → `apiClient.ts`
 
-### Frontend Structure (`apps/web/src/`)
-- `app/[lang]/` — App Router routes; all pages are under a `[lang]` dynamic segment for i18n
-- `lib/` — Service layer: WooCommerce client, caching, filters, search
-- `components/` — React components (Cart, Checkout, Product, etc.)
-- `context/` — React Context providers for global state (cart, etc.)
-- `domains/` — Domain models and business logic
-- `types/` — Shared TypeScript interfaces
-- `styles/` — SCSS stylesheets; SASS includes are resolved relative to `src/`
+`src/lib/wooClient.ts` is the **single data-access boundary** for all product and category data. It:
+- Exports typed `WooProduct`/`WooCategory` interfaces (components depend on these)
+- Fetches from the NestJS backend via `src/lib/apiClient.ts` (reads `API_BASE_URL`)
+- Adapts NestJS API shapes to the Woo interface via `apiProductToWoo` / `apiCategoryToWoo`
+- Applies Next.js ISR cache via `CACHE_CONFIG` in `src/lib/cache.ts`
 
-### Backend Structure (`apps/backend/src/`)
-- `modules/health/` — Health check endpoint
-- `modules/products/` — Products domain (NestJS module, controller, service)
-- `database/` — PostgreSQL connection configuration
-- `app.module.ts` — Root NestJS module
+When migrating an endpoint from WooCommerce to the NestJS backend, update only `wooClient.ts`.
 
-### Key Integrations
-- **Stripe**: Payment processing via `@stripe/react-stripe-js`; keys in `apps/web/.env.local`
-- **i18n**: `react-i18next` with language routing via `[lang]` segment
-- **SEO**: Utilities in `apps/web/src/seo/`
-- **Google Tag Manager**: `NEXT_PUBLIC_GTM_ID` in frontend env
+### Routing
+
+All pages live under `src/app/[lang]/` — the `[lang]` dynamic segment drives i18n. The root `src/app/page.tsx` redirects to the default locale. The layout at `src/app/[lang]/layout.tsx` fetches categories once (cached 1 hr) and wraps all pages in providers.
+
+### Context Providers (set up in `[lang]/layout.tsx`)
+
+- `CartProviderClient` — cart state
+- `I18nProvider` / `LocaleProvider` — i18n
+- `CurrencyProvider` — currency formatting
+- `CategoriesProvider` — categories fetched at layout level, not per-page
+- `ProductsProvider` — product state
+
+### AI Chatbot (Fei Fei)
+
+`src/app/api/chat/route.ts` — Next.js API route that powers the AI shopping assistant. Uses `@anthropic-ai/sdk` with `claude-sonnet-4-20250514`. It fetches live product inventory from the NestJS backend and injects it into the system prompt. Responses may include a `PRODUCTS_JSON:` block with slugs that the frontend parses to display product cards. Requires `ANTHROPIC_API_KEY`.
+
+The chatbot UI lives in `src/components/AIChatbot/` and is mounted globally in `[lang]/layout.tsx`.
+
+### Caching Strategy
+
+Defined in `src/lib/cache.ts` using Next.js ISR:
+- Categories: 1 hour (`CACHE_CONFIG.CATEGORIES`)
+- Products list: 5 minutes (`CACHE_CONFIG.PRODUCTS`)
+- Product detail: 10 minutes (`CACHE_CONFIG.PRODUCT_DETAIL`)
+- Search: no cache (`CACHE_CONFIG.SEARCH`)
+
+### Next.js API Routes (`src/app/api/`)
+
+- `chat/` — AI chatbot (Anthropic SDK)
+- `categories/` — category data proxy
+- `checkout/` — checkout logic
+- `stripe/` — Stripe payment integration
 
 ## Environment Variables
 
-Frontend (`apps/web/.env.local`): `WOO_API_BASE_URL`, `WOO_CONSUMER_KEY`, `WOO_CONSUMER_SECRET`, `NEXT_PUBLIC_STORE_CURRENCY_CODE`, `NEXT_PUBLIC_GTM_ID`, `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+```
+# NestJS backend URL (required - replaces WooCommerce for products/categories)
+API_BASE_URL=
 
-Backend (`apps/backend/.env`): `PORT` (3002), `DATABASE_URL` (PostgreSQL), `WOO_API_BASE_URL`, `WOO_CONSUMER_KEY`, `WOO_CONSUMER_SECRET`
+# WooCommerce (still used for variations and getCategoryById)
+WOO_API_BASE_URL=
+WOO_CONSUMER_KEY=
+WOO_CONSUMER_SECRET=
+
+# AI Chatbot
+ANTHROPIC_API_KEY=
+
+# Stripe
+STRIPE_SECRET_KEY=
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+
+# Store config
+NEXT_PUBLIC_STORE_CURRENCY_CODE=
+NEXT_PUBLIC_GTM_ID=
+```
 
 ## Configuration Notes
 
-- `apps/web/next.config.ts`: React Compiler enabled (experimental), TypeScript build errors ignored
-- `apps/backend/tsconfig.json`: `experimentalDecorators` and `emitDecoratorMetadata` required for NestJS decorators
-- Path alias `@/*` → `./src/*` in the frontend
+- `next.config.ts`: React Compiler enabled, TypeScript build errors ignored, remote images allowed from `sniffnfrolic.com`
+- `tsconfig.json`: Path alias `@/*` → `./src/*`
+- SASS `includePaths` set to `src/` so imports resolve relative to `src/`
