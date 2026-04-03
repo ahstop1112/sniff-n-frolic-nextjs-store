@@ -24,9 +24,9 @@ const getProductList = async (): Promise<{ productListStr: string; productsMap: 
     if (cachedProductList && now - cacheTime < CACHE_TTL) {
         return cachedProductList;
     }
-    
+
     try {
-        const res = await fetch(`${process.env.API_BASE_URL}/products`, {
+        const res = await fetch(`${process.env.API_BASE_URL}/products/limit=100`, {
             cache: 'force-cache',
             headers: { 'Cache-Control': 'max-age=300' },
         });
