@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import CartPageClient from "@/components/Cart/CartPageClient";
-import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
+import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import Section from "@/components/Section/Section";
 import { LangParamsObj, PageProps } from "@/types/next";

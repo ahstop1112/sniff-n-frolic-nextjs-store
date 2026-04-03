@@ -5,7 +5,7 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { getProducts } from "@/lib/wooClient";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
 import MainBanner from "@/components/Home/MainBanner";
-import CategoryProductSliderSection from "@/components/CategoryProduct/CategoryProductSliderSection";
+import CategoryProductSliderSection from "@/components/CategoryProduct";
 import { toCategoryProductSliderItems } from "@/domains/products/adapter";
 import type { PageProps, LangParamsObj } from "@/types/next";
 import HomePageClient from "./HomePageClient";

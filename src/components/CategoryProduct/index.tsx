@@ -2,7 +2,7 @@
 
 import { Box } from "@mui/material";
 import { CateogryProductSliderProps } from "./types";
-import Section from "@/components/Section/Section";
+import Section from "@/components/Section";
 import CategoryProductSlider from "./CategoryProductSlider";
 import styles from "./CategoryProduct.module.scss";
 

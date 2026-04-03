@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import WaveDivider from "../WaveDivider/WaveDivider";
+import WaveDivider from "../WaveDivider";
 import { PageLayoutProps } from "./types";
 import styles from "./PageLayout.module.scss";
 

@@ -16,7 +16,7 @@ export interface SimpleTerm {
   slug: string;
 }
 
-export interface ProductsFilterSidebarClientProps {
+export interface ProductsFilterProps {
   categories: CategorySliderItem[];
   colors?: SimpleTerm[];
   common: CommonDict;

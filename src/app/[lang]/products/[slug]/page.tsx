@@ -10,15 +10,15 @@ import {
   WooProductVariation,
   getProducts
 } from "@/lib/wooClient";
-import Section from "@/components/Section/Section";
-import BreadcrumbsNav from "@/components/Breadcrumb/BreadcrumbsNav";
+import Section from "@/components/Section";
+import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import ProductImageGallery from "@/components/Product/ProductImageGallery";
 import { buildProductMetadata } from "@/seo/buildProductMetaTag";
-import ProductsDetailsTop from "@/components/ProductDetails/ProductsDetailsTop";
-import CategoryProductSliderSection from "@/components/CategoryProduct/CategoryProductSliderSection"; // You may also like
+import ProductsDetailsTop from "@/components/ProductDetails";
+import CategoryProductSliderSection from "@/components/CategoryProduct"; // You may also like
 // Add To Cart
-import ProductPurchasePanel from "@/components/ProductPurchasePanel/ProductPurchasePanel";
+import ProductPurchasePanel from "@/components/ProductPurchasePanel";
 import { toCategoryProductSliderItems } from "@/domains/products/adapter";
 import type { AddToCartInput } from "@/lib/cartTypes";
 import type { PageProps, LangSlugParamsObj } from "@/types/next";

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
-import { getProducts } from '@/lib/wooClient';
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -12,14 +11,22 @@ type Product = {
     sale_price: number | null;
     effective_price: number; 
     featured_image_url: string | null;
-    categories: { name: string }[];
+    category_name: string | null;
 };
+
+let cachedProductList: { str: string; map: Record<string, Product> } | null = null;
+let cacheTime = 0;
+const CACHE_TTL = 10 * 60 * 1000; 
 
 // Fetch products from your NestJS API and format as a product list string
 const getProductList = async (): Promise<{ productListStr: string; productsMap: Record<string, Product> }> => {
-
-  try {
-        const res = await fetch(`${process.env.API_BASE_URL}/products?limit=100`, {
+    const now = Date.now();
+    if (cachedProductList && now - cacheTime < CACHE_TTL) {
+        return cachedProductList;
+    }
+    
+    try {
+        const res = await fetch(`${process.env.API_BASE_URL}/products`, {
             cache: 'force-cache',
             headers: { 'Cache-Control': 'max-age=300' },
         });
@@ -35,8 +42,8 @@ const getProductList = async (): Promise<{ productListStr: string; productsMap: 
             const price = p.sale_price
             ? `$${(p.sale_price / 100).toFixed(2)} (was $${(p.regular_price / 100).toFixed(2)})`
             : `$${(p.regular_price / 100).toFixed(2)}`;
-            const cats = p.categories?.map((c) => c.name).join(', ') || '';
-            return `- ${p.name} | ${price} | slug: ${p.slug}${cats ? ' | categories: ' + cats : ''}`;
+            const cat = p.category_name ? ` | ${p.category_name}` : '';
+            return `- ${p.name} | ${price} | slug: ${p.slug}${cat}`;
         })
         .join('\n');
 
@@ -68,7 +75,7 @@ export const POST = async (req: NextRequest) => {
         Recommend 2–3 products max. Only use slugs from the inventory above. For general chat, omit PRODUCTS_JSON.`;
 
     const response = await client.messages.create({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1024,
         system: systemPrompt,
         messages,

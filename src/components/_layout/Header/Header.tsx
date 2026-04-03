@@ -9,7 +9,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 // Components
 import HeaderNav from "@/components/HeaderNav/HeaderNav";
-import SearchOverlay from "@/components/SearchBar/SearchOverlay";
+import SearchOverlay from "@/components/SearchBar";
 import MobileMenu from "@/components/MobileMenu/MobileMenu";
 import MiniCart from "@/components/Cart/MiniCart";
 // Context & Config

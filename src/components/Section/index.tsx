@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import WaveDivider from "../WaveDivider/WaveDivider";
+import WaveDivider from "../WaveDivider";
 import { SectionProps } from "./types";
 import styles from "./Section.module.scss";
 

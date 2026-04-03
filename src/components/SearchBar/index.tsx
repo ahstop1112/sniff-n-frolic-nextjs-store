@@ -32,7 +32,6 @@ const SearchOverlay = ({
 }: SearchOverlayProps) => {
   const { t } = useTranslation("search");
   const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { runSearch } = useRunSearch({
@@ -71,7 +70,7 @@ const SearchOverlay = ({
 
   const popular = useMemo(() => {
     if (!categories?.length) return [];
-    const topLevel = categories.filter((c) => c.parent === 0);
+    const topLevel = categories.filter((c) => c.parent === "0");
 
     //  shuffle copy
     const shuffled = [...topLevel].sort(() => 0.5 - Math.random());

@@ -12,14 +12,14 @@ import {
   Button,
 } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ProductsFilterSidebarClientProps } from "./types";
+import { ProductsFilterProps } from "./types";
 import styles from "./ProductFilter.module.scss";
 
-const ProductsFilterSidebarClient = ({
+const ProductsFilter = ({
   categories,
   colors = [],
   common,
-}: ProductsFilterSidebarClientProps) => {
+}: ProductsFilterProps) => {
   // Local State
   const [minPriceInput, setMinPriceInput] = useState("");
   const [maxPriceInput, setMaxPriceInput] = useState("");
@@ -234,4 +234,4 @@ const ProductsFilterSidebarClient = ({
   );
 };
 
-export default ProductsFilterSidebarClient;
+export default ProductsFilter;
