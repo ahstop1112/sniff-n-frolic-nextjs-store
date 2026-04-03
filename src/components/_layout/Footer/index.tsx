@@ -16,7 +16,7 @@ import type { WooCategory } from "@/lib/wooClient";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { getTopLevelCategories } from "@/utils/category";
 import styles from "./Footer.module.scss";
-import CookieConsent from "@/components/CookieConsent/CookieConsent";
+import CookieConsent from "@/components/CookieConsent";
 
 const Footer = () => {
   const { t } = useTranslation("footer");
