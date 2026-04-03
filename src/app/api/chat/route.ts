@@ -26,7 +26,7 @@ const getProductList = async (): Promise<{ productListStr: string; productsMap: 
     }
 
     try {
-        const res = await fetch(`${process.env.API_BASE_URL}/products/limit=100`, {
+        const res = await fetch(`${process.env.API_BASE_URL}/products/?limit=100`, {
             cache: 'force-cache',
             headers: { 'Cache-Control': 'max-age=300' },
         });
