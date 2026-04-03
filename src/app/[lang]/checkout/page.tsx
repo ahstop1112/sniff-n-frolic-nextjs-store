@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import Section from "@/components/Section/Section";
+import Section from "@/components/Section";
 import CheckoutPageClient from "@/components/Checkout/CheckoutPageClient";
 import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";

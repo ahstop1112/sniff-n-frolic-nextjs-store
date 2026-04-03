@@ -5,7 +5,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
 import { shuffleArray } from "@/utils/helpers";
 import { buildCategoryMetadata } from "@/seo/buildCategoryMetaTag";
-import CategoryPageClient from "@/components/Category/CategoryPageClient";
+import CategoryPageClient from "@/components/Category";
 import type { PageProps, LangSlugParamsObj } from "@/types/next";
 import { unwrap, unwrapSearchParams } from "@/types/next";
 

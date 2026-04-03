@@ -6,7 +6,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getProducts } from "@/lib/wooClient";
 import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
 import { buildSearchMetadata } from "@/seo/buildSearchMetaTag";
-import Section from "@/components/Section/Section";
+import Section from "@/components/Section";
 import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import ProductGrid from "@/components/Product/ProductGrid";

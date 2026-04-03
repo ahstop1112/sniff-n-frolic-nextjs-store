@@ -9,7 +9,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { useLocale } from "@/i18n/LocaleProvider";
 import PageLoading from "../common/PageLoading";
-import Section from "../Section/Section";
+import Section from "../Section";
 
 interface Props {
   orderId: number;

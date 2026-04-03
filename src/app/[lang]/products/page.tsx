@@ -8,7 +8,7 @@ import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPa
 import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import ProductsFilterSidebarClient from "@/components/ProductFilter";
-import Section from "@/components/Section/Section";
+import Section from "@/components/Section";
 import ProductGrid from "@/components/Product/ProductGrid";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
 import { shuffleArray } from "@/utils/helpers";

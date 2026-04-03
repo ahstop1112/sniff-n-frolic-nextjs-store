@@ -3,7 +3,7 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import CartPageClient from "@/components/Cart/CartPageClient";
 import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
-import Section from "@/components/Section/Section";
+import Section from "@/components/Section";
 import { LangParamsObj, PageProps } from "@/types/next";
 import { getDictionary } from "@/i18n/dictionaries";
 

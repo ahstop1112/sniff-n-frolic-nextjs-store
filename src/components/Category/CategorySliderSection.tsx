@@ -1,6 +1,6 @@
 "use client";
 import { CategorySliderSectionProps } from "./types";
-import Section from "@/components/Section/Section";
+import Section from "@/components/Section";
 import CategorySlider from "./CategorySlider";
 import styles from "./Category.module.scss";
 

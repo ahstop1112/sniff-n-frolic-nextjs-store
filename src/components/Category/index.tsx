@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Grid } from "@mui/material";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { useCategories } from "@/context/CategoriesContext";
-import Section from "@/components/Section/Section";
+import Section from "@/components/Section";
 import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";

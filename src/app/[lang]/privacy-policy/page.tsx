@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Box, Container, Link, List, ListItem, Typography } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
-import Section from "@/components/Section/Section";
+import Section from "@/components/Section";
 import { LangParamsObj, PageProps } from "@/types/next";
 import { getDictionary } from "@/i18n/dictionaries";
 
