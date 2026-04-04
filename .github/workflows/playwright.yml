@@ -27,13 +27,14 @@ jobs:
       - name: Start Next.js
         run: npm run build && npm run start &
         env:
+          BASE_URL: ${{ secrets.BASE_URL }}
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           WOO_API_BASE_URL: ${{ secrets.WOO_API_BASE_URL }}
           WOO_CONSUMER_KEY: ${{ secrets.WOO_CONSUMER_KEY }}
           WOO_CONSUMER_SECRET: ${{ secrets.WOO_CONSUMER_SECRET }}
 
       - name: Wait for server
-        run: npx wait-on http://localhost:3001 --timeout 60000
+        run: npx wait-on ${{ secrets.API_BASE_URL }} --timeout 60000
 
       - name: Run Playwright tests
         run: npx playwright test --project=chromium
