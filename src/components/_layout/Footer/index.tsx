@@ -12,7 +12,7 @@ import {
   Button,
   Link as MuiLink,
 } from "@mui/material";
-import type { WooCategory } from "@/lib/wooClient";
+import type { WooCategory } from "@/lib/wooClient/type";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { getTopLevelCategories } from "@/utils/category";
 import styles from "./Footer.module.scss";
@@ -42,7 +42,6 @@ const Footer = () => {
         setLoadingCats(false);
       }
     };
-
     loadCategories();
   }, []);
 
@@ -85,7 +84,7 @@ const Footer = () => {
               {!loadingCats &&
                 topLevelCategories.map((cat) => (
                   <MuiLink
-                    key={cat.id}
+                    key={cat.slug}
                     component={NextLink}
                     href={`/${locale}/category/${cat.slug}`}
                     underline="hover"

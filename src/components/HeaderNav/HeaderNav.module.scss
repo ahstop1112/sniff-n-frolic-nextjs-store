@@ -32,11 +32,20 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .link,
+  .link{
+    position: relative;
+    display: inline-flex;
+    padding-bottom: 6px;
+
+    &:hover::after,
+    &:focus-visible::after {
+      transform: scaleX(1);
+    }
+  }
+
   .linkBtn {
     position: relative;
-    display: inline-block;
-    padding-bottom: 6px;
+    display: inline-flex;
 
     &::after {
       content: "";
@@ -171,9 +180,11 @@
   border: 0;
   padding: 0;
   cursor: pointer;
+  width: 24px;
+  height: 20px;
 
   svg {
     width: 24px;
-    height: 24px;
+    height: 20px;
   }
 }

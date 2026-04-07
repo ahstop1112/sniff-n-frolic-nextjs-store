@@ -1,11 +1,14 @@
 import type { Locale } from "@/i18n/config";
-import type { WooCategory } from "@/lib/wooClient";
-import type { NavNode } from "@/domains/nav/types";
+
+type categoryNav = {
+  label: string;
+  href: string;
+  children?: categoryNav[];
+}
 
 export const NAV_ITEMS = (
   locale: Locale,
-  nodes: NavNode[],
-  categories?: WooCategory[],
+  categories?: categoryNav[],
 ) => {
   const defaultMega = [
     { label: "petTreats", href: `/${locale}/category/pet-treats` },
@@ -43,23 +46,21 @@ export const NAV_ITEMS = (
     },
   ];
 
-  const buildMegaFromCategories = (cats: WooCategory[]) => {
-    const top = cats.filter((c) => c.parent === 0);
-    return top.map((t) => {
-      const children = cats
-        .filter((c) => c.parent === t.id)
-        .map((ch) => ({
-          key: ch.slug,
-          label: ch.name.replace(/&amp;/g, "&"),
-          href: `/${locale}/category/${ch.slug}`,
-        }));
-      return {
-        key: t.slug,
-        label: t.name.replace(/&amp;/g, "&"),
-        href: `/${locale}/category/${t.slug}`,
-        ...(children.length ? { children } : {}),
-      };
-    });
+  const buildMegaFromCategories = (cats: categoryNav[]) => {
+    return cats
+      .filter((c) => !c.href.includes("uncategor"))
+      .map((t) => ({
+        key: t.href,
+        label: t.label.replace(/&amp;/g, "&"),
+        href: t.href,
+        ...(t.children && t.children.length ? {
+          children: t.children.map((ch) => ({
+            key: ch.href,
+            label: ch.label.replace(/&amp;/g, "&"),
+            href: ch.href,
+          }))
+        } : {}),
+      }));
   };
 
   return [

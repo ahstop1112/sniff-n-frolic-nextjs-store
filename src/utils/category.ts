@@ -1,6 +1,6 @@
-import type { WooCategory } from "@/lib/wooClient";
+import type { WooCategory } from "@/lib/wooClient/type";
 
 export const getTopLevelCategories = (cats: WooCategory[]) =>
   cats
-    .filter((c) => Number(c.parent) === 0)
+    .filter((c) => c.parent === `0` && !c.slug.includes("uncategor"))
     .sort((a, b) => Number(a.id) - Number(b.id));

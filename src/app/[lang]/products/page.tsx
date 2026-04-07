@@ -33,7 +33,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const allCats = await getCategories();
 
   const topLevelCategories = allCats
-    .filter((c) => c.parent === 0)
+    .filter((c) => c.parent === `0`)
     .sort((a, b) => a.id - b.id);
 
   const topLevelSliderItems = wooCategoriesToSliderItems(

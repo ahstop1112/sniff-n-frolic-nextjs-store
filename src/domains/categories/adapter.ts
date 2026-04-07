@@ -1,4 +1,4 @@
-import type { WooCategory } from "@/lib/wooClient";
+import type { WooCategory } from "@/lib/wooClient/type";
 import type { NavNode } from "@/domains/nav/types";
 import type { Locale } from "@/i18n/config";
 import type { CategorySliderItem } from "@/components/Category/types";
@@ -31,12 +31,11 @@ export const wooCategoriesToSliderItems = (
   categories: WooCategory[],
   locale: Locale,
 ): CategorySliderItem[] => {
-  console.log(categories);
   return categories.map((c) => ({
     id: c.id,
     slug: c.slug,
     name: c.name,
-    parent: c.parent,
+    parent: c.parent ?? `0`,
     locale,
     href: `/${locale}/category/${c.slug}`,
     imageSrc: c.image?.src ?? "",
