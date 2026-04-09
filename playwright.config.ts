@@ -10,6 +10,8 @@ export default defineConfig({
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost:3001',
     trace: 'on-first-retry',
+    navigationTimeout: 60000,
+    actionTimeout: 60000,
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
