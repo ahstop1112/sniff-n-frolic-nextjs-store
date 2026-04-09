@@ -41,9 +41,9 @@ The next phase introduces a **custom Node.js backend and database**, progressive
 - Support features not easily achievable with WooCommerce
 
 **Planned Stack**
-- Node.js (REST / GraphQL)
-- Database (PostgreSQL / MongoDB)
-- Authentication and authorization layer
+- Node.js and NestJS (REST)
+- Database (PostgreSQL)
+- Authentication and authorization layer (Not decided yet)
 - Domain-driven data models
 
 ---
@@ -62,8 +62,8 @@ Rather than performing a full rewrite, the system follows an **incremental migra
 - **TypeScript**
 - **React**
 - WooCommerce REST API (Phase 1, in progress)
-- Node.js backend (Phase 2)
-- Database integration (planned)
+- Node.js + NestJS (Phase 2)
+- Database integration (Phase 2)
 
 ---
 
