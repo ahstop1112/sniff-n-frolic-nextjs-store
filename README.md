@@ -32,7 +32,7 @@ The initial version integrates with **WooCommerce REST APIs** as a backend servi
 
 ---
 
-### Phase 2 — Custom Node.js Backend + Database (Not Started yet)
+### Phase 2 — Custom Node.js Backend + Database (Started at March 2026 !!!!!!)
 The next phase introduces a **custom Node.js backend and database**, progressively replacing WooCommerce as the primary data source.
 
 **Goals**
