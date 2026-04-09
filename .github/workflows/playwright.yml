@@ -34,7 +34,7 @@ jobs:
           WOO_CONSUMER_SECRET: ${{ secrets.WOO_CONSUMER_SECRET }}
 
       - name: Wait for server
-        run: npx wait-on ${{ secrets.API_BASE_URL }} --timeout 60000
+        run: npx wait-on http://localhost:3001 --timeout 60000
 
       - name: Run Playwright tests
         run: npx playwright test --project=chromium
