@@ -1,67 +1,34 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { wooFetch } from "@/lib/wooClient";
+import { CartItem } from "@/lib/cartTypes";
+import { CheckoutPayload } from "./types";
 
-type CartItem = {
-  product_id: number;
-  variationId?: number;
-  quantity: number;
+const API_BASE = process.env.API_BASE_URL!;
+
+const getFlatShipping = (subtotalCents: number) => {
+  const FREE_OVER_CENTS = 8000; // $80
+  const FLAT_CENTS = 1600;      // $16
+  return subtotalCents >= FREE_OVER_CENTS ? 0 : FLAT_CENTS;
 };
 
-type CheckoutPayload = {
-  locale: "en" | "zh";
-  email: string;
-  shipping: {
-    first_name: string;
-    last_name: string;
-    address_1: string;
-    address_2?: string;
-    city: string;
-    state: string;
-    postcode: string;
-    country: string; // "CA"
-    phone?: string;
-  };
-  cartItems: CartItem[];
-  shipping_method: "flat_rate";
-};
+const getVerifiedLineItems = async (items: CartItem[]) => {
+  const results = await Promise.all(
+    items.map(async (item) => {
+      const res = await fetch(`${API_BASE}/products/${item.slug}`);
+      if (!res.ok) throw new Error(`Product ${item.slug} not found`);
+      const product = await res.json();
 
-// ---- helpers ----
-const toCents = (n: number) => Math.round(n * 100);
-
-const getVerifiedLineItemsTotal = async (items: CartItem[]) => {
-  // fetch each product (or variation) price from Woo to prevent tampering
-  // (MVP approach: sequential; you can optimize later)
-  let subtotal = 0;
-
-  for (const it of items) {
-    const product: any = await wooFetch(`products/${it.product_id}`);
-    if (!product) throw new Error("Product not found");
-
-    let priceStr: string | null = product.price ?? null;
-
-    if (it.variationId) {
-      const variation: any = await wooFetch(
-        `products/${it.product_id}/variations/${it.variationId}`
-      );
-      priceStr = variation?.price ?? priceStr;
-    }
-
-    const price = Number(priceStr);
-    if (!Number.isFinite(price) || price <= 0) throw new Error("Invalid price");
-
-    const qty = Math.max(1, Math.min(99, Number(it.quantity) || 1));
-    subtotal += price * qty;
-  }
-
-  return +subtotal.toFixed(2);
-};
-
-const getFlatShipping = (subtotal: number) => {
-  // MVP flat rate rules (you can replace with Woo shipping zones later)
-  const FREE_OVER = 80;
-  const FLAT = 10;
-  return subtotal >= FREE_OVER ? 0 : FLAT;
+      const qty = Math.max(1, Math.min(99, Number(item.quantity) || 1));
+      return {
+        product_id: product.id,
+        product_name: product.name,
+        sku: product.sku ?? undefined,
+        quantity: qty,
+        unit_price: product.effective_price, // cents
+      };
+    }),
+  );
+  return results;
 };
 
 export const POST = async (req: Request) => {
@@ -71,123 +38,90 @@ export const POST = async (req: Request) => {
     if (!body?.email || !body?.cartItems?.length) {
       return NextResponse.json(
         { error: "Missing email/cartItems" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // 1) price verification + totals (server source of truth)
-    const subtotal = await getVerifiedLineItemsTotal(body.cartItems);
+    // 1) price verification from NestJS
+    const lineItems = await getVerifiedLineItems(body.cartItems);
+    const subtotal = lineItems.reduce(
+      (sum, item) => sum + item.unit_price * item.quantity,
+      0,
+    );
     const shippingCost = getFlatShipping(subtotal);
+    const gstCents = Math.round(subtotal * 0.05);
+    const pstCents = Math.round(subtotal * 0.07);
+    const total = subtotal + shippingCost + gstCents + pstCents;
 
-    const gst = +(Number(subtotal ?? 0) * 0.05).toFixed(2);
-    const pst = +(Number(subtotal ?? 0) * 0.07).toFixed(2);
-    const taxTotal = Number(gst + pst).toFixed(2);
-    const total = +(subtotal + shippingCost + Number(taxTotal)).toFixed(2);
-
-    // 2) create Woo order (pending)
-    const line_items = body.cartItems.map((it) => {
-      const qty = Math.max(1, Math.min(99, Number(it.quantity) || 1));
-      const base: any = { product_id: it.product_id, quantity: qty };
-      if (it.variationId) base.variation_id = it.variationId;
-      return base;
-    });
-
-    const shipping = {
-      first_name: body.shipping.first_name || "",
-      last_name: body.shipping.last_name || "",
-      address_1: body.shipping.address_1 || "",
-      address_2: body.shipping.address_2 || "",
-      city: body.shipping.city || "",
-      state: body.shipping.state || "",
-      postcode: body.shipping.postcode || "",
-      country: body.shipping.country || "CA",
-    };
-
-    const billing = {
-      ...shipping,
-      email: body.email,
-      phone: body.shipping.phone || "",
-    };
-
-    const order = await wooFetch<any>("orders", {
+    // 2) create order in NestJS
+    const orderRes = await fetch(`${API_BASE}/orders`, {
       method: "POST",
-      bodyJson: {
-        status: "pending",
-        set_paid: false,
-        payment_method: "stripe",
-        payment_method_title: "Stripe",
-        billing,
-        shipping,
-        line_items,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        guest_name: `${body.shipping.first_name} ${body.shipping.last_name}`,
+        guest_email: body.email,
+        shipping_address: {
+          line1: body.shipping.address_1,
+          line2: body.shipping.address_2 ?? "",
+          city: body.shipping.city,
+          province: body.shipping.state,
+          postal_code: body.shipping.postcode,
+          country: body.shipping.country,
+        },
+        items: lineItems,
+        notes: null,
         currency: "CAD",
-        meta_data: [
-          { key: "wpml_language", value: body.locale }, // optional; keep if you use WPML
-          { key: "_headless_checkout", value: "nextjs" },
-        ],
-      },
+      }),
     });
 
-    const orderId = Number(order?.id);
-    if (!orderId) throw new Error("Woo order creation failed");
+    if (!orderRes.ok) throw new Error("NestJS order creation failed");
+    const order = await orderRes.json();
 
     // 3) create Stripe PaymentIntent
     const intent = await stripe.paymentIntents.create({
-      amount: toCents(total),
+      amount: total,
       currency: "cad",
       automatic_payment_methods: { enabled: true },
       receipt_email: body.email,
       metadata: {
+        order_id: order.id,
         locale: body.locale,
-        email: body.email,
-        shipping_method: body.shipping_method,
         subtotal: String(subtotal),
         shipping: String(shippingCost),
-        gst: String(gst),
-        pst: String(pst),
-        tax: String(taxTotal),
+        gst: String(gstCents),
+        pst: String(pstCents),
         total: String(total),
-        // keep these if you really need them (note: metadata size limit)
-        shipping_json: JSON.stringify(body.shipping),
-        items_json: JSON.stringify(body.cartItems),
       },
     });
 
     if (!intent.client_secret) {
       return NextResponse.json(
         { error: "Stripe client_secret missing" },
-        { status: 500 }
+        { status: 500 },
       );
     }
-
-    await wooFetch<any>(`orders/${orderId}`, {
-      method: "PUT",
-      bodyJson: {
-        meta_data: [{ key: "_stripe_payment_intent", value: intent.id }],
-      },
-    });
 
     // 4) return to client
     return NextResponse.json({
       data: {
         clientSecret: intent.client_secret,
         paymentIntentId: intent.id,
-        amount: total,
-        orderId,
+        orderId: order.id,
         pricing: {
           currency: "CAD",
-          subtotal: Number(subtotal ?? 0),
+          subtotal,
           shipping: shippingCost,
-          tax: Number(taxTotal ?? 0),
-          total: Number(total ?? 0),
-          gst,
-          pst,
+          gst: gstCents,
+          pst: pstCents,
+          tax: gstCents + pstCents,
+          total,
         },
       },
     });
   } catch (e: any) {
     return NextResponse.json(
       { error: e?.message || "Server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

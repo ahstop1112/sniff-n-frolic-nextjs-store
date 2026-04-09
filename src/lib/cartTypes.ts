@@ -1,5 +1,5 @@
 export interface CartItem{
-    id: number;
+    id: string;
     slug: string;
     name: string;
     price: number;
@@ -13,7 +13,7 @@ export interface CartState {
 }
   
 export interface AddToCartInput {
-    id: number;
+    id: string;
     slug: string;
     name: string;
     price: number;

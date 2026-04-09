@@ -2,13 +2,14 @@ import "server-only";
 import { apiFetch } from "@/lib/apiClient";
 import { wooFetchServer } from "@/lib/woo/server";
 import { CACHE_CONFIG } from "@/lib/cache";
-import type { ApiProduct, ApiCategory, WooProduct, WooCategory } from "./type";
+import type { ApiProduct, ApiCategory, WooProduct, WooCategory } from "./types";
 
 // ─── Adapters: API → WooProduct/WooCategory shape ────────────────────────────
 const centsToString = (cents: number): string => (cents / 100).toFixed(2);
 
 const apiProductToWoo = (p: ApiProduct): WooProduct => ({
-  id: 0,                         // uuid — set to 0, components should use slug
+  id: 0,
+  uuid: p.id,                         // uuid — set to 0, components should use slug
   name: p.name,
   slug: p.slug,
   permalink: "",
@@ -21,25 +22,25 @@ const apiProductToWoo = (p: ApiProduct): WooProduct => ({
   sku: p.sku ?? "",
   type: p.product_type,
   images: (p.images ?? []).map((img, i) => ({
-    id: i,
+    id: String(i),
     src: img.url,
     alt: img.alt_text ?? "",
   })),
   categories: p.category_slug
-    ? [{ id: 0, name: p.category_name ?? "", slug: p.category_slug }]
+    ? [{ id: p.category_id ?? "", name: p.category_name ?? "", slug: p.category_slug }]
     : [],
 });
 
 const apiCategoryToWoo = (c: ApiCategory): WooCategory & { parentSlug: string | null } => {
   return {
-    id: c.id as unknown as number, // UUID as id, components should use slug
+    id: c.id ?? "0", // UUID as id, components should use slug
     name: c.name,
     slug: c.slug,
     parent: c.parent_id ?? "0",
     parentSlug: c.parent_slug,
     count: c.count,
     image: c.image_url && c.image_url !== 'false'
-      ? { id: 0, src: c.image_url, alt: c.name }
+      ? { id: "0", src: c.image_url, alt: c.name }
       : null,
   }
 };

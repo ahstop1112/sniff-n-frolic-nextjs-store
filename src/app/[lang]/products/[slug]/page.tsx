@@ -6,10 +6,9 @@ import { getDictionary } from "@/i18n/dictionaries";
 import {
   getProductBySlug,
   getProductVariations,
-  WooProduct,
-  WooProductVariation,
   getProducts
 } from "@/lib/wooClient";
+import type { WooProduct, WooProductVariation } from "@/lib/wooClient/types";
 import Section from "@/components/Section";
 import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
@@ -135,7 +134,7 @@ const ProductPage = async ({ params, searchParams }: ProductPageProps) => {
   }
 
   const addToCartInput: AddToCartInput = {
-    id: product.id,
+    id: product.uuid,
     slug: product.slug,
     name: product.name,
     price: Number(product.price || product.regular_price || 0),

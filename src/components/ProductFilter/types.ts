@@ -5,13 +5,13 @@ type Dict = Awaited<ReturnType<typeof getDictionary>>;
 type CommonDict = Dict["common"];
 
 export interface SimpleCategory {
-  id: number;
+  id: string;
   name: string;
   slug: string;
 }
 
 export interface SimpleTerm {
-  id: number;
+  id: string;
   name: string;
   slug: string;
 }

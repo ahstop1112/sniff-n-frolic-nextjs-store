@@ -29,7 +29,7 @@ const CheckoutPageClient = () => {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
 
-  const [orderId, setOrderId] = useState<number | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
   const [pricing, setPricing] = useState<any | null>(null);
 
   const { t } = useTranslation("checkout");
@@ -94,7 +94,7 @@ const CheckoutPageClient = () => {
       setClientSecret(data.clientSecret);
       setPaymentIntentId(data.paymentIntentId);
 
-      setOrderId(Number(data.orderId));
+      setOrderId(`${data.orderId}`);
       setPricing(data.pricing);
     } catch (err: any) {
       console.error(err);

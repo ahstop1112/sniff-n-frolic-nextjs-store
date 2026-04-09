@@ -37,7 +37,8 @@ const Header = () => {
 
   // ✅ Avoid rebuilding NAV_ITEMS every render
   const navItems = useMemo(() => {
-    return NAV_ITEMS(locale, categoryNavItems);
+    const validItems = categoryNavItems.filter((item) => item.href !== undefined);
+    return NAV_ITEMS(locale, validItems as any);
   }, [locale, categoryNavItems]);
 
   const [searchOpen, setSearchOpen] = useState(false);

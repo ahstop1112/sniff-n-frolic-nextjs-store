@@ -2,7 +2,7 @@ import type { SearchParamsObj, Term, MaybePromise } from "@/types/next";
 import { getCategoryIdBySlug } from "../categories/getCategoryIdBySlug";
 
 export type SimpleCategory = {
-  id: number;
+  id: string;
   slug: string;
   parent?: number;
 };

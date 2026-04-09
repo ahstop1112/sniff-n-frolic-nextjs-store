@@ -3,7 +3,7 @@ import { stripe } from "@/lib/stripe";
 import { wooFetch } from "@/lib/wooClient";
 
 interface CompleteBody {
-  orderId: number;
+  orderid: string;
   paymentIntentId: string;
 }
 

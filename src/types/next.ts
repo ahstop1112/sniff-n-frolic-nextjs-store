@@ -16,7 +16,7 @@ export type NextPageProps<P extends object> = {
   searchParams?: SearchParamsObj;
 };
 
-export type Term = { id: number; slug: string };
+export type Term = { id: string; slug: string };
 
 export const unwrap = async <T>(v: MaybePromise<T>) => Promise.resolve(v);
 

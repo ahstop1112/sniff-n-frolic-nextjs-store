@@ -12,7 +12,7 @@ import PageLoading from "../common/PageLoading";
 import Section from "../Section";
 
 interface Props {
-  orderId: number;
+  orderId: string;
   pricing?: any;
   paymentIntentId: string;
   onError: (msg: string) => void;

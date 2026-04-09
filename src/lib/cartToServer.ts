@@ -1,7 +1,7 @@
 import type { CartItem } from "@/lib/cartTypes";
 
 export type ServerCartItem = {
-  product_id: number;
+  slug: string;
   quantity: number;
   variationId?: number;
 };
@@ -30,7 +30,7 @@ export const parseVariationIdFromVariantKey = (variantKey?: string) => {
 
 export const cartItemsToServerItems = (items: CartItem[]): ServerCartItem[] => {
   return items.map((it) => ({
-    product_id: it.id,
+    slug: it.slug,
     quantity: Math.max(1, Math.min(99, Number(it.quantity) || 1)),
     variationId: parseVariationIdFromVariantKey(it.variantKey),
   }));

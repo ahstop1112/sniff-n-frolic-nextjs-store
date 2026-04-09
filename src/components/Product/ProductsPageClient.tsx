@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Box, Divider } from "@mui/material";
-import type { WooProduct, WooProductVariation } from "@/lib/wooClient";
+import type { WooProduct, WooProductVariation } from "@/lib/wooClient/types";
 import type { Locale } from "@/i18n/config";
 import ProductDetails from "@/components/ProductDetails";
 import ProductPurchasePanel from "@/components/ProductPurchasePanel";
@@ -31,7 +31,7 @@ const ProductPageClient = ({
   const price = Number(product.price || product.regular_price || 0);
 
   const addToCartInput: AddToCartInput = {
-    id: product.id,
+    id: product.uuid,
     slug: product.slug,
     name: product.name,
     price: Number(product.price || product.regular_price || 0),

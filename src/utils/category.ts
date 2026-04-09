@@ -1,4 +1,4 @@
-import type { WooCategory } from "@/lib/wooClient/type";
+import type { WooCategory } from "@/lib/wooClient/types";
 
 export const getTopLevelCategories = (cats: WooCategory[]) =>
   cats

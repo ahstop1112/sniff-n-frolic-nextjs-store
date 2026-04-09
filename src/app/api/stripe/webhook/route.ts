@@ -19,7 +19,7 @@ const clampInt = (n: any, min: number, max: number) => {
 };
 
 type MetaCartItem = {
-  productId: number;
+  productid: string;
   variationId?: number;
   quantity: number;
 };

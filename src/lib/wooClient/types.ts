@@ -21,7 +21,7 @@ export interface YoastHeadJson {
 }
 
 export interface WooImage {
-  id: number;
+  id: string;
   src: string;
   alt: string;
   sizes?: string;
@@ -29,34 +29,56 @@ export interface WooImage {
 }
 
 export interface WooProductCategory {
-  id: number;
+  id: string;
   name: string;
   slug: string;
 }
 
 export interface WooProduct {
-  categories?: WooProductCategory[];
+    categories?: WooProductCategory[];
+    id: number;
+    uuid: string;
+    name: string;
+    slug: string;
+    permalink: string;
+    price: string;
+    regular_price: string;
+    sale_price: string;
+    on_sale: boolean;
+    images: WooImage[];
+    short_description: string;
+    description: string;
+    sku: string;
+    type: string;
+    attributes?: WooProductAttribute[];
+    variations?: number[];
+    yoast_head?: string;
+    yoast_head_json?: YoastHeadJson;
+}
+
+export interface WooProductVariation {
   id: number;
-  name: string;
   slug: string;
   permalink: string;
   price: string;
   regular_price: string;
   sale_price: string;
   on_sale: boolean;
+  status: string;
+  stock_status: string;
+  stock_quantity: number | null;
+  manage_stock: boolean;
   images: WooImage[];
-  short_description: string;
-  description: string;
-  sku: string;
-  type: string;
-  attributes?: WooProductAttribute[];
-  variations?: number[];
-  yoast_head?: string;
-  yoast_head_json?: YoastHeadJson;
+  attributes: {
+    id: number;
+    name: string;
+    slug: string;
+    option: string;
+  }[];
 }
 
 export interface WooProductAttribute {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   position: number;
@@ -66,14 +88,14 @@ export interface WooProductAttribute {
 }
 
 export interface WooCategoryImage {
-  id: number;
+  id: string;
   src: string;
   alt?: string;
   name?: string;
 }
 
 export interface WooCategory {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   parent: string | null;

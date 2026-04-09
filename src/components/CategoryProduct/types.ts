@@ -4,7 +4,7 @@ import type { SectionTone } from "../Section/types";
 export type CateogryProductSliderItem = {
   regular_price: string | undefined;
   on_sale: boolean | undefined;
-  id: number;
+  id: string;
   slug: string;
   image?: WooImage[];
   imageSrc?: string;

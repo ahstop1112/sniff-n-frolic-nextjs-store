@@ -34,7 +34,7 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
 
   const topLevelCategories = allCats
     .filter((c) => c.parent === `0`)
-    .sort((a, b) => a.id - b.id);
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   const topLevelSliderItems = wooCategoriesToSliderItems(
     topLevelCategories,
