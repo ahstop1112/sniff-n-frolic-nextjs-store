@@ -32,7 +32,7 @@ The initial version integrates with **WooCommerce REST APIs** as a backend servi
 
 ---
 
-### Phase 2 — Custom Node.js Backend + Database (Not Started yet)
+### Phase 2 — Custom Node.js Backend + Database (Started at March 2026 !!!!!!)
 The next phase introduces a **custom Node.js backend and database**, progressively replacing WooCommerce as the primary data source.
 
 **Goals**
@@ -41,9 +41,9 @@ The next phase introduces a **custom Node.js backend and database**, progressive
 - Support features not easily achievable with WooCommerce
 
 **Planned Stack**
-- Node.js (REST / GraphQL)
-- Database (PostgreSQL / MongoDB)
-- Authentication and authorization layer
+- Node.js and NestJS (REST)
+- Database (PostgreSQL)
+- Authentication and authorization layer (Not decided yet)
 - Domain-driven data models
 
 ---
@@ -62,8 +62,8 @@ Rather than performing a full rewrite, the system follows an **incremental migra
 - **TypeScript**
 - **React**
 - WooCommerce REST API (Phase 1, in progress)
-- Node.js backend (Phase 2)
-- Database integration (planned)
+- Node.js + NestJS (Phase 2)
+- Database integration (Phase 2)
 
 ---
 
