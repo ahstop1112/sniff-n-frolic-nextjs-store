@@ -39,6 +39,7 @@ jobs:
           WOO_API_BASE_URL: ${{ secrets.WOO_API_BASE_URL }}
           WOO_CONSUMER_KEY: ${{ secrets.WOO_CONSUMER_KEY }}
           WOO_CONSUMER_SECRET: ${{ secrets.WOO_CONSUMER_SECRET }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 
       - name: Wait for server
         run: npx wait-on http://localhost:3001 --timeout 60000
