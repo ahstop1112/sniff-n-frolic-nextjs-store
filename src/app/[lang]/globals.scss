@@ -50,6 +50,10 @@ h4,
 h5,
 h6 {
   color: $sf-teal;
+
+  &.orange{
+    color: $sf-orange;
+  }
 }
 
 * {
@@ -61,6 +65,15 @@ h6 {
 a {
   color: $sf-orange;
   text-decoration: none;
+}
+
+p{
+  &.brown{
+    color: $brown;
+  }
+  &.orange{
+    color: $sf-orange;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -95,6 +108,10 @@ a {
   @media (max-width: $bp-sm) {
     font-size: 2.5rem;
   }
+
+  &.orange{
+    color: $sf-orange !important;
+  }
 }
 
 .pageHeader nav {
@@ -103,4 +120,26 @@ a {
 
 .pageHeader a {
   color: $sf-orange !important;
+}
+
+.story-bg{
+  background-image: url("/images/banner_ourStory.webp") !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  height: 60vh;
+
+  .tagline{
+    color: $sf-teal;
+    margin-bottom: $point * 2;
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
+}
+
+h3.note-title{
+  font-family: "Lilita One", Arial, sans-serif;
+  color: $sf-orange !important;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: $point * 2;
 }

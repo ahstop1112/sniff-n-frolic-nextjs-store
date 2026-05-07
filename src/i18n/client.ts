@@ -19,6 +19,7 @@ export const initClientI18n = (locale: Locale, dict: Dictionary) => {
           checkout: dict.checkout,
           cart: dict.cart,
           cookie: dict.cookie,
+          story: dict.story
         },
       },
       interpolation: { escapeValue: false },

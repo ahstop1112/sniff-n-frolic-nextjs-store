@@ -6,6 +6,7 @@
   overflow: hidden;
   width: 100%;
   margin: 0 auto;
+  display: flex;
 
   @media screen and (min-width: $bp-xs) {
     padding: $point * 5;
@@ -22,6 +23,15 @@
   h4{
     color: $sf-orange;
   }
+
+  .center{
+    justify-content: center !important;
+
+    .inner, .innerNoMarginTop {
+      display: flex;
+      justify-content: center !important;
+    }
+  }
 }
 
 .inner {
@@ -34,9 +44,11 @@
 }
 
 .innerNoMarginTop {
+  max-width: $max-width;
   position: relative;
   z-index: 1;
   padding: 0 0 $point * 15 0;
+  margin: 0 auto;
 }
 
 /* background tones */

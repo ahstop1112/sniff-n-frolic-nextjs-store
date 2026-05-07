@@ -73,7 +73,7 @@ export const NAV_ITEMS = (
           ? buildMegaFromCategories(categories)
           : defaultMega,
     },
-    { key: "ourStory", label: "ourStory", href: `/${locale}/about` },
+    { key: "ourStory", label: "ourStory", href: `/${locale}/sniff-frolic-story` },
     { key: "howToBuy", label: "howToBuy", href: `/${locale}/how-to-buy` },
     { key: "faq", label: "faq", href: `/${locale}/faq` },
   ];

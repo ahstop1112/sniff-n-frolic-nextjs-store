@@ -237,7 +237,24 @@ export interface Dictionary {
     rightsDesc: string;
     rights: string[];
   },
+  terms: {
+    breadcrumb: string;
+    title: string;
+    intro: string;
+    lastUpdated: string;
+    generalTitle: string; general: string[];
+    productTitle: string; product: string[];
+    ordersTitle: string; orders: string[];
+    shippingTitle: string; shipping: string[];
+    returnsTitle: string; returns: string[];
+    ipTitle: string; ip: string[];
+    privacyTitle: string; privacy: string[];
+    liabilityTitle: string; liability: string[];
+    changesTitle: string; changes: string[];
+    lawTitle: string; law: string[];
+  },
   howToBuy: {
+    breadcrumb: string;
     title: string;
     step1Title: string;
     step1Desc: string;
@@ -260,5 +277,77 @@ export interface Dictionary {
     step5Title: string;
     step5Desc: string;
     step5Desc2: string;
+  },
+  story: {
+    breadcrumb: string;
+    heroTagline: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    feifeiNoteTitle: string;
+    feifeiNote: string;
+    feifeiRole: string;
+    beginningTitle: string;
+    beginningBody: string;
+    beginningBody2: string;
+    beginningBody3: string;
+    nameOriginTitle: string;
+    nameOriginBody: string;
+  },
+  faq: {
+    breadcrumb: string;
+    title: string;
+    subtitle: string;
+    subtitleDesc: string;
+    returnsTitle: string;
+    q1: string; a1: string;
+    q2: string; a2: string;
+    paymentsTitle: string;
+    q3: string; a3: string;
+    funTitle: string;
+    q4: string; a4: string;
+    contactLabel: string;
+  },
+  refundReturn: {
+    breadcrumb: string;
+    title: string;
+    intro: string;
+    lastUpdated: string;
+    returnsTitle: string;
+    returnsWindow: string;
+    eligibilityTitle: string;
+    eligibilityItems: string[];
+    startReturnTitle: string;
+    startReturnItems: string[];
+    refundsTitle: string;
+    refundsDesc: string;
+    exchangesTitle: string;
+    exchangesDesc: string;
+    damagedTitle: string;
+    damagedDesc: string;
+    contactTitle: string;
+    location: string;
+    thankYou: string;
+  },
+  shippingPolicy: {
+    breadcrumb: string;
+    title: string;
+    intro: string;
+    lastUpdated: string;
+    processingTitle: string;
+    processingDesc: string;
+    methodsTitle: string;
+    methodsDesc: string;
+    deliveryTitle: string;
+    deliveryItems: string[];
+    deliveryNote: string;
+    feesTitle: string;
+    feesItems: string[];
+    lostTitle: string;
+    lostDesc: string;
+    pickupTitle: string;
+    pickupDesc: string;
+    contactTitle: string;
+    location: string;
+    thankYou: string;
   }
 }

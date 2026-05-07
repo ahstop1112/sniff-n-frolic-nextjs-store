@@ -1,12 +1,14 @@
 import { notFound } from "next/navigation";
 import {
-  Box, Container, Link, List, ListItem, Typography,
+  Box, Grid, Link, List, ListItem, Typography,
   Accordion, AccordionSummary, AccordionDetails,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { isValidLocale, type Locale } from "@/i18n/config";
 import Section from "@/components/Section";
+import BreadcrumbsNav from "@/components/Breadcrumb";
+import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import { LangParamsObj, PageProps } from "@/types/next";
 import { getDictionary } from "@/i18n/dictionaries";
 
@@ -18,14 +20,17 @@ const HowToBuyPage = async ({ params }: HowToBuyPageProps) => {
   if (!isValidLocale(lang)) notFound();
   const locale: Locale = lang;
   const dict = await getDictionary(locale);
+  const breadcrumbs: BreadcrumbItem[] = [{ label: dict.howToBuy.breadcrumb }];
 
   return (
-    <Section tone="white" bottomWave="cream">
-      <Box>
-        <Typography variant="h4" component="h4" gutterBottom>
-          {dict.howToBuy.title}
-        </Typography>
-      </Box>
+    <>
+    <Section tone="teal" className="pageHeader">
+        <BreadcrumbsNav isProduct={false} items={breadcrumbs} />
+        <Grid container spacing={4}>
+          <h1> {dict.howToBuy.title}</h1>
+        </Grid>
+    </Section>
+    <Section tone="white" topWave="teal" bottomWave="cream">
       <Accordion defaultExpanded disableGutters
         elevation={0}
         square
@@ -41,7 +46,7 @@ const HowToBuyPage = async ({ params }: HowToBuyPageProps) => {
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          <Typography variant="h5" component="h5">{dict.howToBuy.step1Title}</Typography>
+          <Typography variant="h5" component="h5" className="orange">{dict.howToBuy.step1Title}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           {dict.howToBuy.step1Desc}<br />
@@ -64,7 +69,7 @@ const HowToBuyPage = async ({ params }: HowToBuyPageProps) => {
           aria-controls="panel2-content"
           id="panel2-header"
         >
-          <Typography variant="h5" component="h5">{dict.howToBuy.step2Title}</Typography>
+          <Typography variant="h5" component="h5" className="orange">{dict.howToBuy.step2Title}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           {dict.howToBuy.step2Desc}
@@ -86,7 +91,7 @@ const HowToBuyPage = async ({ params }: HowToBuyPageProps) => {
           aria-controls="panel3-content"
           id="panel3-header"
         >
-          <Typography variant="h5" component="h5">{dict.howToBuy.step3Title}</Typography>
+          <Typography variant="h5" component="h5" className="orange">{dict.howToBuy.step3Title}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           {dict.howToBuy.step3Desc}
@@ -115,7 +120,7 @@ const HowToBuyPage = async ({ params }: HowToBuyPageProps) => {
           aria-controls="panel4-content"
           id="panel4-header"
         >
-          <Typography variant="h5" component="h5">{dict.howToBuy.step4Title}</Typography>
+          <Typography variant="h5" component="h5" className="orange">{dict.howToBuy.step4Title}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -157,14 +162,15 @@ const HowToBuyPage = async ({ params }: HowToBuyPageProps) => {
           aria-controls="panel5-content"
           id="panel5-header"
         >
-          <Typography variant="h5" component="h5">{dict.howToBuy.step5Title}</Typography>
+          <Typography variant="h5" component="h5" className="orange">{dict.howToBuy.step5Title}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           {dict.howToBuy.step5Desc}<br/>
           {dict.howToBuy.step5Desc2}<br/>
         </AccordionDetails>
       </Accordion>
-    </Section>
+      </Section>
+    </>
   );
 };
 
