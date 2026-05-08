@@ -128,10 +128,10 @@ const ProductPage = async ({ params, searchParams }: ProductPageProps) => {
 
   let variantOptions: VariantOptionGroup[] = [];
 
-  if (product.type === "variable") {
-    const variations = await getProductVariations(product.id);
-    variantOptions = buildVariantOptions(product, variations);
-  }
+  // if (product.type === "variable") {
+  //   const variations = await getProductVariations(product.id);
+  //   variantOptions = buildVariantOptions(product, variations);
+  // }
 
   const addToCartInput: AddToCartInput = {
     id: product.uuid,

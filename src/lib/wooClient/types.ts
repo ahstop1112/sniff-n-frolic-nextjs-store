@@ -77,6 +77,20 @@ export interface WooProductVariation {
   }[];
 }
 
+export interface ApiProductVariation {
+  id: string;
+  slug: string;
+  name: string;
+  sku: string | null;
+  regular_price: number;
+  sale_price: number | null;
+  effective_price: number;
+  stock_status: string | null;
+  stock_quantity: number | null;
+  featured_image_url: string | null;
+}
+
+
 export interface WooProductAttribute {
   id: string;
   name: string;
@@ -126,6 +140,7 @@ export interface ApiProduct {
   category_name: string | null;
   category_slug: string | null;
   images: { url: string; alt_text: string | null; sort_order: number; is_featured: boolean }[];
+  variations?: ApiProductVariation[];
 }
 
 export interface ApiCategory {
