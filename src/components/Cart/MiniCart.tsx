@@ -31,15 +31,13 @@ const MiniCart = () => {
   const { currency } = useCurrency();
   const { items, subtotal, totalItems, updateQuantity, removeItem } = useCart();
   const [open, setOpen] = useState(false);
-
-  const currencyLabel = `${currency} $`;
+  const currencyLabel = `${currency?.code} $`;
   const toggle = (value: boolean) => () => setOpen(value);
 
   return (
     <>
-      {/* Header 上面個 icon */}
-      <IconButton aria-label={t("cartTitle")} onClick={toggle(true)} size="large">
-        <Badge badgeContent={totalItems} color="primary">
+      <IconButton aria-label={t("title")} onClick={toggle(true)} size="large">
+        <Badge badgeContent={totalItems} color="secondary">
           <ShoppingBagOutlinedIcon />
         </Badge>
       </IconButton>
@@ -53,7 +51,7 @@ const MiniCart = () => {
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            bgcolor: "#fff7ef", // 類似你而家個淡米色底
+            bgcolor: "#fff7ef",
           }}
         >
           {/* Header */}
@@ -67,7 +65,7 @@ const MiniCart = () => {
             }}
           >
             <Typography variant="h6" sx={{ letterSpacing: 1, fontWeight: 600 }}>
-              {t('cartTitle').toUpperCase()}
+              {t('title').toUpperCase()}
             </Typography>
             <IconButton onClick={toggle(false)}>
               <CloseIcon />
@@ -102,7 +100,7 @@ const MiniCart = () => {
                     <ListItemText
                       primary={
                         <Link
-                          href={`/en/products/${item.slug}`} // 如果要 locale 可以改 `${locale}`
+                          href={`/en/products/${item.slug}`}
                           style={{
                             textDecoration: "none",
                             color: "#063F53",
@@ -132,7 +130,6 @@ const MiniCart = () => {
                             gap: 1,
                           }}
                         >
-                          {/* 數量輸入 */}
                           <TextField
                             type="number"
                             size="small"
@@ -152,7 +149,7 @@ const MiniCart = () => {
                           <Typography variant="body2">×</Typography>
                           <Typography
                             variant="body2"
-                            sx={{ color: "#b45b33", fontWeight: 600 }}
+                            sx={{ color: "#e16849", fontWeight: 600 }}
                           >
                             {currencyLabel} {item.price.toFixed(2)}
                           </Typography>
@@ -180,7 +177,7 @@ const MiniCart = () => {
               </Typography>
               <Typography
                 variant="subtitle1"
-                sx={{ fontWeight: 600, color: "#b45b33" }}
+                sx={{ fontWeight: 600, color: "#e16849" }}
               >
                 {currencyLabel} {subtotal.toFixed(2)}
               </Typography>
@@ -197,7 +194,7 @@ const MiniCart = () => {
                   fullWidth
                   sx={{
                     borderColor: "#f2d2bd",
-                    color: "#b45b33",
+                    color: "#e16849",
                     fontWeight: 600,
                   }}
                 >
@@ -209,6 +206,7 @@ const MiniCart = () => {
               <Link
                 href={`/${locale}/checkout`}
                 style={{ textDecoration: "none" }}
+                onClick={toggle(false)}
               >
                 <Button
                   variant="contained"

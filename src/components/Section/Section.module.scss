@@ -35,20 +35,30 @@
 }
 
 .inner {
+  width: 100%;
   max-width: $max-width;
   position: relative;
   z-index: 1;
 
   margin: 0 auto;
   padding: $point * 15 0;
+
+  @media screen and (min-width: $bp-md) {
+    max-width: $container-width;
+  }
 }
 
 .innerNoMarginTop {
+  width: 100%;
   max-width: $max-width;
   position: relative;
   z-index: 1;
   padding: 0 0 $point * 15 0;
   margin: 0 auto;
+
+  @media screen and (min-width: $bp-md) {
+    max-width: $container-width;
+  }
 }
 
 /* background tones */

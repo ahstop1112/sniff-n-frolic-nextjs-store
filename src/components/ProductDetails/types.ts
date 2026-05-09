@@ -4,6 +4,8 @@ export interface ProductDetailsProps {
   price: number;
   onSale: boolean;
   variantOptions: VariantOptionGroup[];
+  selectedAttributes?: Record<string, string>;
+  onSelectVariant?: (attrSlug: string, value: string) => void;
 }
 
 export interface VariantOptionGroup {

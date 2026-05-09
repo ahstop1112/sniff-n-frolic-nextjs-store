@@ -12,8 +12,9 @@ const ProductsDetailsTop = ({
   price,
   onSale,
   variantOptions,
+  onSelectVariant,
+  selectedAttributes
 }: ProductDetailsProps) => {
-  const locale = useLocale();
   const displayPrice = formatPrice(price);
 
   return (
@@ -38,14 +39,10 @@ const ProductsDetailsTop = ({
                 {group.values.map((value) => (
                   <Box
                     key={value}
-                    sx={{
-                      borderRadius: 1,
-                      border: "1px solid",
-                      borderColor: "divider",
-                      px: 1.2,
-                      py: 0.4,
-                      fontSize: 14,
-                    }}
+                    onClick={() => onSelectVariant?.(group.slug, value)}
+                    className={`${styles.variantOption} ${
+                      selectedAttributes?.[group.slug] === value ? styles.variantOptionSelected : ""
+                    }`}
                   >
                     {value}
                   </Box>

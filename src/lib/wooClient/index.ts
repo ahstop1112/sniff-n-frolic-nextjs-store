@@ -13,7 +13,7 @@ const apiProductToWoo = (p: ApiProduct): WooProduct => ({
   name: p.name,
   slug: p.slug,
   permalink: "",
-  price: centsToString(p.effective_price),
+  price: centsToString(p.effective_price || p.regular_price || p.min_variation_price || 0),
   regular_price: centsToString(p.regular_price),
   sale_price: p.sale_price ? centsToString(p.sale_price) : "",
   on_sale: p.sale_price !== null,
@@ -29,6 +29,7 @@ const apiProductToWoo = (p: ApiProduct): WooProduct => ({
   categories: p.category_slug
     ? [{ id: p.category_id ?? "", name: p.category_name ?? "", slug: p.category_slug }]
     : [],
+  variations: p.variations ?? [],
 });
 
 const apiCategoryToWoo = (c: ApiCategory): WooCategory & { parentSlug: string | null } => {
@@ -65,7 +66,9 @@ export const getProducts = async (options?: {
     next: { revalidate: CACHE_CONFIG.PRODUCTS },
   });
 
-  return products.map(apiProductToWoo);
+  return products
+    .filter((p) => p.product_type !== 'variation')
+    .map(apiProductToWoo);
 };
 
 export const getProductBySlug = async (
