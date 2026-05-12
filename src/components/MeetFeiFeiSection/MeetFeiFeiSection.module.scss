@@ -1,0 +1,58 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  padding-bottom: 1rem;
+
+  @media (max-width: $bp-sm) {
+    flex-wrap: wrap;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  flex-shrink: 0;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.woofBubble {
+  position: absolute;
+  bottom: 10px;
+  left: -10px;
+  background: $white;
+  border-radius: 50%;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.content {
+  color: $white;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  font-family: "Lilita One", Arial, sans-serif;
+  color: $white;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 600px;
+}

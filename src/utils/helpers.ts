@@ -21,7 +21,11 @@ export const collectDescendantIds = (all: any[], rootId: number) => {
 };
 
 export const formatMoney = (n: number, currency = "CAD") =>
-  new Intl.NumberFormat("en-CA", { style: "currency", currency }).format(n);
+  new Intl.NumberFormat("en-CA", { 
+    style: "currency", 
+    currency,
+    currencyDisplay: "narrowSymbol"
+  }).format(n);
 
 export const toNum = (v?: string) => {
   const x = Number(v);

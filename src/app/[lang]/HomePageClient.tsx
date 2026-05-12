@@ -17,9 +17,9 @@ const HomePageClient = () => {
 
   return (
     <CategorySliderSection
-      bottomWave="green"
       title="All Categories"
       items={homeSliderItems}
+      tone="teal"
     />
   );
 };

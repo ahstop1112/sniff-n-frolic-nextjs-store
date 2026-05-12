@@ -9,9 +9,10 @@ const Section = ({
   topWave,
   bottomWave,
   className,
+  style
 }: SectionProps) => {
   return (
-    <section className={clsx(styles.section, styles[tone], className)}>
+    <section className={clsx(styles.section, styles[tone], className)} style={style}>
       {topWave && <WaveDivider tone={topWave} position="top" />}
       <div className={!topWave ? styles.innerNoMarginTop : styles.inner}>{children}</div>
       {bottomWave && <WaveDivider tone={bottomWave} position="bottom" />}

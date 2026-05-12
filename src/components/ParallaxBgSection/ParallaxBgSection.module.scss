@@ -1,0 +1,77 @@
+@use "@/styles/tokens" as *;
+@use "@/styles/mixins" as m;
+
+.banner {
+    position: relative;
+    height: 50vh;
+    background-attachment: fixed; // parallax effect
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+
+    &.textCenter{
+        justify-content: center;
+
+        .content {
+            justify-content: center;
+            text-align: center;
+        }
+    }
+    &.textRight{
+        justify-content: flex-end;
+
+        .content {
+            text-align: right;
+            justify-content: flex-end;
+        }
+    }
+  }
+  
+  .content {
+    padding: 2rem 3rem;
+    color: $white;
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+
+    @media (max-width: $bp-sm) {
+        width: 100%;
+    }
+  }
+  
+  .title {
+    font-family: "Lilita One", Arial, sans-serif;
+    color: $white;
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    width: 80%;
+
+    @media (max-width: $bp-sm) {
+        width: 100%;
+    }
+  }
+  
+  .button {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background-color: $sf-orange;
+    color: $white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background-color 0.2s;
+  
+    &:hover {
+      background-color: darken($sf-orange, 10%);
+    }
+  }

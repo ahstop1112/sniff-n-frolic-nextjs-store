@@ -6,6 +6,8 @@ import { getProducts } from "@/lib/wooClient";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
 import MainBanner from "@/components/Home/MainBanner";
 import CategoryProductSliderSection from "@/components/CategoryProduct";
+import ParallaxBgSection from "@/components/ParallaxBgSection";
+import MeetFeiFeiSection from "@/components/MeetFeiFeiSection";
 import { toCategoryProductSliderItems } from "@/domains/products/adapter";
 import type { PageProps, LangParamsObj } from "@/types/next";
 import HomePageClient from "./HomePageClient";
@@ -60,23 +62,37 @@ const HomePage = async ({ params }: HomePageProps) => {
     <>
       <MainBanner />
       <HomePageClient />
+      <ParallaxBgSection
+        title="Walk & Travel"
+        subtitle="Walk and travel essentials including jackets, walk gear and on-the-go accessories."
+        buttonText="Explore Gear"
+        buttonHref={`${locale}/category/walk-gear`}
+        imageSrc="images/banner_feifei.webp"
+      />
       {/* Pet Treats */}
       <CategoryProductSliderSection
         title={treatsTitle}
         desc="Everyday treats handpicked for mindful feeding, slow rewards, and daily routines."
         items={productTreatsItems}
         tone="white"
-        topWave="green"
-        bottomWave="yellow"
+      />
+      <ParallaxBgSection
+        title="Sniff & Bites"
+        subtitle="Natural Single-Ingredient Treats for Dogs & Cats
+        Chicken • Kangaroo • Sardines"
+        buttonText="Shop Now"
+        buttonHref={`${locale}/category/sniff-n-bites`}
+        imageSrc="/images/banner_snb_v2.webp"
+        position="right"
       />
       {/* Pet Bowls & Feeders */}
       <CategoryProductSliderSection
         title={feederTitle}
         desc="Bowls, feeders and drinking accessories designed for everyday feeding and hydration."
         items={productFeederItems}
-        tone="yellow"
-        bottomWave="cream"
+        tone="orange"
       />
+      <MeetFeiFeiSection />
     </>
   );
 };

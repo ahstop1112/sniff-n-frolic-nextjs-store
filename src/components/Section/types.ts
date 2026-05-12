@@ -6,4 +6,5 @@ export type SectionProps = {
   topWave?: SectionTone;
   bottomWave?: SectionTone;
   className?: string;
+  style?: React.CSSProperties;
 };

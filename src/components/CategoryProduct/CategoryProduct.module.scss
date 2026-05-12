@@ -9,14 +9,14 @@
 
 @include bp-up($bp-lg) {
   .categoryProductSection {
-    --cs-slide-basis: calc(100% / 6); // 4 items
+    --cs-slide-basis: calc(100% / 7); // 4 items
   }
 }
 
 /* Tablet (md ~ lg) */
 @include bp-between($bp-md, $bp-lg) {
   .categoryProductSection {
-    --cs-slide-basis: calc(100% / 4); // 3 items
+    --cs-slide-basis: calc(100% / 5); // 3 items
   }
 }
 
@@ -40,14 +40,14 @@
   font-family: "Lilita One", Arial, sans-serif;
   font-size: 2.25rem;
   line-height: 1.6;
-  margin: 0 0 $point * 2 0;
+  margin: $point * 2 0;
 }
 
 .categoryProductSection h4 {
   text-align: center;
   color: $sf-yellow;
   line-height: 1.6;
-  margin: 0 0 $point * 4;
+  margin: $point * 4;
 }
 
 .wrap {
