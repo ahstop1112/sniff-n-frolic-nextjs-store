@@ -9,7 +9,7 @@
 
 @include bp-up($bp-lg) {
   .categoryProductSection {
-    --cs-slide-basis: calc(100% / 7); // 4 items
+    --cs-slide-basis: calc(100% / 6); // 4 items
   }
 }
 
