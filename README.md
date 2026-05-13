@@ -1,5 +1,5 @@
 # Snff & Frolic NextJS Store (Pet Supplier Store)
-https://app.sniffnfrolic.com
+https://sniffnfrolic.com
 
 ## Overview
 This is a production-style **Next.js + TypeScript** project focused on scalable frontend architecture and real-world application structure rather than feature completeness.
