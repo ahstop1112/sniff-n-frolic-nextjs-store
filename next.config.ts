@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/product/:slug',
+        destination: '/en/products/:slug',
+        permanent: true,
+      },
+      {
         source: '/category/:parent/:slug',
         destination: '/en/category/:slug',
         permanent: true,
