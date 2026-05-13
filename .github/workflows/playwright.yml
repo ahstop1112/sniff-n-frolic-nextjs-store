@@ -39,6 +39,8 @@ jobs:
           WOO_CONSUMER_KEY: ${{ secrets.WOO_CONSUMER_KEY }}
           WOO_CONSUMER_SECRET: ${{ secrets.WOO_CONSUMER_SECRET }}
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }} 
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+
 
       - name: Start Next.js
         run: npm run start &
@@ -48,6 +50,8 @@ jobs:
           WOO_CONSUMER_KEY: ${{ secrets.WOO_CONSUMER_KEY }}
           WOO_CONSUMER_SECRET: ${{ secrets.WOO_CONSUMER_SECRET }}
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+
 
       - name: Wait for server
         run: npx wait-on http://localhost:3001 --timeout 60000
