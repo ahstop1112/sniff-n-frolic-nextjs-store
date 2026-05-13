@@ -20,7 +20,21 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverComponentsHmrCache: false,
-  }
+  },
+  async redirects() {
+    return [
+      {
+        source: '/category/:parent/:slug',
+        destination: '/en/category/:slug',
+        permanent: true,
+      },
+      {
+        source: '/category/:slug',
+        destination: '/en/category/:slug',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 
