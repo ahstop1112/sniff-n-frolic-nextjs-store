@@ -66,10 +66,10 @@ const RefundReturnPage = async ({ params }: RefundReturnPageProps) => {
             📧{" "}
             <Box
               component="a"
-              href="mailto:woff@sniffnfrolic.com"
+              href="mailto:woof@sniffnfrolic.com"
               sx={{ color: "primary.main", textDecoration: "none", "&:hover": { textDecoration: "underline" } }}
             >
-              woff@sniffnfrolic.com
+              woof@sniffnfrolic.com
             </Box>
           </Typography>
           <Typography variant="body1" sx={{ mb: 3 }}>📍 {dict.refundReturn.location}</Typography>

@@ -112,8 +112,6 @@ const ProductPage = async ({ params, searchParams }: ProductPageProps) => {
 
   let variantOptions: VariantOptionGroup[] = [];
 
-  console.log(product);
-
   if (product.type === "variable" && product.variations?.length) {
     variantOptions = buildVariantOptions(product.variations);
   }

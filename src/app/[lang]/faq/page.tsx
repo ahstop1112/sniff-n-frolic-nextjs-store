@@ -98,10 +98,10 @@ const FaqPage = async ({ params }: FaqPageProps) => {
             {dict.faq.contactLabel}{" "}
             <Box
               component="a"
-              href="mailto:woff@sniffnfrolic.com"
+              href="mailto:woof@sniffnfrolic.com"
               sx={{ color: "primary.main", textDecoration: "none", "&:hover": { textDecoration: "underline" } }}
             >
-              woff@sniffnfrolic.com
+              woof@sniffnfrolic.com
             </Box>
           </Typography>
         </Box>

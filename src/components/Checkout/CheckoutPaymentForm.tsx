@@ -85,7 +85,7 @@ const CheckoutPaymentForm = ({
   };
 
   return (
-    <Section>
+    <>
       <PageLoading open={loading} label={t("preparingPayment")} />
       {localError ? (
         <Alert severity="error" sx={{ mb: 2 }}>
@@ -103,7 +103,7 @@ const CheckoutPaymentForm = ({
       >
         {loading ? t("processingPayment") : t("payNow")}
       </Button>
-    </Section>
+    </>
   );
 };
 

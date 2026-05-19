@@ -27,12 +27,12 @@ const CheckoutOrderSummary = ({
   const calc = useMemo(() => {
     if (pricing?.total != null) {
       return {
-        shipping: Number(pricing.shipping ?? 0),
-        gst: Number(pricing.gst ?? 0),
-        pst: Number(pricing.pst ?? 0),
-        tax: Number(pricing.tax ?? 0),
-        total: Number(pricing.total ?? 0),
-        subtotal: Number(pricing.subtotal ?? subtotal),
+        shipping: Number(pricing.shipping ?? 0) / 100,
+        gst: Number(pricing.gst ?? 0) / 100,
+        pst: Number(pricing.pst ?? 0) / 100,
+        tax: Number(pricing.tax ?? 0) / 100,
+        total: Number(pricing.total ?? 0) / 100,
+        subtotal: Number(pricing.subtotal ?? subtotal) / 100,
         from: "server" as const,
       };
     }

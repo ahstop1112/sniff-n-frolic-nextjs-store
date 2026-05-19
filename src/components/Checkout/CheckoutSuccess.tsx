@@ -5,10 +5,9 @@ import { useTranslation } from "react-i18next";
 import { Box, Typography, Button } from "@mui/material";
 import { useCart } from "@/context/CartContext";
 
-const CheckoutSuccess = ({ orderId }: { orderId: string; }) => {
+const CheckoutSuccess = ({ orderId, lang }: { orderId: string; lang: string }) => {
   const { t } = useTranslation("checkout");
   const { clearCart } = useCart();
-  let lang;
 
   useEffect(() => {
       clearCart();
@@ -17,7 +16,7 @@ const CheckoutSuccess = ({ orderId }: { orderId: string; }) => {
   }, []);
 
   return (
-    <Box maxWidth={700} mx="auto" mt={6} px={2}>
+    <Box maxWidth={700} mx="auto" mt={6} mb={6} px={2}>
       <Typography variant="h4" gutterBottom>
         {t('paymentSuccess')}
       </Typography>
@@ -33,17 +32,17 @@ const CheckoutSuccess = ({ orderId }: { orderId: string; }) => {
       ) : null}
 
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-        <Button variant="contained" component={Link} href={`/${lang}/collections`}>
+        <Button variant="contained" component={Link} href={`/${lang}/products`}>
           {t('continueShopping')}
         </Button>
 
-        <Button
+        {/* <Button
           variant="outlined"
           component={Link}
           href={`/${lang}/account/orders`}
         >
           {t('viewOrders')}
-        </Button>
+        </Button> */}
       </Box>
     </Box>
   );

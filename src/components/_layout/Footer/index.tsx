@@ -68,7 +68,7 @@ const Footer = () => {
             </Button>
             <p>
               <b>{t("needHelp")}</b><br />
-              <a href="mailto:woff@sniffnfrolic.com">woff@sniffnfrolic.com</a>
+              <a href="mailto:woof@sniffnfrolic.com">woof@sniffnfrolic.com</a>
             </p>
           </Grid>
 

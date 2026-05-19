@@ -253,7 +253,7 @@ export const enDictionary: Dictionary = {
         company: "Sniff & Frolic",
         location: "Burnaby, BC, Canada",
         website: "https://sniffnfrolic.com",
-        email: "woff@sniffnfrolic.com"
+        email: "woof@sniffnfrolic.com"
       }
   },
   privacyPolicy: {
@@ -411,7 +411,7 @@ No matter what kind of adventure (or nap!) you're into, we're here to add a litt
     q1: "Can I return my order?",
     a1: "We accept returns within 14 days of order date. Items must be unused, in original packaging. Please note: shipping fees are non-refundable, and customers are responsible for return shipping.",
     q2: "Can I cancel my order?",
-    a2: "If your order hasn't shipped yet, we can help cancel it. Just email us at woff@sniffnfrolic.com as soon as possible.",
+    a2: "If your order hasn't shipped yet, we can help cancel it. Just email us at woof@sniffnfrolic.com as soon as possible.",
     paymentsTitle: "Payments",
     q3: "What payment options do you accept?",
     a3: "We accept Credit Cards, Stripe, Apple Pay, Google Pay, and PayPal. All transactions are secured.",
@@ -433,7 +433,7 @@ No matter what kind of adventure (or nap!) you're into, we're here to add a litt
       "Toys, treats, and consumables must be unopened for hygiene reasons",
       "Clearance or final-sale items are non-returnable",
     ],
-    startReturnTitle: "To start a return, email us at woff@sniffnfrolic.com with:",
+    startReturnTitle: "To start a return, email us at woof@sniffnfrolic.com with:",
     startReturnItems: [
       "Your order number",
       "Item(s) you wish to return",
@@ -442,7 +442,7 @@ No matter what kind of adventure (or nap!) you're into, we're here to add a litt
     refundsTitle: "Refunds",
     refundsDesc: "Once we receive and inspect your returned item, we will notify you by email. Approved refunds will be issued to your original payment method within 3–7 business days. Shipping fees are non-refundable.",
     exchangesTitle: "Exchanges",
-    exchangesDesc: "If you need a different size, colour, or product, please contact us at woff@sniffnfrolic.com. We will arrange an exchange depending on stock availability.",
+    exchangesDesc: "If you need a different size, colour, or product, please contact us at woof@sniffnfrolic.com. We will arrange an exchange depending on stock availability.",
     damagedTitle: "Damaged / Incorrect Items",
     damagedDesc: "If your item arrives damaged or incorrect, please contact us within 7 days of delivery. We will provide a replacement or refund as soon as possible.",
     contactTitle: "Contact Us",

@@ -208,7 +208,7 @@ const CookiePolicyPage = async ({ params }: CookiePolicyPageProps) => {
               </Link>
             </Typography>
             <Typography variant="body1">
-              Email: <Link href="mailto:woff@sniffnfrolic.com">woff@sniffnfrolic.com</Link>
+              Email: <Link href="mailto:woof@sniffnfrolic.com">woof@sniffnfrolic.com</Link>
             </Typography>
             <Typography variant="body1">
               This Cookie Policy was synchronized with <a href="http://cookiedatabase.org" target="_blank">cookiedatabase.org</a> on September 12, 2025.

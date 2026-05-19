@@ -71,6 +71,9 @@ export const POST = async (req: Request) => {
         items: lineItems,
         notes: null,
         currency: "CAD",
+        shipping: shippingCost,        // 加
+        tax: gstCents + pstCents,      // 加
+        total,   
       }),
     });
 
