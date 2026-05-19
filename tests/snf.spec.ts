@@ -159,7 +159,7 @@ test.describe('Checkout', () => {
   
     // Debug: print all iframe titles
     const titles = await page.locator('iframe').evaluateAll(
-      (frames) => frames.map(f => ({ title: f.title, name: f.name, src: f.src.substring(0, 80) }))
+      (frames) => frames.map(f => ({ title: (f as HTMLIFrameElement).title, name: (f as HTMLIFrameElement).name, src: (f as HTMLIFrameElement).src.substring(0, 80) }))
     );
     console.log('iframes:', JSON.stringify(titles, null, 2));
   });
