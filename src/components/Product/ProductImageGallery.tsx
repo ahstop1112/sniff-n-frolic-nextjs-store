@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Box, Stack } from "@mui/material";
-import type { WooImage } from "@/lib/wooClient";
+import type { WooImage } from "@/lib/storeApi";
 
 interface ProductImageGalleryProps {
   images: WooImage[];

@@ -1,6 +1,6 @@
 import { Locale } from "@/i18n/config";
 import type { RawNavNode } from "./types";
-import type { WooCategory } from "@/lib/wooClient";
+import type { WooCategory } from "@/lib/storeApi";
 
 type CategoryWithParentSlug = WooCategory & { parentSlug?: string | null };
 

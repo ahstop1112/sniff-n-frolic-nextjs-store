@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
-import { getProductBySlug } from "@/lib/wooClient";
+import { getProductBySlug } from "@/lib/storeApi";
 import { seoConfig } from "./seoConfig";
 
 interface BuildProductMetadataArgs {

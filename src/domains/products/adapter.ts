@@ -1,6 +1,6 @@
 import type { CateogryProductSliderItem } from "@/components/CategoryProduct/types";
 import type { Locale } from "@/i18n/config";
-import type { WooProduct } from "@/lib/wooClient";
+import type { WooProduct } from "@/lib/storeApi";
 
 export const toCategoryProductSliderItems = (
   products: WooProduct[],

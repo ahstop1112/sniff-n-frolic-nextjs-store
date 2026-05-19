@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Box, Grid, Divider } from "@mui/material";
-import type { WooProduct, ApiProductVariation } from "@/lib/wooClient/types";
+import type { WooProduct, ApiProductVariation } from "@/lib/storeApi/types";
 import type { Locale } from "@/i18n/config";
 import ProductDetails from "@/components/ProductDetails";
 import ProductPurchasePanel from "@/components/ProductPurchasePanel";

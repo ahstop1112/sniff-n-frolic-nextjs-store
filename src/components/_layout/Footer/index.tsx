@@ -12,7 +12,7 @@ import {
   Button,
   Link as MuiLink,
 } from "@mui/material";
-import type { WooCategory } from "@/lib/wooClient/types";
+import type { WooCategory } from "@/lib/storeApi/types";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { getTopLevelCategories } from "@/utils/category";
 import styles from "./Footer.module.scss";

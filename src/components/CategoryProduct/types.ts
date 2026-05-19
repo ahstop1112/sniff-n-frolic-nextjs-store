@@ -1,4 +1,4 @@
-import type { WooImage, WooProductCategoryLite } from "@/lib/wooClient";
+import type { WooImage, WooProductCategoryLite } from "@/lib/storeApi";
 import type { SectionTone } from "../Section/types";
 
 export type CateogryProductSliderItem = {

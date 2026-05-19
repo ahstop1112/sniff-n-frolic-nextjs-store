@@ -3,15 +3,13 @@ import { notFound } from "next/navigation";
 import { Grid } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getProducts, getCategories } from "@/lib/wooClient";
-import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
+import { getProducts, getCategories } from "@/lib/storeApi";
 import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import ProductsFilterSidebarClient from "@/components/ProductFilter";
 import Section from "@/components/Section";
-import ProductGrid from "@/components/Product/ProductGrid";
+import ProductsGridClient from "@/components/Product/ProductsGridClient"
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
-import { shuffleArray } from "@/utils/helpers";
 import { wooCategoriesToSliderItems } from "@/domains/categories/adapter";
 import {
   PageProps,
@@ -20,10 +18,12 @@ import {
   unwrapSearchParams,
 } from "@/types/next";
 
+const PAGE_SIZE = 20;
+
 type ProductsPageProps = PageProps<LangSlugParamsObj>;
 
 const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
-  const { lang, slug } = await unwrap(params);
+  const { lang } = await unwrap(params);
   const sp = await unwrapSearchParams(searchParams);
 
   if (!isValidLocale(lang)) notFound();
@@ -33,41 +33,22 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
   const allCats = await getCategories();
 
   const topLevelCategories = allCats
-    .filter((c) => c.parent === `0`)
+    .filter((c) => c.parent === "0")
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const topLevelSliderItems = wooCategoriesToSliderItems(
-    topLevelCategories,
-    locale,
-  );
+  const topLevelSliderItems = wooCategoriesToSliderItems(topLevelCategories, locale);
 
-  // Show the first level of Categoryes
-  const { wooParams } = await buildWooParamsForListPage({
-    searchParams: sp,
-    perPage: 50,
+  const categorySlug = typeof sp.category === "string" ? sp.category : undefined;
+  const search = typeof sp.search === "string" ? sp.search : undefined;
+
+  // First page — server side
+  const initialProducts = await getProducts({
+    page: 1,
+    per_page: PAGE_SIZE,
+    category: categorySlug,
+    search,
   });
-  const categorySlug =
-    typeof sp.category === "string" ? sp.category : undefined;
-  const inStockFlag = typeof sp.in_stock === "string" ? sp.in_stock : undefined;
 
-  let selectedCategory = undefined as any;
-  selectedCategory = categorySlug
-    ? topLevelCategories.find((item) => item.slug === categorySlug)
-    : null;
-
-  if (selectedCategory?.id) {
-    wooParams.category = selectedCategory.id;
-  }
-
-  if (inStockFlag === "1") {
-    (wooParams as any).stock_status = "instock";
-  }
-
-  const products = await getProducts(wooParams);
-  const finalProducts =
-    categorySlug || inStockFlag ? products : shuffleArray(products);
-
-  // Breadcrumbs
   const breadcrumbs: BreadcrumbItem[] = [];
 
   return (
@@ -76,35 +57,27 @@ const ProductsPage = async ({ params, searchParams }: ProductsPageProps) => {
         <BreadcrumbsNav isProduct={true} items={breadcrumbs} />
         <h1>{dict.nav.collection}</h1>
       </Section>
+
       <Section tone="white" topWave="teal" bottomWave="green">
-        {/* All Product */}
         <Grid container spacing={3}>
+          {/* Sidebar */}
           <Grid size={{ lg: 3, xl: 3, md: 3, sm: 12, xs: 12 }}>
             <ProductsFilterSidebarClient
               categories={topLevelSliderItems}
               common={dict.common}
             />
           </Grid>
-          <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
-            {(finalProducts || []).map((p) => (
-              <Grid
-                container
-                size={{ lg: 3, xl: 2, md: 4, sm: 6, xs: 6 }}
-                key={p.slug}
-              >
-                <ProductGrid
-                  slug={p.slug}
-                  image={p?.images[0]}
-                  name={p.name}
-                  onSale={p?.on_sale}
-                  price={p.price}
-                  regularPrice={p?.regular_price}
-                />
-              </Grid>
-            ))}
-          </Grid>
+
+          {/* Products — client handles infinite scroll */}
+          <ProductsGridClient
+            initialProducts={initialProducts}
+            categorySlug={categorySlug}
+            search={search}
+            pageSize={PAGE_SIZE}
+          />
         </Grid>
       </Section>
+
       <CategorySliderSection
         title={dict.search.allCategories}
         items={topLevelSliderItems}

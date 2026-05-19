@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCategories } from "@/lib/wooClient";
+import { getCategories } from "@/lib/storeApi";
 
 export const GET = async () => {
   try {

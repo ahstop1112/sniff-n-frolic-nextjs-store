@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Typography, Box, Grid } from "@mui/material";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getProducts } from "@/lib/wooClient";
+import { getProducts } from "@/lib/storeApi";
 import { buildWooParamsForListPage } from "@/lib/filters/buildWooParamsForListPage";
 import { buildSearchMetadata } from "@/seo/buildSearchMetaTag";
 import Section from "@/components/Section";

@@ -1,4 +1,4 @@
-import type { WooCategoryImage } from "@/lib/wooClient";
+import type { WooCategoryImage } from "@/lib/storeApi";
 import type { Locale } from "@/i18n/config";
 import type { SectionTone } from "../Section/types";
 import { NavNode } from "@/domains/nav/types";
@@ -31,4 +31,5 @@ export interface CategoryPageClientProps {
   slug?: string | ``;
   dict: any;
   finalProducts: any[];
+  search?: string;
 }

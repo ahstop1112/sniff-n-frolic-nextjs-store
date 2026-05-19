@@ -1,4 +1,4 @@
-import type { WooImage } from "@/lib/wooClient";
+import type { WooImage } from "@/lib/storeApi";
 
 export interface ProductGridProps {
   slug: string;

@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
-import { getProducts } from "@/lib/wooClient";
+import { getProducts } from "@/lib/storeApi";
 import { buildHomeMetadata } from "@/seo/buildHomeMetadata";
 import MainBanner from "@/components/Home/MainBanner";
 import CategoryProductSliderSection from "@/components/CategoryProduct";

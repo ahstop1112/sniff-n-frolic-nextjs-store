@@ -1,13 +1,15 @@
+// src/app/[lang]/category/[slug]/page.tsx
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getProducts } from "@/lib/wooClient";
-import { shuffleArray } from "@/utils/helpers";
+import { getProducts } from "@/lib/storeApi";
 import { buildCategoryMetadata } from "@/seo/buildCategoryMetaTag";
 import CategoryPageClient from "@/components/Category";
 import type { PageProps, LangSlugParamsObj } from "@/types/next";
 import { unwrap, unwrapSearchParams } from "@/types/next";
+
+const PAGE_SIZE = 20;
 
 type CategoryPageProps = PageProps<LangSlugParamsObj>;
 
@@ -29,20 +31,20 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
 
   const search = typeof sp.q === "string" ? sp.q.trim() : undefined;
 
-  const products = await getProducts({
+  // First page only — client handles the rest
+  const initialProducts = await getProducts({
     category: slug,
     search: search || undefined,
-    per_page: 50,
+    per_page: PAGE_SIZE,
+    page: 1,
   });
-
-  const hasAnyFilter = Boolean(search);
-  const finalProducts = hasAnyFilter ? products : shuffleArray(products);
 
   return (
     <CategoryPageClient
       slug={slug}
       dict={dict}
-      finalProducts={finalProducts}
+      finalProducts={initialProducts}
+      search={search}
     />
   );
 };

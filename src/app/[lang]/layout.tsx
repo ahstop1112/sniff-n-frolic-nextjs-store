@@ -2,7 +2,7 @@
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getCategories } from "@/lib/wooClient";
+import { getCategories } from "@/lib/storeApi";
 import I18nProvider from "@/i18n/I18nProvider";
 import { requireLocale } from "@/i18n/requireLocale";
 import { LocaleProvider } from "@/i18n/LocaleProvider";

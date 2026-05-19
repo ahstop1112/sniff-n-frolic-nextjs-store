@@ -9,7 +9,7 @@ import Section from "@/components/Section";
 import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
 import CategorySliderSection from "@/components/Category/CategorySliderSection";
-import ProductGrid from "@/components/Product/ProductGrid";
+import ProductsGridClient from "@/components/Product/ProductsGridClient";
 import ProductsFilterSidebarClient from "@/components/ProductFilter";
 import { wooCategoriesToSliderItems } from "@/domains/categories/adapter";
 
@@ -19,6 +19,7 @@ const CategoryPageClient = ({
   slug,
   dict,
   finalProducts,
+  search,
 }: CategoryPageClientProps) => {
   const locale = useLocale();
   const allCats = useCategories();
@@ -68,24 +69,12 @@ const CategoryPageClient = ({
             />
           </Grid>
 
-          <Grid container size={{ lg: 9, xl: 9, md: 9, sm: 12, xs: 12 }}>
-            {(finalProducts || []).map((p) => (
-              <Grid
-                container
-                size={{ lg: 3, xl: 2, md: 4, sm: 6, xs: 6 }}
-                key={p.slug}
-              >
-                <ProductGrid
-                  slug={p.slug}
-                  image={p?.images[0]}
-                  name={p.name}
-                  onSale={p?.on_sale}
-                  price={p.price}
-                  regularPrice={p?.regular_price}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          <ProductsGridClient
+            initialProducts={finalProducts}
+            categorySlug={slug}
+            search={search}
+            pageSize={20}
+          />
         </Grid>
       </Section>
 

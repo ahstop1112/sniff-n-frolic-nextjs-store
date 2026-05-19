@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { isValidLocale, type Locale } from "@/i18n/config";
-import { getCategories } from "@/lib/wooClient";
+import { getCategories } from "@/lib/storeApi";
 import { getDictionary } from "@/i18n/dictionaries";
 import { seoConfig } from "./seoConfig";
 

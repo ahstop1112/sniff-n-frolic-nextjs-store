@@ -1,4 +1,4 @@
-import type { WooCategory } from "@/lib/wooClient/types";
+import type { WooCategory } from "@/lib/storeApi/types";
 import type { NavNode } from "@/domains/nav/types";
 import type { Locale } from "@/i18n/config";
 import type { CategorySliderItem } from "@/components/Category/types";

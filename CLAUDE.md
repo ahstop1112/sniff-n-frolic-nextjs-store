@@ -28,17 +28,17 @@ This is a single **Next.js 16** app (App Router, React 19, MUI v7, TypeScript) �
 
 **Phase 1:** Headless frontend calling WooCommerce REST APIs directly.
 
-**Phase 2 (current):** Frontend now calls a custom NestJS backend via `API_BASE_URL`. The `wooClient.ts` service layer still exports `WooProduct`/`WooCategory` shapes so no components needed changes — adapters inside `wooClient.ts` convert NestJS API responses to those shapes. `getProductVariations` and `getCategoryById` still fall back to WooCommerce directly.
+**Phase 2 (current):** Frontend now calls a custom NestJS backend via `API_BASE_URL`. The `storeApi.ts` service layer still exports `WooProduct`/`WooCategory` shapes so no components needed changes — adapters inside `storeApi.ts` convert NestJS API responses to those shapes. 
 
-### Key Abstraction: `wooClient.ts` → `apiClient.ts`
+### Key Abstraction: `storeApi.ts` → `apiClient.ts`
 
-`src/lib/wooClient.ts` is the **single data-access boundary** for all product and category data. It:
+`src/lib/storeApi.ts` is the **single data-access boundary** for all product and category data. It:
 - Exports typed `WooProduct`/`WooCategory` interfaces (components depend on these)
 - Fetches from the NestJS backend via `src/lib/apiClient.ts` (reads `API_BASE_URL`)
 - Adapts NestJS API shapes to the Woo interface via `apiProductToWoo` / `apiCategoryToWoo`
 - Applies Next.js ISR cache via `CACHE_CONFIG` in `src/lib/cache.ts`
 
-When migrating an endpoint from WooCommerce to the NestJS backend, update only `wooClient.ts`.
+When migrating an endpoint from WooCommerce to the NestJS backend, update only `storeApi.ts`.
 
 ### Routing
 
@@ -79,7 +79,7 @@ Defined in `src/lib/cache.ts` using Next.js ISR:
 # NestJS backend URL (required - replaces WooCommerce for products/categories)
 API_BASE_URL=
 
-# WooCommerce (still used for variations and getCategoryById)
+# WooCommerce (legacy since May 2026)
 WOO_API_BASE_URL=
 WOO_CONSUMER_KEY=
 WOO_CONSUMER_SECRET=

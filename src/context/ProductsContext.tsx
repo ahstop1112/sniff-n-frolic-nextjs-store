@@ -7,7 +7,7 @@ import React, {
   useCallback,
   ReactNode,
 } from "react";
-import type { WooProduct } from "@/lib/wooClient";
+import type { WooProduct } from "@/lib/storeApi";
 
 export type FetchOptions = {
   page?: number;

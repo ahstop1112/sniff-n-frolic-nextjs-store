@@ -1,8 +1,8 @@
+// LEGACY WOOCLIENT (to be removed after migration to new API is complete - updated 2026-05-18)
 import "server-only";
 import { apiFetch } from "@/lib/apiClient";
-import { wooFetchServer } from "@/lib/woo/server";
 import { CACHE_CONFIG } from "@/lib/cache";
-import type { ApiProduct, ApiCategory, WooProduct, WooCategory } from "./types";
+import type { ApiProduct, ApiCategory, WooProduct, WooCategory } from "./types"
 
 // ─── Adapters: API → WooProduct/WooCategory shape ────────────────────────────
 const centsToString = (cents: number): string => (cents / 100).toFixed(2);
@@ -47,7 +47,6 @@ const apiCategoryToWoo = (c: ApiCategory): WooCategory & { parentSlug: string | 
 };
 
 // ─── Public fetch functions (same signature as before) ───────────────────────
-
 export const getProducts = async (options?: {
   page?: number;
   per_page?: number;
@@ -95,21 +94,4 @@ export const getCategories = async (options?: {
   return categories
     .filter((c) => !options?.hide_empty || c.count > 0)
     .map(apiCategoryToWoo);
-};
-
-// ─── WooCommerce-only calls (kept for features not yet migrated) ──────────────
-
-export const wooFetch = wooFetchServer;
-
-export const getProductVariations = async (productId: number) =>
-  wooFetchServer(`products/${productId}/variations`, {
-    searchParams: { per_page: 100 },
-    next: { revalidate: CACHE_CONFIG.PRODUCT_DETAIL },
-  });
-
-export const getCategoryById = async (id: string) => {
-  const category = await wooFetchServer(`categories/${id}`, {
-    next: { revalidate: CACHE_CONFIG.CATEGORIES },
-  });
-  return Array.isArray(category) ? category : null;
 };

@@ -5,9 +5,8 @@ import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import {
   getProductBySlug,
-  getProductVariations,
   getProducts
-} from "@/lib/wooClient";
+} from "@/lib/storeApi";
 import Section from "@/components/Section";
 import BreadcrumbsNav from "@/components/Breadcrumb";
 import { BreadcrumbItem } from "@/components/Breadcrumb/types";
@@ -17,7 +16,7 @@ import ProductPageClient from "@/components/Product/ProductsPageClient";
 import CategoryProductSliderSection from "@/components/CategoryProduct"; // You may also like
 // Add To Cart
 import { toCategoryProductSliderItems } from "@/domains/products/adapter";
-import type { ApiProductVariation } from "@/lib/wooClient/types"  ;
+import type { ApiProductVariation } from "@/lib/storeApi/types"  ;
 import type { AddToCartInput } from "@/lib/cartTypes";
 import type { PageProps, LangSlugParamsObj } from "@/types/next";
 import { unwrap, unwrapSearchParams } from "@/types/next";

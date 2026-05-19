@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, ReactNode } from "react";
-import type { WooCategory } from "@/lib/wooClient";
+import type { WooCategory } from "@/lib/storeApi";
 
 interface CategoriesContextType {
   categories: WooCategory[];
