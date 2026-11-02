@@ -1,6 +1,4 @@
 "use client";
-import { useState } from "react";
-import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import {
@@ -10,7 +8,6 @@ import {
   CardContent,
   Typography,
   IconButton,
-  TextField,
   Button,
   Divider,
 } from "@mui/material";
@@ -29,15 +26,15 @@ const CartPageClient = () => {
 
   const { items, subtotal, updateQuantity, removeItem, clearCart } = useCart();
 
-  const [coupon, setCoupon] = useState("");
-  const [applying, setApplying] = useState(false);
+  // const [coupon, setCoupon] = useState("");
+  // const [applying, setApplying] = useState(false);
 
-  const handleDecrease = (id: number, qty: number, variantKey?: string) => {
+  const handleDecrease = (id: string, qty: number, variantKey?: string) => {
     if (qty <= 1) return;
     updateQuantity(id, qty - 1, variantKey);
   };
 
-  const handleIncrease = (id: number, qty: number, variantKey?: string) => {
+  const handleIncrease = (id: string, qty: number, variantKey?: string) => {
     updateQuantity(id, qty + 1, variantKey);
   };
 
@@ -90,7 +87,6 @@ const CartPageClient = () => {
                       }}
                     >
                       <Grid container alignItems="center" spacing={2}>
-                        {/* 圖 + 名 */}
                         <Grid size={{ xs: 12, md: 6 }}>
                           <Box display="flex" alignItems="center" gap={2}>
                             {/* 圖片 */}

@@ -1,6 +1,6 @@
 import { isValidLocale, type Locale } from "@/i18n/config";
 import CheckoutSuccess from "@/components/Checkout/CheckoutSuccess";
-import { getDictionary } from "@/i18n/dictionaries";
+import { notFound } from 'next/navigation';
 
 type CheckoutSuccessPageProps = {
   params: Promise<{ lang: string }>;
@@ -9,7 +9,9 @@ type CheckoutSuccessPageProps = {
 
 const CheckoutSuccessPage = async ({ params, searchParams }: CheckoutSuccessPageProps) => {
   const { lang } = await params;
-  if (!isValidLocale(lang)) notFound();
+  if (lang !== 'en' && lang !== 'zh') {
+    notFound();
+  }
   const locale: Locale = lang;
 
   const { orderId = "" } = await searchParams;

@@ -95,3 +95,14 @@ export const getCategories = async (options?: {
     .filter((c) => !options?.hide_empty || c.count > 0)
     .map(apiCategoryToWoo);
 };
+
+export type {
+  WooProduct,
+  WooCategory,
+  WooImage,
+  WooCategoryImage,
+  WooProductCategory as WooProductCategoryLite,
+  ApiProduct,
+  ApiCategory,
+  ApiProductVariation,
+} from './types';

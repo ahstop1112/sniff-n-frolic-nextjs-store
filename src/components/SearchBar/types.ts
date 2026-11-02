@@ -1,4 +1,4 @@
-export type CatOption = { id: number | "all"; label: string; slug?: string };
+export type CatOption = { id: string; label: string; slug?: string };
 export type PopularCategory = {
   label: string;
   href: string;

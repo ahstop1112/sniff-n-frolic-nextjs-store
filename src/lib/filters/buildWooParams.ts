@@ -83,7 +83,7 @@ export const buildWooParamsFromSearchParams = async (args: {
   };
 
   // category: slug → id
-  let resolvedCategoryId: number | undefined;
+  let resolvedCategoryId: string | undefined;
 
   if (categorySlug) {
     // 1) local lookup (fast)

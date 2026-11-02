@@ -54,7 +54,7 @@ const SearchOverlay = ({
     if (!categories?.length) return [];
 
     const options: CatOption[] = [
-      { id: 0, label: t("allCategories"), slug: "all" },
+      { id: "all", label: t("allCategories"), slug: "all" },
     ];
 
     categories.map((item) => {

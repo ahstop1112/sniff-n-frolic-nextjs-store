@@ -1,14 +1,15 @@
 import type { Locale } from "@/i18n/config";
 
-type categoryNav = {
+type CategoryNavInput = {
+  key?: string;
   label: string;
-  href: string;
-  children?: categoryNav[];
-}
+  href?: string;
+  children?: CategoryNavInput[];
+};
 
 export const NAV_ITEMS = (
   locale: Locale,
-  categories?: categoryNav[],
+  categories?: CategoryNavInput[],
 ) => {
   const defaultMega = [
     { label: "petTreats", href: `/${locale}/category/pet-treats` },
@@ -20,7 +21,10 @@ export const NAV_ITEMS = (
           label: "slowFeeders",
           href: `/${locale}/category/slow-feeders`,
         },
-        { label: "lickMats", href: `/${locale}/category/lick-mats` },
+        {
+          label: "lickMats",
+          href: `/${locale}/category/lick-mats`,
+        },
         {
           label: "waterBottles",
           href: `/${locale}/category/water-bottles`,
@@ -37,7 +41,10 @@ export const NAV_ITEMS = (
           label: "carSeatCovers",
           href: `/${locale}/category/car-seat`,
         },
-        { label: "seatBelts", href: `/${locale}/category/seat-belt` },
+        {
+          label: "seatBelts",
+          href: `/${locale}/category/seat-belt`,
+        },
       ],
     },
     {
@@ -46,20 +53,22 @@ export const NAV_ITEMS = (
     },
   ];
 
-  const buildMegaFromCategories = (cats: categoryNav[]) => {
+  const buildMegaFromCategories = (
+    cats: CategoryNavInput[],
+  ): CategoryNavInput[] => {
     return cats
-      .filter((c) => !c.href.includes("uncategor"))
-      .map((t) => ({
-        key: t.href,
-        label: t.label.replace(/&amp;/g, "&"),
-        href: t.href,
-        ...(t.children && t.children.length ? {
-          children: t.children.map((ch) => ({
-            key: ch.href,
-            label: ch.label.replace(/&amp;/g, "&"),
-            href: ch.href,
-          }))
-        } : {}),
+      .filter(
+        (c) =>
+          !c.href?.toLowerCase().includes("uncategor") &&
+          (!!c.href || !!c.children?.length),
+      )
+      .map((c, index) => ({
+        key: c.key ?? c.href ?? `category-group-${index}`,
+        label: c.label.replace(/&amp;/g, "&"),
+        ...(c.href ? { href: c.href } : {}),
+        ...(c.children?.length
+          ? { children: buildMegaFromCategories(c.children) }
+          : {}),
       }));
   };
 
@@ -73,8 +82,20 @@ export const NAV_ITEMS = (
           ? buildMegaFromCategories(categories)
           : defaultMega,
     },
-    { key: "ourStory", label: "ourStory", href: `/${locale}/sniff-frolic-story` },
-    { key: "howToBuy", label: "howToBuy", href: `/${locale}/how-to-buy` },
-    { key: "faq", label: "faq", href: `/${locale}/faq` },
+    {
+      key: "ourStory",
+      label: "ourStory",
+      href: `/${locale}/sniff-frolic-story`,
+    },
+    {
+      key: "howToBuy",
+      label: "howToBuy",
+      href: `/${locale}/how-to-buy`,
+    },
+    {
+      key: "faq",
+      label: "faq",
+      href: `/${locale}/faq`,
+    },
   ];
 };

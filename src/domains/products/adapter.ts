@@ -7,7 +7,7 @@ export const toCategoryProductSliderItems = (
   locale: Locale,
 ): CateogryProductSliderItem[] => {
   return products.map((p) => ({
-    id: p.id,
+    id: p.uuid, // Use NestJS UUID instead of legacy numeric ID
     slug: p.slug,
     locale,
     name: p.name,

@@ -15,9 +15,9 @@ const STORAGE_KEY = "sniff-cart-v1";
 interface CartContextValue extends CartState {
   hydrated: boolean;
   addItem: (input: AddToCartInput, quantity?: number) => void;
-  removeItem: (id: number, variantKey?: string) => void;
+  removeItem: (id: string, variantKey?: string) => void;
   clearCart: () => void;
-  updateQuantity: (id: number, quantity: number, variantKey?: string) => void;
+  updateQuantity: (id: string, quantity: number, variantKey?: string) => void;
   totalItems: number;
   subtotal: number;
 }
@@ -86,7 +86,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     });
   };
 
-  const removeItem = (id: number, variantKey?: string) => {
+  const removeItem = (id: string, variantKey?: string) => {
     setState((prev) => {
       const key = `${id}-${variantKey ?? ""}`;
       const items = prev.items.filter(
@@ -106,7 +106,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   };
 
   const updateQuantity = (
-    id: number,
+    id: string,
     quantity: number,
     variantKey?: string,
   ) => {

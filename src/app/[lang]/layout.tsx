@@ -1,6 +1,5 @@
 // src/app/[lang]/layout.tsx
 import type { ReactNode } from "react";
-import { notFound } from "next/navigation";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getCategories } from "@/lib/storeApi";
 import I18nProvider from "@/i18n/I18nProvider";
@@ -17,7 +16,7 @@ import "./globals.scss";
 
 interface LangLayoutProps {
   children: ReactNode;
-  params: LangParamsObj;
+  params: Promise<{ lang: string }> | { lang: string }
 }
 
 const LangLayout = async ({ children, params }: LangLayoutProps) => {

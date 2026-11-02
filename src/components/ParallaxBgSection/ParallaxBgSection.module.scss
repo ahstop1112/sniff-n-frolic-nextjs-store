@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "@/styles/tokens" as *;
 @use "@/styles/mixins" as m;
 
@@ -70,6 +71,6 @@
     transition: background-color 0.2s;
   
     &:hover {
-      background-color: darken($sf-orange, 10%);
+      background-color: color.adjust($sf-orange, $lightness: -10%);
     }
   }
