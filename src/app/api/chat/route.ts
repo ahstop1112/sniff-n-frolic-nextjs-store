@@ -152,6 +152,10 @@ async function searchProducts(searchTerm: string): Promise<Product[]> {
 export async function POST(req: NextRequest) {
   const startedAt = Date.now();
 
+  // Rate-limit before spending Claude API tokens.
+  const limitResponse = await checkAssistantRateLimit(req);
+  if (limitResponse) return limitResponse;
+
   let body: unknown;
 
   try {
@@ -182,6 +186,41 @@ export async function POST(req: NextRequest) {
   }
 
   const chat: ChatMessage[] = messages.slice(-8);
+
+  // Handle the latest unattended-play request, plus immediate budget follow-ups.
+  // An unrelated new product request must not inherit an old safety refusal.
+  const userTurns = chat
+    .filter((m) => m.role === 'user')
+    .map((m) => m.content);
+
+  const latest = userTurns.at(-1) ?? '';
+  const previous = userTurns.at(-2) ?? '';
+
+  const budgetFollowUp =
+    /\b(?:under|below|budget|cheaper|less than)\b|[$€£]|預算|以下|平啲/i.test(latest);
+
+  const switchedToSupervised =
+    /\b(?:supervised|when (?:i(?:'m| am)|we(?:'re| are)) home)\b|有人睇住|有人看管|有人陪住/i.test(latest);
+
+  const switchedProduct =
+    /\b(?:backpack|carrier|harness|leash|collar|bed|bowl|grooming)\b|背囊|背包|牽繩|牵引绳|胸背|狗床|狗碗/i.test(latest);
+
+  const latestUnsafe = isUnattendedPlayRequest(latest);
+  const unsafe =
+    latestUnsafe ||
+    (isUnattendedPlayRequest(previous) &&
+      budgetFollowUp &&
+      !switchedToSupervised &&
+      !switchedProduct);
+
+  if (unsafe) {
+    console.info('[ProductAssistant] unattended safety guard triggered');
+
+    return NextResponse.json({
+      text: getUnattendedSafetyReply(latestUnsafe ? latest : previous),
+      products: [],
+    });
+  }
 
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json(
